@@ -1,490 +1,999 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>English Trainer • Níveis</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Inglês Pro - Claudio</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;background:#e0e7ff;color:#0f172a}
+    .container{max-width:720px;margin:0 auto;padding:18px;min-height:100vh}
+    .header{
+      background:linear-gradient(135deg,#4f46e5,#2563eb);
+      color:#fff;padding:18px;border-radius:20px;margin-bottom:14px;position:relative;
+      box-shadow:0 18px 40px rgba(0,0,0,.14);
+    }
+    .header h1{font-size:1.5em;margin-bottom:6px}
+    .header p{opacity:.9}
+    .card{
+      background:#fff;border-radius:20px;box-shadow:0 14px 30px rgba(0,0,0,.10);
+      padding:18px;margin-bottom:14px
+    }
+    .row{display:flex;gap:10px;flex-wrap:wrap}
+    .pill{
+      background:#eef2ff;color:#1e293b;border:1px solid #c7d2fe;border-radius:999px;
+      padding:8px 12px;font-weight:700;font-size:.95em
+    }
+    .btn{
+      border:none;border-radius:14px;padding:12px 14px;font-weight:800;cursor:pointer;
+      transition:transform .06s ease, filter .2s ease;
+      display:inline-flex;align-items:center;justify-content:center;gap:8px
+    }
+    .btn:active{transform:scale(.98)}
+    .btn-primary{background:#4f46e5;color:#fff}
+    .btn-ghost{background:#f1f5f9;color:#0f172a}
+    .btn-danger{background:#ef4444;color:#fff}
+    .btn-success{background:#10b981;color:#fff}
+    .btn-warning{background:#f59e0b;color:#111827}
+    .btn-wide{width:100%}
+    .screen{display:none}
+    .screen.active{display:block}
 
-<style>
-  :root{
-    --bg:#0f1115;
-    --card:#171a21;
-    --muted:#9aa3b2;
-    --btn:#2a2f3a;
-    --btn2:#3a4152;
-    --good:#1f7a1f;
-    --bad:#8b1e1e;
-    --warn:#f59e0b;
-    --accent:#4f46e5;
-    --border:#262b36;
-  }
-  *{box-sizing:border-box}
-  body{
-    margin:0;
-    font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-    background: radial-gradient(1000px 600px at 20% 0%, #1d2140 0%, transparent 60%),
-                radial-gradient(900px 600px at 90% 10%, #2b1248 0%, transparent 60%),
-                var(--bg);
-    color:#fff;
-    padding:18px;
-  }
-  .wrap{max-width:920px;margin:0 auto}
-  .top{
-    display:flex;gap:10px;align-items:center;justify-content:space-between;
-    margin-bottom:14px;flex-wrap:wrap;
-  }
-  .brand{display:flex;flex-direction:column;gap:2px}
-  .brand h1{margin:0;font-size:18px}
-  .brand small{color:var(--muted)}
-  .pill{
-    background:#0b0d12;border:1px solid var(--border);
-    padding:8px 10px;border-radius:999px;color:var(--muted);
-    font-size:12px;
-  }
+    .level-grid{display:grid;grid-template-columns:1fr;gap:10px}
+    @media(min-width:620px){ .level-grid{grid-template-columns:1fr 1fr} }
 
-  .card{
-    background: rgba(23,26,33,.92);
-    border:1px solid var(--border);
-    border-radius:16px;
-    box-shadow: 0 18px 40px rgba(0,0,0,.35);
-    padding:16px;
-  }
+    .option{
+      border:2px solid #e2e8f0;background:#f8fafc;border-radius:16px;
+      padding:12px 12px;cursor:pointer;transition:all .15s ease;display:flex;gap:10px;align-items:flex-start
+    }
+    .option:hover{filter:brightness(.98)}
+    .opt-letter{
+      min-width:34px;height:34px;border-radius:12px;background:#e0e7ff;color:#1e293b;
+      display:flex;align-items:center;justify-content:center;font-weight:900
+    }
+    .option.selected{border-color:#4f46e5;background:#eef2ff}
+    .option.correct{border-color:#10b981;background:#ecfdf5}
+    .option.wrong{border-color:#ef4444;background:#fef2f2}
 
-  .screen{display:none}
-  .screen.active{display:block}
+    .q-title{font-size:1.2em;font-weight:900;margin-bottom:8px}
+    .q-sub{color:#475569;margin-bottom:12px;line-height:1.35}
+    .divider{height:1px;background:#e5e7eb;margin:14px 0}
 
-  .grid{
-    display:grid;
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:10px;
-    margin-top:10px;
-  }
-  @media (max-width:700px){
-    .grid{grid-template-columns:1fr}
-  }
+    .hintBox{
+      background:#fff7ed;border:2px solid #fdba74;border-radius:16px;padding:12px;color:#7c2d12
+    }
+    .explainBox{
+      background:#eff6ff;border:2px solid #93c5fd;border-radius:16px;padding:12px;color:#1e3a8a
+    }
+    .audioRow{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}
+    .tiny{font-size:.92em;color:#64748b}
 
-  button{
-    border:none;
-    cursor:pointer;
-    border-radius:12px;
-    padding:10px 12px;
-    font-size:14px;
-    color:#fff;
-    background:var(--btn);
-    transition:.15s transform, .15s background;
-    user-select:none;
-  }
-  button:hover{background:var(--btn2)}
-  button:active{transform:scale(.98)}
-  .btn-accent{background:var(--accent)}
-  .btn-accent:hover{background:#3f37d8}
-  .btn-ghost{
-    background:transparent;
-    border:1px solid var(--border);
-    color:#d6d9e0;
-  }
-  .btn-ghost:hover{background:#0b0d12}
+    .topbar{
+      display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:10px
+    }
 
-  .qhead{
-    display:flex;gap:12px;align-items:flex-start;justify-content:space-between;
-    margin-bottom:10px;flex-wrap:wrap;
-  }
-  .qtitle{margin:0;font-size:18px;line-height:1.25}
-  .meta{color:var(--muted);font-size:12px;margin-top:6px}
-  .controls{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0 8px}
-  .options{display:grid;gap:10px;margin-top:10px}
-  .opt{
-    text-align:left;
-    background:#121520;
-    border:1px solid var(--border);
-    padding:12px 12px;
-    border-radius:12px;
-  }
-  .opt:hover{background:#151a26}
-  .opt.correct{background:rgba(31,122,31,.22);border-color:rgba(31,122,31,.6)}
-  .opt.wrong{background:rgba(139,30,30,.22);border-color:rgba(139,30,30,.6)}
-  .opt:disabled{opacity:.95;cursor:not-allowed}
+    .progressWrap{background:#eef2ff;border-radius:999px;overflow:hidden;height:12px;border:1px solid #c7d2fe}
+    .progressBar{height:12px;background:#4f46e5;width:0%}
+    .footerActions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
 
-  .panel{
-    margin-top:12px;
-    border:1px solid var(--border);
-    border-radius:12px;
-    padding:12px;
-    background:#0b0d12;
-    display:none;
-  }
-  .panel.show{display:block}
-  .panel h3{margin:0 0 8px;font-size:14px}
-  .hint{border-left:4px solid var(--warn);padding-left:10px;color:#fbe7c2}
-  .explain{border-left:4px solid #22c55e;padding-left:10px;color:#c9f7d3}
-  .reveal{
-    margin-top:10px;
-    padding:10px;
-    border-radius:12px;
-    background:#101423;
-    border:1px dashed #394055;
-    color:#d7dbe6;
-  }
-  .footer{
-    margin-top:10px;
-    display:flex;gap:10px;justify-content:space-between;align-items:center;
-    flex-wrap:wrap;
-  }
-  .progress{color:var(--muted);font-size:12px}
-  .big{
-    font-size:20px;
-    margin:0 0 6px 0;
-  }
-  .muted{color:var(--muted)}
-  .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-  .chip{font-size:12px;color:#d6d9e0;border:1px solid var(--border);padding:6px 10px;border-radius:999px;background:#0b0d12}
-</style>
+    /* Flash feedback */
+    .flash{position:fixed;inset:0;pointer-events:none;opacity:0;transition:opacity .18s ease}
+    .flash.on{opacity:.18}
+    .flash.good{background:#22c55e}
+    .flash.bad{background:#ef4444}
+  </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="top">
-    <div class="brand">
-      <h1>🎯 English Trainer</h1>
-      <small>Menu por níveis • alternativas A–E • feedback completo</small>
-    </div>
-    <div class="pill" id="scorePill">Score: 0 ✅ | 0 ❌</div>
-  </div>
+  <div class="flash" id="flash"></div>
 
-  <!-- HOME -->
-  <div id="homeScreen" class="card screen active">
-    <p class="big">Escolha um modo</p>
-    <p class="muted">Dica: comece pela Avaliação quando for um aluno novo. (vamos montar depois)</p>
+  <div class="container">
 
-    <div class="grid">
-      <button class="btn-ghost" onclick="comingSoon()">🧪 Avaliação (em breve)</button>
-      <button class="btn-accent" onclick="startLevel('basic')">📘 Básico</button>
-      <button onclick="comingSoon()">📗 Pré-intermediário (em breve)</button>
-      <button onclick="comingSoon()">📙 Intermediário (em breve)</button>
-      <button onclick="comingSoon()">📕 Pré-avançado (em breve)</button>
-      <button onclick="comingSoon()">🏆 Avançado (em breve)</button>
-    </div>
-
-    <div class="chips">
-      <div class="chip">🔊 Áudio em todas</div>
-      <div class="chip">💡 Dica sem entregar</div>
-      <div class="chip">✅ Explicação após resposta</div>
-      <div class="chip">A–E embaralhado</div>
-    </div>
-  </div>
-
-  <!-- QUIZ -->
-  <div id="quizScreen" class="card screen">
-    <div class="qhead">
-      <div>
-        <h2 id="prompt" class="qtitle">Carregando…</h2>
-        <div id="meta" class="meta"></div>
+    <!-- HOME -->
+    <div id="homeScreen" class="screen active">
+      <div class="header">
+        <h1>🎯 Inglês Pro</h1>
+        <p>Claudio • aula gamificada (Básico → Pré-Intermediário)</p>
       </div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap">
-        <button class="btn-ghost" onclick="goHome()">⌂ Menu</button>
-        <button class="btn-ghost" onclick="resetProgress()">↻ Reset</button>
+
+      <div class="card">
+        <div class="row" style="margin-bottom:10px">
+          <div class="pill" id="streakPill">🔥 Streak: 0</div>
+          <div class="pill" id="xpPill">⭐ XP: 0</div>
+          <div class="pill" id="accuracyPill">🎯 Acerto: 0%</div>
+        </div>
+
+        <div class="level-grid">
+          <button class="btn btn-primary btn-wide" onclick="startLevel('basic')">📘 Básico (A1)</button>
+          <button class="btn btn-primary btn-wide" onclick="startLevel('preintermediate')">📗 Pré-Intermediário (A2)</button>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="row">
+          <button class="btn btn-ghost" onclick="openStats()">📊 Progresso</button>
+          <button class="btn btn-danger" onclick="resetAll()">🧨 Resetar tudo</button>
+        </div>
+
+        <p class="tiny" style="margin-top:10px">
+          Dica: no GitHub Pages, qualquer alteração no <strong>index.html</strong> pode levar alguns segundos pra atualizar.
+        </p>
       </div>
     </div>
 
-    <div class="controls">
-      <button class="btn-accent" onclick="playAudio()">🔊 Ouvir</button>
-      <button onclick="toggleHint()">💡 Dica</button>
-      <button class="btn-ghost" onclick="repeatSlow()">🐢 Ouvir devagar</button>
+    <!-- STATS -->
+    <div id="statsScreen" class="screen">
+      <div class="header">
+        <h1>📊 Seu Progresso</h1>
+        <p>Resumo rápido do que você já fez</p>
+      </div>
+
+      <div class="card" id="statsBox"></div>
+
+      <div class="card">
+        <button class="btn btn-primary btn-wide" onclick="goHome()">← Voltar</button>
+      </div>
     </div>
 
-    <div id="options" class="options"></div>
+    <!-- QUIZ -->
+    <div id="quizScreen" class="screen">
+      <div class="header">
+        <h1 id="quizHeader">🧠 Aula</h1>
+        <p id="quizSub">Responda, peça dica e ouça o áudio.</p>
+      </div>
 
-    <div id="hintPanel" class="panel">
-      <h3>💡 Dica</h3>
-      <div id="hintText" class="hint"></div>
+      <div class="card">
+        <div class="topbar">
+          <div style="min-width:220px">
+            <div class="tiny" id="qCounter">Questão 1/10</div>
+            <div class="progressWrap" aria-label="Progresso">
+              <div class="progressBar" id="progressBar"></div>
+            </div>
+          </div>
+
+          <div class="row">
+            <button class="btn btn-ghost" onclick="confirmEndPartial()">⏸ Encerrar parcial</button>
+            <button class="btn btn-danger" onclick="confirmExitHome()">🏠 Início</button>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="q-title" id="qTitle">Carregando…</div>
+        <div class="q-sub" id="qPrompt"></div>
+
+        <div class="audioRow">
+          <button class="btn btn-ghost" onclick="speakCurrent(0.9)">🔊 Ouvir</button>
+          <button class="btn btn-ghost" onclick="speakCurrent(0.75)">🐢 Ouvir devagar</button>
+        </div>
+
+        <div id="optionsBox" style="display:grid;gap:10px"></div>
+
+        <div class="footerActions">
+          <button class="btn btn-warning" onclick="toggleHint()">💡 Dica</button>
+          <button class="btn btn-primary" id="checkBtn" onclick="checkAnswer()">✅ Verificar</button>
+          <button class="btn btn-primary" id="nextBtn" style="display:none" onclick="nextQuestion()">➡️ Próxima</button>
+        </div>
+
+        <div id="hintArea" style="display:none;margin-top:12px" class="hintBox"></div>
+        <div id="explainArea" style="display:none;margin-top:12px" class="explainBox"></div>
+
+        <p class="tiny" style="margin-top:12px" id="tipFooter"></p>
+      </div>
     </div>
 
-    <div id="resultPanel" class="panel">
-      <h3 id="resultTitle">Resultado</h3>
-      <div id="explainText" class="explain"></div>
-      <div id="revealBox" class="reveal"></div>
-    </div>
-
-    <div class="footer">
-      <div class="progress" id="progressText">—</div>
-      <button id="nextBtn" class="btn-accent" style="display:none" onclick="nextQuestion()">Próxima →</button>
-    </div>
   </div>
-
-  <!-- COMPLETE -->
-  <div id="completeScreen" class="card screen">
-    <p class="big">✅ Aula concluída!</p>
-    <p class="muted" id="completeSummary">—</p>
-
-    <div class="grid" style="margin-top:14px">
-      <button class="btn-accent" onclick="startLevel(activeLevel)">🔁 Refazer aula</button>
-      <button class="btn-ghost" onclick="goHome()">⌂ Voltar ao menu</button>
-      <button onclick="comingSoon()">📌 Revisar erros (em breve)</button>
-      <button onclick="comingSoon()">➡️ Próximo nível (em breve)</button>
-    </div>
-  </div>
-</div>
-
-<!-- SFX -->
-<audio id="success">
-  <source src="https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3">
-</audio>
-<audio id="fail">
-  <source src="https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-fail-notification-946.mp3">
-</audio>
 
 <script>
 /* =========================
-   BANCO (por níveis)
-   ========================= */
+   0) UTIL / STORAGE
+========================= */
+const STORE_KEY = "inglesPro_v3";
+const nowISO = () => new Date().toISOString();
+const todayKey = () => new Date().toLocaleDateString("pt-BR");
+
+function loadState(){
+  try{
+    return JSON.parse(localStorage.getItem(STORE_KEY) || "{}");
+  }catch(e){
+    return {};
+  }
+}
+function saveState(patch){
+  const s = loadState();
+  const merged = { ...s, ...patch };
+  localStorage.setItem(STORE_KEY, JSON.stringify(merged));
+  return merged;
+}
+
+function clamp(n,min,max){ return Math.max(min, Math.min(max,n)); }
+
+function shuffle(arr){
+  // Fisher-Yates (in-place copy)
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+/* =========================
+   1) BANCO DE QUESTÕES
+   (Básico + Pré-Intermediário)
+========================= */
 const BANK = {
   basic: [
-    {"id":"B01","type":"PT_to_EN","promptPT":"Você está em uma aula e precisa se apresentar. Qual frase em inglês está correta?","audioTextEN":"I live in São Paulo.","options":["I live in São Paulo.","I lives in São Paulo.","I living in São Paulo.","I lived in São Paulo."],"correctIndex":0,"hintPT":"Pense: você está falando do presente (agora) ou do passado?","explainPT":"Com 'I', o verbo fica na forma base no Present Simple (live).","revealEN":"I live in São Paulo."},
-    {"id":"B02","type":"PickCorrectEN","promptPT":"Seu colega descreve rotina. Qual frase está correta e combina com hábito?","audioTextEN":"I usually wake up at six.","options":["I usually wake up at six.","I am usually waking up at six.","I usually waking up at six.","I was usually waking up at six."],"correctIndex":0,"hintPT":"A palavra 'usually' fala de frequência (rotina), não de 'agora'.","explainPT":"Advérbios de frequência (usually/always/sometimes) puxam o Present Simple.","revealEN":"I usually wake up at six."},
-    {"id":"B03","type":"PickCorrectEN","promptPT":"Você está descrevendo sua melhor amiga. Escolha a frase correta em inglês.","audioTextEN":"She works as a teacher.","options":["She work as a teacher.","She works as a teacher.","She working as a teacher.","She is work as a teacher."],"correctIndex":1,"hintPT":"Compare com 'I work...'. O que muda com 'She'?","explainPT":"Com he/she/it, geralmente usamos verbo com -s/-es no Present Simple.","revealEN":"She works as a teacher."},
-    {"id":"B04","type":"PickCorrectEN","promptPT":"No restaurante, você quer dizer que não bebe café. Escolha a frase correta.","audioTextEN":"I do not drink coffee.","options":["I not drink coffee.","I do not drink coffee.","I no drink coffee.","I doesn't drink coffee."],"correctIndex":1,"hintPT":"Na negativa do Present Simple com 'I', você precisa de um auxiliar.","explainPT":"Negativa: do + not + verbo base (drink).","revealEN":"I do not drink coffee."},
-    {"id":"B05","type":"PickCorrectEN","promptPT":"Você quer saber o hobby de alguém. Qual pergunta está correta?","audioTextEN":"What do you do on weekends?","options":["What you do on weekends?","What do you do on weekends?","What does you do on weekends?","What you doing on weekends?"],"correctIndex":1,"hintPT":"Pergunta no Present Simple geralmente precisa de 'do/does'.","explainPT":"Estrutura: Wh-word + do + subject + verbo base.","revealEN":"What do you do on weekends?"},
-    {"id":"B06","type":"PickCorrectEN","promptPT":"Você está falando de algo que vocês fazem juntos no domingo. Qual frase está correta?","audioTextEN":"We cook together on Sundays.","options":["We cooks together on Sundays.","We cook together on Sundays.","We cooking together on Sundays.","We are cook together on Sundays."],"correctIndex":1,"hintPT":"'We' é plural. O verbo costuma ficar na forma base.","explainPT":"Com we/you/they, o verbo fica na forma base no Present Simple.","revealEN":"We cook together on Sundays."},
-    {"id":"B07","type":"PickCorrectEN","promptPT":"Você fala sobre seus colegas (eles). Qual frase está correta?","audioTextEN":"They work in the marketing department.","options":["They works in the marketing department.","They working in the marketing department.","They work in the marketing department.","They are work in the marketing department."],"correctIndex":2,"hintPT":"Regra rápida: 'they' usa verbo base.","explainPT":"Com they, nada de -s no verbo: they work.","revealEN":"They work in the marketing department."},
-    {"id":"B08","type":"PickCorrectEN","promptPT":"Você descreve seu apartamento. Qual frase está correta?","audioTextEN":"It has two bedrooms.","options":["It have two bedrooms.","It has two bedrooms.","It having two bedrooms.","It is have two bedrooms."],"correctIndex":1,"hintPT":"'It' é he/she/it. E 'have' vira 'has'.","explainPT":"Terceira pessoa: it has (forma irregular de have).","revealEN":"It has two bedrooms."},
-    {"id":"B09","type":"Audio_to_PT","promptPT":"Ouça a frase e escolha o significado correto (PT).","audioTextEN":"She eats healthy food.","options":["Ela comeu comida saudável ontem.","Ela está comendo comida saudável agora.","Ela come comida saudável.","Ela vai comer comida saudável."],"correctIndex":2,"hintPT":"Sem 'yesterday/now/tomorrow' → pense em rotina/verdade geral.","explainPT":"Present Simple pode indicar hábito ou fato geral: 'She eats...'.","revealEN":"She eats healthy food."},
-    {"id":"B10","type":"PickCorrectEN","promptPT":"Qual frase fala de hábito no presente (rotina)?","audioTextEN":"I study English every day.","options":["I study English every day.","I am studying English every day.","I studied English every day.","I study English yesterday."],"correctIndex":0,"hintPT":"'Every day' indica repetição.","explainPT":"Rotina → Present Simple. 'Yesterday' não combina com presente.","revealEN":"I study English every day."},
-    {"id":"B11","type":"PickCorrectEN","promptPT":"Você quer perguntar se ele trabalha de manhã. Qual pergunta está correta?","audioTextEN":"Does he work in the morning?","options":["He works in the morning?","Does he work in the morning?","Does he works in the morning?","Work he in the morning?"],"correctIndex":1,"hintPT":"Com he/she/it, perguntas usam 'does'. E o verbo volta à base.","explainPT":"Pergunta: does + sujeito + verbo base (work).","revealEN":"Does he work in the morning?"},
-    {"id":"B12","type":"PickCorrectEN","promptPT":"Escolha a forma correta para dizer: 'Ele não mora aqui.'","audioTextEN":"He doesn't live here.","options":["He don't live here.","He doesn't live here.","He not live here.","He no live here."],"correctIndex":1,"hintPT":"Com 'he', a negativa usa 'doesn't'.","explainPT":"Doesn't = does not. Depois dele, verbo base: live.","revealEN":"He doesn't live here."},
-    {"id":"B13","type":"PickCorrectEN","promptPT":"Você quer saber onde ela trabalha. Qual pergunta está correta?","audioTextEN":"Where does she work?","options":["Where she works?","Where does she work?","Where works she?","Does where she work?"],"correctIndex":1,"hintPT":"Wh-word + auxiliar + sujeito + verbo base.","explainPT":"Em perguntas com Where/What/When: auxiliar vem antes do sujeito.","revealEN":"Where does she work?"},
-    {"id":"B14","type":"PickCorrectEN","promptPT":"Você quer saber quando a pessoa costuma chegar. Qual pergunta está correta?","audioTextEN":"When do you usually arrive?","options":["When you usually arrive?","When do you usually arrive?","When does you usually arrive?","When you arrive usually?"],"correctIndex":1,"hintPT":"Com 'you', o auxiliar é 'do'.","explainPT":"Pergunta: When + do + you + verbo base + advérbio.","revealEN":"When do you usually arrive?"},
-    {"id":"B15","type":"PickCorrectEN","promptPT":"Na loja, você quer perguntar: 'O que é isso em inglês?' Qual frase está correta?","audioTextEN":"What is this in English?","options":["What this is in English?","What is this in English?","What this in English?","What are this in English?"],"correctIndex":1,"hintPT":"Com 'to be', não usamos do/does.","explainPT":"Pergunta com 'to be': What + is + sujeito.","revealEN":"What is this in English?"},
-    {"id":"B16","type":"PickCorrectEN","promptPT":"Você está dando direção ao turista. Qual frase está correta?","audioTextEN":"The museum is next to the park.","options":["The museum next to the park.","The museum are next to the park.","The museum is next to the park.","The museum be next to the park."],"correctIndex":2,"hintPT":"Localização quase sempre precisa do verbo 'to be'.","explainPT":"Sujeito singular (museum) → 'is'.","revealEN":"The museum is next to the park."},
-    {"id":"B17","type":"PickCorrectEN","promptPT":"Você quer dizer que gosta de pizza. Qual frase está correta?","audioTextEN":"I like pizza.","options":["I liking pizza.","I likes pizza.","I like pizza.","I am like pizza."],"correctIndex":2,"hintPT":"Com 'I', use o verbo base. E 'like' não precisa de 'am'.","explainPT":"Present Simple: I like + objeto.","revealEN":"I like pizza."},
-    {"id":"B18","type":"PickCorrectEN","promptPT":"Você está preenchendo formulário. Como dizer corretamente: 'Eu trabalho como engenheiro'?","audioTextEN":"I work as an engineer.","options":["I work as engineer.","I working as an engineer.","I work as an engineer.","I works as an engineer."],"correctIndex":2,"hintPT":"Antes de 'engineer', normalmente entra um artigo. E com 'I' o verbo não ganha 's'.","explainPT":"Som de vogal em 'engineer' → 'an'. E: I work.","revealEN":"I work as an engineer."},
-    {"id":"B19","type":"PickCorrectEN","promptPT":"Você apresenta um amigo francês. Qual frase está correta?","audioTextEN":"He is French.","options":["He French.","He is French.","He are French.","He have French."],"correctIndex":1,"hintPT":"Nacionalidade usa o verbo 'to be'.","explainPT":"Para características/nacionalidade: he is + adjetivo.","revealEN":"He is French."},
-    {"id":"B20","type":"PickCorrectEN","promptPT":"Como perguntar com que frequência a pessoa vai à academia?","audioTextEN":"How often do you go to the gym?","options":["How often you go to the gym?","How often do you go to the gym?","How often does you go to the gym?","How often you do go to the gym?"],"correctIndex":1,"hintPT":"Pergunta de hábito com 'you' → usa 'do'.","explainPT":"Estrutura: How often + do + you + verbo base.","revealEN":"How often do you go to the gym?"},
-    {"id":"B21","type":"Audio_to_PT","promptPT":"Ouça e escolha o significado correto.","audioTextEN":"She lives in London and works at a bank.","options":["Ela morou em Londres no passado.","Ela está trabalhando em um banco agora.","Ela mora em Londres e trabalha em um banco.","Ela vai morar em Londres em breve."],"correctIndex":2,"hintPT":"Dois verbos no Present Simple → informações atuais/rotina.","explainPT":"Lives/works indicam onde ela mora e trabalha (situação atual).","revealEN":"She lives in London and works at a bank."},
-    {"id":"B22","type":"PickCorrectEN","promptPT":"Qual frase indica ação acontecendo agora (em progresso)?","audioTextEN":"I am reading a book.","options":["I am reading a book.","I reading a book.","I read a book.","I am read a book."],"correctIndex":0,"hintPT":"Ação em progresso: 'am/is/are' + verbo com -ing.","explainPT":"Present Continuous: I am + reading.","revealEN":"I am reading a book."},
-    {"id":"B23","type":"PickCorrectEN","promptPT":"Você quer saber o preço de uma camiseta. Qual pergunta está correta?","audioTextEN":"How much is this t-shirt?","options":["How much this t-shirt is?","How much is this t-shirt?","How much cost this t-shirt?","How many is this t-shirt?"],"correctIndex":1,"hintPT":"Preço: 'How much' + verbo 'to be' invertido.","explainPT":"Pergunta padrão: How much is/are + item?","revealEN":"How much is this t-shirt?"},
-    {"id":"B24","type":"PickCorrectEN","promptPT":"Você quer dizer que ela sabe nadar muito bem. Qual frase está correta?","audioTextEN":"She can swim very well.","options":["She can swim very well.","She can swims very well.","She can swimming very well.","She can is swim very well."],"correctIndex":0,"hintPT":"Depois de 'can', o verbo fica na forma base.","explainPT":"Modal + verbo base: can swim.","revealEN":"She can swim very well."},
-    {"id":"B25","type":"PickCorrectEN","promptPT":"Qual frase está 100% correta (negativa + rotina) usando 'they'?","audioTextEN":"They don't work on weekends, but they study English on Saturdays.","options":["They don't work on weekends, but they study English on Saturdays.","They doesn't work on weekends, but they study English on Saturdays.","They don't work on weekends, but they studying English on Saturdays.","They don't works on weekends, but they study English on Saturdays."],"correctIndex":0,"hintPT":"'They' usa 'don't' e verbo base: work/study.","explainPT":"Plural: don't + verbo base. Após 'but', a regra continua igual.","revealEN":"They don't work on weekends, but they study English on Saturdays."}
+    {
+      id:"B01",
+      promptPT:"Escolha a frase correta para o ambiente de trabalho.",
+      audioTextEN:"I help my team.",
+      options:[
+        "I help my team.",
+        "I helps my team.",
+        "I helping my team.",
+        "I helped my team every day.",
+        "I am help my team."
+      ],
+      correctIndex:0,
+      hintPT:"Observe quem faz a ação (I / he / she / they).",
+      explainPT:"Com I, o verbo fica na forma base (help), sem “s”."
+    },
+    {
+      id:"B02",
+      promptPT:"O que essa frase significa?",
+      audioTextEN:"I wake up early.",
+      options:[
+        "Eu acordo cedo.",
+        "Eu acordei cedo ontem.",
+        "Eu estou acordando agora.",
+        "Eu vou acordar cedo amanhã.",
+        "Eu estava acordando cedo."
+      ],
+      correctIndex:0,
+      hintPT:"A frase fala de hábito ou de um momento específico?",
+      explainPT:"Presente simples geralmente indica rotina/hábito."
+    },
+    {
+      id:"B03",
+      promptPT:"Você está viajando. Qual frase faz sentido?",
+      audioTextEN:"I go to the airport.",
+      options:[
+        "I go to the airport.",
+        "I goes to the airport.",
+        "I going to the airport.",
+        "I went go to the airport.",
+        "I am go to the airport."
+      ],
+      correctIndex:0,
+      hintPT:"Com I, qual forma do verbo usamos?",
+      explainPT:"I + verbo base (go)."
+    },
+    {
+      id:"B04",
+      promptPT:"Complete a frase.",
+      audioTextEN:"At school, I study English.",
+      options:[
+        "study",
+        "studies",
+        "studying",
+        "studied",
+        "studyed"
+      ],
+      correctIndex:0,
+      hintPT:"Pense em algo que você faz com frequência.",
+      explainPT:"Ação habitual → Present Simple (study)."
+    },
+    {
+      id:"B05",
+      promptPT:"Qual frase combina com cinema?",
+      audioTextEN:"I like this movie.",
+      options:[
+        "Eu gosto desse filme.",
+        "Eu estou fazendo um filme.",
+        "Eu gostei desse filme ontem.",
+        "Eu vou gostar desse filme amanhã.",
+        "Eu estou gostando desse filme agora."
+      ],
+      correctIndex:0,
+      hintPT:"‘Like’ aqui é preferência geral.",
+      explainPT:"Like no presente indica gosto/preferência."
+    },
+    {
+      id:"B06",
+      promptPT:"Escolha a frase correta.",
+      audioTextEN:"She works at the office.",
+      options:[
+        "She work at the office.",
+        "She works at the office.",
+        "She working at the office.",
+        "She worked at the office every day.",
+        "She is work at the office."
+      ],
+      correctIndex:1,
+      hintPT:"Observe o sujeito: é I ou she?",
+      explainPT:"He/She/It → verbo recebe “s” (works)."
+    },
+    {
+      id:"B07",
+      promptPT:"Qual frase fala de algo que você faz sempre?",
+      audioTextEN:"I watch movies on weekends.",
+      options:[
+        "I watch movies on weekends.",
+        "I am watching a movie now.",
+        "I watched a movie yesterday.",
+        "I will watch a movie tomorrow.",
+        "I watching movies on weekends."
+      ],
+      correctIndex:0,
+      hintPT:"On weekends indica rotina.",
+      explainPT:"Presente simples + rotina."
+    },
+    {
+      id:"B08",
+      promptPT:"Escolha a frase mais natural.",
+      audioTextEN:"I have coffee in the morning.",
+      options:[
+        "I have coffee in the morning.",
+        "I am have coffee in the morning.",
+        "I having coffee in the morning.",
+        "I having coffee every morning.",
+        "I have coffees in the morning."
+      ],
+      correctIndex:0,
+      hintPT:"Veja qual frase soa natural e completa.",
+      explainPT:"Estrutura simples do Present Simple."
+    },
+    {
+      id:"B09",
+      promptPT:"O que essa frase quer dizer?",
+      audioTextEN:"I am from Brazil.",
+      options:[
+        "Eu sou do Brasil.",
+        "Eu estou no Brasil agora.",
+        "Eu vou para o Brasil.",
+        "Eu gosto do Brasil.",
+        "Eu moro no Brasil."
+      ],
+      correctIndex:0,
+      hintPT:"From indica origem.",
+      explainPT:"I am from… = eu sou de / eu venho de."
+    },
+    {
+      id:"B10",
+      promptPT:"Qual frase fala de rotina no trabalho?",
+      audioTextEN:"I check my emails every morning.",
+      options:[
+        "I check my emails every morning.",
+        "I am checking my emails now.",
+        "I checked my emails yesterday.",
+        "I will check my emails tomorrow.",
+        "I checking my emails every morning."
+      ],
+      correctIndex:0,
+      hintPT:"Every morning indica hábito.",
+      explainPT:"Present Simple + rotina."
+    },
+    {
+      id:"B11",
+      promptPT:"Escolha a frase correta para descrever rotina dos seus pais.",
+      audioTextEN:"They live in a big house.",
+      options:[
+        "They lives in a big house.",
+        "They live in a big house.",
+        "They living in a big house.",
+        "They lived in a big house now.",
+        "They are live in a big house."
+      ],
+      correctIndex:1,
+      hintPT:"They é plural. Plural leva 's' no verbo?",
+      explainPT:"Com They (plural), verbo fica na base (live)."
+    },
+    {
+      id:"B12",
+      promptPT:"Complete a frase.",
+      audioTextEN:"We go to the park on Sundays.",
+      options:[
+        "go",
+        "goes",
+        "going",
+        "went",
+        "gone"
+      ],
+      correctIndex:0,
+      hintPT:"We = nós. Verbo fica como no I.",
+      explainPT:"We + verbo base (go)."
+    },
+    {
+      id:"B13",
+      promptPT:"Como você diz que não gosta de café?",
+      audioTextEN:"I do not like coffee.",
+      options:[
+        "I not like coffee.",
+        "I do not like coffee.",
+        "I no like coffee.",
+        "I am not like coffee.",
+        "I don't likes coffee."
+      ],
+      correctIndex:1,
+      hintPT:"Negativa no presente usa do/does.",
+      explainPT:"I do not (don’t) + verbo base."
+    },
+    {
+      id:"B14",
+      promptPT:"Escolha a frase correta para dizer que ele não trabalha no sábado.",
+      audioTextEN:"He does not work on Saturday.",
+      options:[
+        "He do not works on Saturday.",
+        "He does not work on Saturday.",
+        "He not works on Saturday.",
+        "He does not works on Saturday.",
+        "He doesn't works on Saturday."
+      ],
+      correctIndex:1,
+      hintPT:"O 's' vai no auxiliar ou no verbo?",
+      explainPT:"Does + verbo base (work), sem 's' no verbo."
+    },
+    {
+      id:"B15",
+      promptPT:"Como você pergunta se a pessoa estuda inglês?",
+      audioTextEN:"Do you study English?",
+      options:[
+        "You study English?",
+        "Are you study English?",
+        "Do you study English?",
+        "Does you study English?",
+        "Do you studies English?"
+      ],
+      correctIndex:2,
+      hintPT:"Pergunta no presente: do/does + sujeito + verbo base.",
+      explainPT:"Com You usamos DO."
+    }
+  ],
+
+  preintermediate: [
+    {
+      id:"P01",
+      promptPT:"Você está falando do que está acontecendo AGORA. Qual frase está correta?",
+      audioTextEN:"I am studying right now.",
+      options:["I am studying right now.","I study right now.","I studying right now.","I am study right now.","I studied right now."],
+      correctIndex:0,
+      hintPT:"Procure um sinal de 'agora': right now/at the moment/now.",
+      explainPT:"Ação em progresso: am/is/are + verbo com -ing."
+    },
+    {
+      id:"P02",
+      promptPT:"Rotina/hábito. Qual frase está correta?",
+      audioTextEN:"I study English every day.",
+      options:["I am studying English every day.","I study English every day.","I studies English every day.","I studying English every day.","I study English yesterday."],
+      correctIndex:1,
+      hintPT:"Every day = hábito.",
+      explainPT:"Hábito → Present Simple."
+    },
+    {
+      id:"P03",
+      promptPT:"Você quer dizer que NÃO tem tempo hoje. Qual frase está correta?",
+      audioTextEN:"I don't have time today.",
+      options:["I no have time today.","I don't have time today.","I doesn't have time today.","I am not have time today.","I not have time today."],
+      correctIndex:1,
+      hintPT:"Negativa no Present Simple precisa de auxiliar (do/does).",
+      explainPT:"Com I/you/we/they: don't + verbo base."
+    },
+    {
+      id:"P04",
+      promptPT:"Qual pergunta está correta para perguntar ONDE fica o banheiro?",
+      audioTextEN:"Where is the bathroom?",
+      options:["Where the bathroom is?","Where is the bathroom?","Where does the bathroom is?","Where are the bathroom?","Where is bathroom?"],
+      correctIndex:1,
+      hintPT:"Com 'to be' (is/are) não usamos do/does.",
+      explainPT:"Where + is/are + sujeito."
+    },
+    {
+      id:"P05",
+      promptPT:"Viagem: pedir a conta de forma educada. Qual frase é melhor?",
+      audioTextEN:"Could I have the bill, please?",
+      options:["Could I have the bill, please?","Can I to have the bill, please?","Could I has the bill, please?","I have the bill, please?","Do you have bill?"],
+      correctIndex:0,
+      hintPT:"Pedido educado: Could I…? (sem 'to' antes do verbo).",
+      explainPT:"Depois de could/can, verbo fica na base."
+    },
+    {
+      id:"P06",
+      promptPT:"Você quer dizer que foi ao cinema ontem. Qual frase está correta?",
+      audioTextEN:"I went to the cinema yesterday.",
+      options:["I go to the cinema yesterday.","I went to the cinema yesterday.","I goed to the cinema yesterday.","I was go to the cinema yesterday.","I am going to the cinema yesterday."],
+      correctIndex:1,
+      hintPT:"Yesterday = passado → Past Simple.",
+      explainPT:"Past Simple de go é irregular: went."
+    },
+    {
+      id:"P07",
+      promptPT:"Você quer dizer que já terminou a tarefa. Qual frase está correta?",
+      audioTextEN:"I finished my homework.",
+      options:["I finish my homework.","I finished my homework.","I finishing my homework.","I have finish my homework.","I was finished my homework."],
+      correctIndex:1,
+      hintPT:"Ação concluída no passado (mesmo que recente).",
+      explainPT:"Finished = Past Simple."
+    },
+    {
+      id:"P08",
+      promptPT:"Futuro planejado (intenção). Qual frase está correta?",
+      audioTextEN:"I'm going to travel next month.",
+      options:["I going to travel next month.","I'm going to travel next month.","I will to travel next month.","I'm go travel next month.","I traveled next month."],
+      correctIndex:1,
+      hintPT:"Plano: be + going to + verbo base.",
+      explainPT:"I'm going to + verb."
+    },
+    {
+      id:"P09",
+      promptPT:"Comparativo: sua casa é maior que a minha. Qual frase está correta?",
+      audioTextEN:"Your house is bigger than mine.",
+      options:["Your house is more big than mine.","Your house is bigger than mine.","Your house are bigger than mine.","Your house is big than mine.","Your house is biggest than mine."],
+      correctIndex:1,
+      hintPT:"Adjetivo curto: big → bigger.",
+      explainPT:"bigger + than."
+    },
+    {
+      id:"P10",
+      promptPT:"Quantidades: você precisa comprar pão. Qual frase é correta?",
+      audioTextEN:"I need some bread.",
+      options:["I need some bread.","I need a bread.","I need many bread.","I need breads.","I need few bread."],
+      correctIndex:0,
+      hintPT:"Bread é incontável.",
+      explainPT:"Incontável: some bread."
+    },
+    {
+      id:"P11",
+      promptPT:"Preço: qual pergunta está correta?",
+      audioTextEN:"How much does it cost?",
+      options:["How much it costs?","How much does it cost?","How much do it cost?","How much does it costs?","How many does it cost?"],
+      correctIndex:1,
+      hintPT:"Pergunta com it (singular) usa does + verbo base.",
+      explainPT:"Does + cost (base)."
+    },
+    {
+      id:"P12",
+      promptPT:"Você quer dizer: 'Ela não gosta de acordar cedo'. Qual frase correta?",
+      audioTextEN:"She doesn't like waking up early.",
+      options:["She don't like waking up early.","She doesn't likes waking up early.","She doesn't like waking up early.","She not like waking up early.","She isn't like waking up early."],
+      correctIndex:2,
+      hintPT:"Com she/he/it: doesn't + verbo base.",
+      explainPT:"Doesn't + like (base)."
+    },
+    {
+      id:"P13",
+      promptPT:"There is/are: escolha a frase correta.",
+      audioTextEN:"There are two chairs in the room.",
+      options:["There is two chairs in the room.","There are two chairs in the room.","There have two chairs in the room.","It are two chairs in the room.","There are two chair in the room."],
+      correctIndex:1,
+      hintPT:"Plural → are.",
+      explainPT:"Two chairs = plural → there are."
+    },
+    {
+      id:"P14",
+      promptPT:"Contável: qual frase está correta?",
+      audioTextEN:"I have a few friends in this city.",
+      options:["I have a few friends in this city.","I have a little friends in this city.","I have few friend in this city.","I have much friends in this city.","I have many friend in this city."],
+      correctIndex:0,
+      hintPT:"Friends é contável/plural.",
+      explainPT:"Countable plural: a few friends."
+    },
+    {
+      id:"P15",
+      promptPT:"Incontável: qual frase está correta?",
+      audioTextEN:"I have a little time today.",
+      options:["I have a little time today.","I have a few time today.","I have many time today.","I have a time today.","I have much times today."],
+      correctIndex:0,
+      hintPT:"Time é incontável.",
+      explainPT:"Uncountable: a little time."
+    }
+    // (Se quiser, eu adiciono já o pacote 40/80/120 do pré-intermediário no próximo envio)
   ]
 };
 
 /* =========================
-   ESTADO
-   ========================= */
-let activeLevel = "basic";
-let pool = [];            // questões do nível (clonadas)
-let idx = 0;
-let locked = false;
-let scoreOk = 0;
-let scoreBad = 0;
-let rendered = null;      // questão renderizada (com alternativas embaralhadas)
+   2) CONFIG / SESSÃO
+========================= */
+const LETTERS = ["A","B","C","D","E"];
+
+let session = {
+  levelKey: null,
+  originalBank: [],
+  remaining: [],
+  askedCount: 0,
+  targetCount: 12, // quantas questões por aula (pode ajustar)
+  current: null,
+  currentShuffledOptions: [],
+  correctText: "",
+  selectedIndex: null,
+  locked: false,
+  usedHint: false,
+  correct: 0,
+  wrong: 0
+};
 
 /* =========================
-   ELEMENTOS
-   ========================= */
-const elScorePill = document.getElementById("scorePill");
-
-const homeScreen = document.getElementById("homeScreen");
-const quizScreen = document.getElementById("quizScreen");
-const completeScreen = document.getElementById("completeScreen");
-
-const elPrompt = document.getElementById("prompt");
-const elMeta = document.getElementById("meta");
-const elOptions = document.getElementById("options");
-
-const elHintPanel = document.getElementById("hintPanel");
-const elHintText = document.getElementById("hintText");
-
-const elResultPanel = document.getElementById("resultPanel");
-const elResultTitle = document.getElementById("resultTitle");
-const elExplainText = document.getElementById("explainText");
-const elRevealBox = document.getElementById("revealBox");
-
-const elNextBtn = document.getElementById("nextBtn");
-const elProgressText = document.getElementById("progressText");
-
-const elCompleteSummary = document.getElementById("completeSummary");
-
-/* =========================
-   UTIL
-   ========================= */
-function updateScorePill(){
-  elScorePill.textContent = `Score: ${scoreOk} ✅ | ${scoreBad} ❌`;
-}
-
-function show(screen){
-  [homeScreen, quizScreen, completeScreen].forEach(s => s.classList.remove("active"));
-  screen.classList.add("active");
-}
-
-function escapeHtml(str){
-  return String(str)
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
-}
-
-function speak(text, rate=0.92){
-  if (!("speechSynthesis" in window)) return;
-  window.speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = "en-US";
-  u.rate = rate;
-  window.speechSynthesis.speak(u);
-}
-
-function playSfx(ok){
-  const a = document.getElementById(ok ? "success" : "fail");
-  a.currentTime = 0;
-  a.play();
-}
-
-function shuffle(arr){
-  // Fisher–Yates
-  for (let i = arr.length - 1; i > 0; i--){
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  return arr;
-}
-
-/* =========================
-   NORMALIZA + EMBARALHA
-   - embaralha opções e recalcula correctIndex
-   - suporta 4 ou 5 opções (A–E)
-   ========================= */
-function buildRenderedQuestion(q){
-  const opts = q.options.map((text, originalIndex) => ({ text, originalIndex }));
-  shuffle(opts);
-
-  const newCorrectIndex = opts.findIndex(o => o.originalIndex === q.correctIndex);
-
-  return {
-    ...q,
-    options: opts.map(o => o.text),
-    correctIndex: newCorrectIndex
-  };
-}
-
-function optionLabel(i){
-  return ["A","B","C","D","E"][i] || String(i+1);
-}
-
-/* =========================
-   FLOW
-   ========================= */
-function startLevel(level){
-  activeLevel = level;
-  pool = structuredClone(BANK[level] || []);
-  idx = 0;
-  scoreOk = 0;
-  scoreBad = 0;
-  updateScorePill();
-  show(quizScreen);
-  loadQuestion();
+   3) UI HELPERS
+========================= */
+function showScreen(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
 }
 
 function goHome(){
-  show(homeScreen);
+  renderHomePills();
+  showScreen("homeScreen");
 }
 
-function resetProgress(){
-  if (!confirm("Resetar pontuação e voltar para a primeira questão deste nível?")) return;
-  idx = 0;
-  scoreOk = 0;
-  scoreBad = 0;
-  updateScorePill();
-  loadQuestion();
+function openStats(){
+  const s = loadState();
+  const statsBox = document.getElementById("statsBox");
+  const basic = s.basic || {};
+  const pre = s.preintermediate || {};
+  statsBox.innerHTML = `
+    <div class="row" style="margin-bottom:12px">
+      <div class="pill">🔥 Streak: ${s.streak||0}</div>
+      <div class="pill">⭐ XP: ${s.xp||0}</div>
+      <div class="pill">🎯 Acerto: ${calcAccuracy(s)}%</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <p style="font-weight:900;margin-bottom:6px">📘 Básico</p>
+    <p class="tiny">Concluídas: <strong>${(basic.completedSessions||0)}</strong> • Melhor acerto: <strong>${(basic.bestAcc||0)}%</strong></p>
+
+    <div class="divider"></div>
+
+    <p style="font-weight:900;margin-bottom:6px">📗 Pré-Intermediário</p>
+    <p class="tiny">Concluídas: <strong>${(pre.completedSessions||0)}</strong> • Melhor acerto: <strong>${(pre.bestAcc||0)}%</strong></p>
+
+    <div class="divider"></div>
+
+    <p class="tiny">Dica: Se quiser, eu adiciono “teste de nível” e trilha automática (A1→A2→B1…).</p>
+  `;
+  showScreen("statsScreen");
 }
 
-function comingSoon(){
-  alert("🚧 Em breve! Vamos montar a avaliação e os próximos níveis.");
+function calcAccuracy(state){
+  const c = state.totalCorrect||0;
+  const w = state.totalWrong||0;
+  const t = c+w;
+  return t ? Math.round((c/t)*100) : 0;
+}
+
+function renderHomePills(){
+  const s = loadState();
+  document.getElementById("streakPill").textContent = `🔥 Streak: ${s.streak||0}`;
+  document.getElementById("xpPill").textContent = `⭐ XP: ${s.xp||0}`;
+  document.getElementById("accuracyPill").textContent = `🎯 Acerto: ${calcAccuracy(s)}%`;
 }
 
 /* =========================
-   RENDER
-   ========================= */
-function loadQuestion(){
-  locked = false;
-  elHintPanel.classList.remove("show");
-  elResultPanel.classList.remove("show");
-  elNextBtn.style.display = "none";
-  elOptions.innerHTML = "";
+   4) AUDIO (TTS)
+========================= */
+function speak(text, rate=0.9){
+  if(!("speechSynthesis" in window)) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = "en-US";
+  u.rate = rate;
+  speechSynthesis.speak(u);
+}
+function speakCurrent(rate){
+  if(!session.current) return;
+  speak(session.current.audioTextEN, rate);
+}
 
-  if (idx >= pool.length){
-    // finished
-    elCompleteSummary.textContent =
-      `Você concluiu o nível ${activeLevel.toUpperCase()}.\n✅ ${scoreOk} acertos • ❌ ${scoreBad} erros`;
-    show(completeScreen);
+/* =========================
+   5) FEEDBACK SOUNDS
+========================= */
+let audioCtx = null;
+function beep(type){
+  try{
+    if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+    const ctx = audioCtx;
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.connect(g); g.connect(ctx.destination);
+
+    const t0 = ctx.currentTime;
+    if(type==="good"){
+      o.type = "sine";
+      o.frequency.setValueAtTime(880, t0);
+      o.frequency.exponentialRampToValueAtTime(1320, t0+0.08);
+      g.gain.setValueAtTime(0.001, t0);
+      g.gain.exponentialRampToValueAtTime(0.12, t0+0.01);
+      g.gain.exponentialRampToValueAtTime(0.001, t0+0.18);
+      o.start(t0); o.stop(t0+0.20);
+    }else{
+      o.type = "square";
+      o.frequency.setValueAtTime(220, t0);
+      o.frequency.exponentialRampToValueAtTime(110, t0+0.10);
+      g.gain.setValueAtTime(0.001, t0);
+      g.gain.exponentialRampToValueAtTime(0.16, t0+0.01);
+      g.gain.exponentialRampToValueAtTime(0.001, t0+0.22);
+      o.start(t0); o.stop(t0+0.24);
+    }
+  }catch(e){}
+}
+
+function flash(type){
+  const el = document.getElementById("flash");
+  el.className = "flash " + (type==="good" ? "good" : "bad");
+  requestAnimationFrame(()=> el.classList.add("on"));
+  setTimeout(()=> el.classList.remove("on"), 160);
+}
+
+/* =========================
+   6) CORE: START / LOAD Q
+========================= */
+function startLevel(levelKey){
+  const bank = BANK[levelKey];
+  if(!bank || !bank.length){
+    alert("Esse nível ainda não tem questões.");
     return;
   }
 
-  const q = pool[idx];
-  rendered = buildRenderedQuestion(q);
+  session.levelKey = levelKey;
+  session.originalBank = bank.slice();
+  session.remaining = shuffle(bank); // embaralha ordem das questões
+  session.askedCount = 0;
+  session.targetCount = levelKey==="basic" ? 12 : 12; // pode ajustar por nível
+  session.current = null;
+  session.currentShuffledOptions = [];
+  session.correctText = "";
+  session.selectedIndex = null;
+  session.locked = false;
+  session.usedHint = false;
+  session.correct = 0;
+  session.wrong = 0;
 
-  elPrompt.textContent = rendered.promptPT;
-  elMeta.textContent = `Questão ${idx+1} / ${pool.length} • ${rendered.id} • Tipo: ${rendered.type}`;
-  elProgressText.textContent = "Responda. Depois veja a correção e clique em Próxima.";
+  document.getElementById("quizHeader").textContent =
+    levelKey==="basic" ? "📘 Básico (A1)" : "📗 Pré-Intermediário (A2)";
 
-  elHintText.textContent = rendered.hintPT;
+  document.getElementById("quizSub").textContent =
+    "Escolha uma alternativa. Use dica e áudio quando precisar.";
 
-  rendered.options.forEach((opt, i) => {
-    const b = document.createElement("button");
-    b.className = "opt";
-    b.innerHTML = `<strong>${optionLabel(i)})</strong> ${escapeHtml(opt)}`;
-    b.onclick = () => choose(i, b);
-    elOptions.appendChild(b);
+  nextQuestion(true);
+  showScreen("quizScreen");
+}
+
+function pickNextQuestion(){
+  // Se acabou, reembaralha e continua (para ter banco grande e sem travar)
+  if(session.remaining.length === 0){
+    session.remaining = shuffle(session.originalBank);
+  }
+  return session.remaining.pop();
+}
+
+function buildShuffledQuestion(q){
+  // embaralha opções e recalcula índice correto
+  const correctText = q.options[q.correctIndex];
+  const shuffled = shuffle(q.options);
+
+  // garante variação boa: se por acaso cair sempre A, a chance é baixa,
+  // mas aqui reforçamos com um "re-shuffle" quando cai em A repetido muito.
+  // (Simplão: se correto cair em A 3x seguidas, reembaralha)
+  // Vamos manter um histórico por sessão.
+  if(!session._lastCorrectLetters) session._lastCorrectLetters = [];
+  let idx = shuffled.indexOf(correctText);
+  let letter = LETTERS[idx] || "A";
+  const last = session._lastCorrectLetters.slice(-2);
+  if(last.length===2 && last[0]===letter && last[1]===letter){
+    // reembaralha uma vez pra tentar mudar
+    const resh = shuffle(q.options);
+    const idx2 = resh.indexOf(correctText);
+    shuffled.splice(0, shuffled.length, ...resh);
+    idx = idx2;
+    letter = LETTERS[idx] || "A";
+  }
+  session._lastCorrectLetters.push(letter);
+
+  return {
+    ...q,
+    _correctText: correctText,
+    _shuffledOptions: shuffled
+  };
+}
+
+/* =========================
+   7) RENDER
+========================= */
+function renderQuestion(){
+  const q = session.current;
+  const optionsBox = document.getElementById("optionsBox");
+
+  document.getElementById("hintArea").style.display = "none";
+  document.getElementById("explainArea").style.display = "none";
+  document.getElementById("checkBtn").style.display = "inline-flex";
+  document.getElementById("nextBtn").style.display = "none";
+  session.selectedIndex = null;
+  session.locked = false;
+  session.usedHint = false;
+
+  const total = session.targetCount;
+  const n = clamp(session.askedCount, 1, total);
+  document.getElementById("qCounter").textContent = `Questão ${n}/${total}`;
+  document.getElementById("progressBar").style.width = `${Math.round((n-1)/total*100)}%`;
+
+  document.getElementById("qTitle").textContent = `🎯 ${q.promptPT}`;
+  document.getElementById("qPrompt").textContent = "Escolha a melhor alternativa:";
+
+  // Observação pequena com a letra correta (para debug interno) — DESLIGADO:
+  document.getElementById("tipFooter").textContent =
+    `Tema: ${session.levelKey} • Use 🔊 pra ouvir a frase em inglês.`;
+
+  optionsBox.innerHTML = "";
+  q._shuffledOptions.forEach((text, idx)=>{
+    const div = document.createElement("div");
+    div.className = "option";
+    div.onclick = ()=> selectOption(idx);
+
+    const letter = LETTERS[idx] || "?";
+    div.innerHTML = `
+      <div class="opt-letter">${letter}</div>
+      <div style="flex:1">
+        <div style="font-weight:900">${text}</div>
+      </div>
+    `;
+    optionsBox.appendChild(div);
   });
 }
 
-function choose(choiceIndex){
-  if (locked) return;
-  locked = true;
-
-  const q = rendered;
-  const isCorrect = choiceIndex === q.correctIndex;
-
-  // mark all
-  const btns = [...elOptions.querySelectorAll("button")];
-  btns.forEach((b, i) => {
-    if (i === q.correctIndex) b.classList.add("correct");
-    if (i === choiceIndex && !isCorrect) b.classList.add("wrong");
-    b.disabled = true;
+function selectOption(idx){
+  if(session.locked) return;
+  session.selectedIndex = idx;
+  const children = [...document.getElementById("optionsBox").children];
+  children.forEach((c,i)=>{
+    c.classList.toggle("selected", i===idx);
   });
-
-  if (isCorrect){ scoreOk++; elResultTitle.textContent = "✅ Correto!"; }
-  else { scoreBad++; elResultTitle.textContent = "❌ Quase! Vamos corrigir."; }
-  updateScorePill();
-  playSfx(isCorrect);
-
-  elExplainText.textContent = q.explainPT;
-  elRevealBox.innerHTML = `<strong>Frase em inglês (reforço):</strong><br/>${escapeHtml(q.revealEN)}`;
-
-  elResultPanel.classList.add("show");
-  elNextBtn.style.display = "inline-block";
-}
-
-function nextQuestion(){
-  idx++;
-  loadQuestion();
 }
 
 function toggleHint(){
-  elHintPanel.classList.toggle("show");
+  if(!session.current) return;
+  session.usedHint = true;
+  const hintArea = document.getElementById("hintArea");
+  hintArea.innerHTML = `<strong>💡 Dica:</strong> ${session.current.hintPT || "Observe o padrão da frase."}`;
+  hintArea.style.display = "block";
 }
 
-function playAudio(){
-  if (!rendered) return;
-  speak(rendered.audioTextEN, 0.92);
+/* =========================
+   8) CHECK / NEXT / END
+========================= */
+function checkAnswer(){
+  if(session.locked) return;
+
+  if(session.selectedIndex===null){
+    alert("Selecione uma alternativa primeiro 😉");
+    return;
+  }
+
+  session.locked = true;
+
+  const q = session.current;
+  const correctText = q._correctText;
+  const chosenText = q._shuffledOptions[session.selectedIndex];
+  const isCorrect = chosenText === correctText;
+
+  const optionsEls = [...document.getElementById("optionsBox").children];
+  optionsEls.forEach((el, idx)=>{
+    const t = q._shuffledOptions[idx];
+    if(t === correctText) el.classList.add("correct");
+    if(idx === session.selectedIndex && !isCorrect) el.classList.add("wrong");
+  });
+
+  const explain = document.getElementById("explainArea");
+  explain.innerHTML = `
+    <div style="font-weight:900;margin-bottom:6px">${isCorrect ? "✅ Correto!" : "❌ Quase!"}</div>
+    <div class="tiny" style="margin-bottom:8px"><strong>Frase (EN):</strong> ${q.audioTextEN}</div>
+    <div><strong>Por quê:</strong> ${q.explainPT || "Boa! Continue observando o padrão."}</div>
+  `;
+  explain.style.display = "block";
+
+  // feedback audiovisual
+  if(isCorrect){
+    session.correct++;
+    beep("good"); flash("good");
+  }else{
+    session.wrong++;
+    beep("bad"); flash("bad");
+  }
+
+  // XP e stats globais
+  const s = loadState();
+  const addXP = isCorrect ? 10 : 2;
+  const totalCorrect = (s.totalCorrect||0) + (isCorrect?1:0);
+  const totalWrong = (s.totalWrong||0) + (isCorrect?0:1);
+  let xp = (s.xp||0) + addXP;
+
+  saveState({ xp, totalCorrect, totalWrong });
+
+  document.getElementById("checkBtn").style.display = "none";
+  document.getElementById("nextBtn").style.display = "inline-flex";
+
+  // Se errou: para ficar “dinâmico”, já prepara um “recurso”:
+  // na próxima, prioriza outra questão (não repete a mesma).
 }
 
-function repeatSlow(){
-  if (!rendered) return;
-  speak(rendered.audioTextEN, 0.75);
+function nextQuestion(isFirst=false){
+  // Se já completou a meta, encerra
+  if(!isFirst && session.askedCount >= session.targetCount){
+    finishSession();
+    return;
+  }
+
+  // se errou na última, aumenta chance de puxar outra do mesmo nível (já é)
+  const qRaw = pickNextQuestion();
+  const q = buildShuffledQuestion(qRaw);
+
+  session.current = q;
+  session.askedCount = session.askedCount + 1;
+
+  renderQuestion();
+
+  // fala automático só na primeira questão (pra não ficar chato)
+  if(isFirst){
+    setTimeout(()=> speakCurrent(0.9), 250);
+  }
 }
 
-/* start at home */
-updateScorePill();
+function finishSession(){
+  // Atualiza streak (só se ainda não marcou hoje)
+  const s = loadState();
+  const lastDay = s.lastDay || null;
+  const today = todayKey();
+  let streak = s.streak || 0;
+
+  if(lastDay !== today){
+    // se foi “ontem” ou qualquer outro, a gente incrementa
+    // (simples: incrementa sempre que for novo dia)
+    streak = streak + 1;
+  }
+
+  // accuracy da sessão
+  const total = session.correct + session.wrong;
+  const acc = total ? Math.round((session.correct/total)*100) : 0;
+
+  // stats por nível
+  const level = s[session.levelKey] || {};
+  const completedSessions = (level.completedSessions||0) + 1;
+  const bestAcc = Math.max(level.bestAcc||0, acc);
+
+  saveState({
+    streak,
+    lastDay: today,
+    [session.levelKey]: { ...level, completedSessions, bestAcc }
+  });
+
+  alert(`✅ Aula concluída!\n\nAcerto: ${acc}%\nCertas: ${session.correct}\nErradas: ${session.wrong}\nXP ganho: +${session.correct*10 + session.wrong*2}`);
+
+  goHome();
+}
+
+function confirmExitHome(){
+  const ok = confirm("Quer voltar ao início agora? (o progresso parcial desta aula fica salvo só no geral, mas a aula atual reinicia)");
+  if(ok) goHome();
+}
+
+function confirmEndPartial(){
+  const ok = confirm("Encerrar parcial e voltar ao início?");
+  if(ok){
+    // não conta como sessão concluída, mas mantém XP já ganho
+    goHome();
+  }
+}
+
+function resetAll(){
+  const ok = confirm("Tem certeza que quer resetar TUDO? (XP, streak, progresso)");
+  if(!ok) return;
+  localStorage.removeItem(STORE_KEY);
+  renderHomePills();
+  alert("Resetado ✅");
+}
+
+/* =========================
+   INIT
+========================= */
+renderHomePills();
 </script>
 </body>
 </html>
