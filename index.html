@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>English Trainer - Básico (25 Questões)</title>
+<title>English Trainer • Níveis</title>
 
 <style>
   :root{
@@ -28,14 +28,12 @@
     color:#fff;
     padding:18px;
   }
-  .wrap{max-width:860px;margin:0 auto}
+  .wrap{max-width:920px;margin:0 auto}
   .top{
     display:flex;gap:10px;align-items:center;justify-content:space-between;
-    margin-bottom:14px;
+    margin-bottom:14px;flex-wrap:wrap;
   }
-  .brand{
-    display:flex;flex-direction:column;gap:2px;
-  }
+  .brand{display:flex;flex-direction:column;gap:2px}
   .brand h1{margin:0;font-size:18px}
   .brand small{color:var(--muted)}
   .pill{
@@ -52,19 +50,19 @@
     padding:16px;
   }
 
-  .qhead{
-    display:flex;gap:12px;align-items:flex-start;justify-content:space-between;
-    margin-bottom:10px;
+  .screen{display:none}
+  .screen.active{display:block}
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+    margin-top:10px;
   }
-  .qtitle{
-    margin:0;
-    font-size:18px;
-    line-height:1.25;
+  @media (max-width:700px){
+    .grid{grid-template-columns:1fr}
   }
-  .meta{color:var(--muted);font-size:12px;margin-top:6px}
-  .controls{
-    display:flex;gap:10px;flex-wrap:wrap;margin:12px 0 8px;
-  }
+
   button{
     border:none;
     cursor:pointer;
@@ -87,6 +85,13 @@
   }
   .btn-ghost:hover{background:#0b0d12}
 
+  .qhead{
+    display:flex;gap:12px;align-items:flex-start;justify-content:space-between;
+    margin-bottom:10px;flex-wrap:wrap;
+  }
+  .qtitle{margin:0;font-size:18px;line-height:1.25}
+  .meta{color:var(--muted);font-size:12px;margin-top:6px}
+  .controls{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0 8px}
   .options{display:grid;gap:10px;margin-top:10px}
   .opt{
     text-align:left;
@@ -96,14 +101,9 @@
     border-radius:12px;
   }
   .opt:hover{background:#151a26}
-  .opt.correct{
-    background:rgba(31,122,31,.22);
-    border-color:rgba(31,122,31,.6);
-  }
-  .opt.wrong{
-    background:rgba(139,30,30,.22);
-    border-color:rgba(139,30,30,.6);
-  }
+  .opt.correct{background:rgba(31,122,31,.22);border-color:rgba(31,122,31,.6)}
+  .opt.wrong{background:rgba(139,30,30,.22);border-color:rgba(139,30,30,.6)}
+  .opt:disabled{opacity:.95;cursor:not-allowed}
 
   .panel{
     margin-top:12px;
@@ -115,16 +115,8 @@
   }
   .panel.show{display:block}
   .panel h3{margin:0 0 8px;font-size:14px}
-  .hint{
-    border-left:4px solid var(--warn);
-    padding-left:10px;
-    color:#fbe7c2;
-  }
-  .explain{
-    border-left:4px solid #22c55e;
-    padding-left:10px;
-    color:#c9f7d3;
-  }
+  .hint{border-left:4px solid var(--warn);padding-left:10px;color:#fbe7c2}
+  .explain{border-left:4px solid #22c55e;padding-left:10px;color:#c9f7d3}
   .reveal{
     margin-top:10px;
     padding:10px;
@@ -138,30 +130,59 @@
     display:flex;gap:10px;justify-content:space-between;align-items:center;
     flex-wrap:wrap;
   }
-  .progress{
-    color:var(--muted);
-    font-size:12px;
+  .progress{color:var(--muted);font-size:12px}
+  .big{
+    font-size:20px;
+    margin:0 0 6px 0;
   }
+  .muted{color:var(--muted)}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .chip{font-size:12px;color:#d6d9e0;border:1px solid var(--border);padding:6px 10px;border-radius:999px;background:#0b0d12}
 </style>
 </head>
 <body>
 <div class="wrap">
-
   <div class="top">
     <div class="brand">
       <h1>🎯 English Trainer</h1>
-      <small>Modo Básico • 25 questões • com áudio e feedback</small>
+      <small>Menu por níveis • alternativas A–E • feedback completo</small>
     </div>
     <div class="pill" id="scorePill">Score: 0 ✅ | 0 ❌</div>
   </div>
 
-  <div class="card">
+  <!-- HOME -->
+  <div id="homeScreen" class="card screen active">
+    <p class="big">Escolha um modo</p>
+    <p class="muted">Dica: comece pela Avaliação quando for um aluno novo. (vamos montar depois)</p>
+
+    <div class="grid">
+      <button class="btn-ghost" onclick="comingSoon()">🧪 Avaliação (em breve)</button>
+      <button class="btn-accent" onclick="startLevel('basic')">📘 Básico</button>
+      <button onclick="comingSoon()">📗 Pré-intermediário (em breve)</button>
+      <button onclick="comingSoon()">📙 Intermediário (em breve)</button>
+      <button onclick="comingSoon()">📕 Pré-avançado (em breve)</button>
+      <button onclick="comingSoon()">🏆 Avançado (em breve)</button>
+    </div>
+
+    <div class="chips">
+      <div class="chip">🔊 Áudio em todas</div>
+      <div class="chip">💡 Dica sem entregar</div>
+      <div class="chip">✅ Explicação após resposta</div>
+      <div class="chip">A–E embaralhado</div>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="quizScreen" class="card screen">
     <div class="qhead">
       <div>
         <h2 id="prompt" class="qtitle">Carregando…</h2>
         <div id="meta" class="meta"></div>
       </div>
-      <button class="btn-ghost" onclick="resetProgress()">↻ Reset</button>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn-ghost" onclick="goHome()">⌂ Menu</button>
+        <button class="btn-ghost" onclick="resetProgress()">↻ Reset</button>
+      </div>
     </div>
 
     <div class="controls">
@@ -189,6 +210,18 @@
     </div>
   </div>
 
+  <!-- COMPLETE -->
+  <div id="completeScreen" class="card screen">
+    <p class="big">✅ Aula concluída!</p>
+    <p class="muted" id="completeSummary">—</p>
+
+    <div class="grid" style="margin-top:14px">
+      <button class="btn-accent" onclick="startLevel(activeLevel)">🔁 Refazer aula</button>
+      <button class="btn-ghost" onclick="goHome()">⌂ Voltar ao menu</button>
+      <button onclick="comingSoon()">📌 Revisar erros (em breve)</button>
+      <button onclick="comingSoon()">➡️ Próximo nível (em breve)</button>
+    </div>
+  </div>
 </div>
 
 <!-- SFX -->
@@ -201,143 +234,85 @@
 
 <script>
 /* =========================
-   BANCO COMPLETO (25)
+   BANCO (por níveis)
    ========================= */
-const bank = [
-  {"id":"B01","type":"PT_to_EN","promptPT":"Você está em uma aula e precisa se apresentar. Qual frase em inglês está correta?","audioTextEN":"I live in São Paulo.","options":["I live in São Paulo.","I lives in São Paulo.","I living in São Paulo.","I lived in São Paulo."],"correctIndex":0,"hintPT":"Pense: você está falando do presente (agora) ou do passado?","explainPT":"Com 'I', o verbo fica na forma base no Present Simple (live).","revealEN":"I live in São Paulo."},
-  {"id":"B02","type":"PickCorrectEN","promptPT":"Seu colega descreve rotina. Qual frase está correta e combina com hábito?","audioTextEN":"I usually wake up at six.","options":["I usually wake up at six.","I am usually waking up at six.","I usually waking up at six.","I was usually waking up at six."],"correctIndex":0,"hintPT":"A palavra 'usually' fala de frequência (rotina), não de 'agora'.","explainPT":"Advérbios de frequência (usually/always/sometimes) puxam o Present Simple.","revealEN":"I usually wake up at six."},
-  {"id":"B03","type":"PickCorrectEN","promptPT":"Você está descrevendo sua melhor amiga. Escolha a frase correta em inglês.","audioTextEN":"She works as a teacher.","options":["She work as a teacher.","She works as a teacher.","She working as a teacher.","She is work as a teacher."],"correctIndex":1,"hintPT":"Compare com 'I work...'. O que muda com 'She'?","explainPT":"Com he/she/it, geralmente usamos verbo com -s/-es no Present Simple.","revealEN":"She works as a teacher."},
-  {"id":"B04","type":"PickCorrectEN","promptPT":"No restaurante, você quer dizer que não bebe café. Escolha a frase correta.","audioTextEN":"I do not drink coffee.","options":["I not drink coffee.","I do not drink coffee.","I no drink coffee.","I doesn't drink coffee."],"correctIndex":1,"hintPT":"Na negativa do Present Simple com 'I', você precisa de um auxiliar.","explainPT":"Negativa: do + not + verbo base (drink).","revealEN":"I do not drink coffee."},
-  {"id":"B05","type":"PickCorrectEN","promptPT":"Você quer saber o hobby de alguém. Qual pergunta está correta?","audioTextEN":"What do you do on weekends?","options":["What you do on weekends?","What do you do on weekends?","What does you do on weekends?","What you doing on weekends?"],"correctIndex":1,"hintPT":"Pergunta no Present Simple geralmente precisa de 'do/does'.","explainPT":"Estrutura: Wh-word + do + subject + verbo base.","revealEN":"What do you do on weekends?"},
-  {"id":"B06","type":"PickCorrectEN","promptPT":"Você está falando de algo que vocês fazem juntos no domingo. Qual frase está correta?","audioTextEN":"We cook together on Sundays.","options":["We cooks together on Sundays.","We cook together on Sundays.","We cooking together on Sundays.","We are cook together on Sundays."],"correctIndex":1,"hintPT":"'We' é plural. O verbo costuma ficar na forma base.","explainPT":"Com we/you/they, o verbo fica na forma base no Present Simple.","revealEN":"We cook together on Sundays."},
-  {"id":"B07","type":"PickCorrectEN","promptPT":"Você fala sobre seus colegas (eles). Qual frase está correta?","audioTextEN":"They work in the marketing department.","options":["They works in the marketing department.","They working in the marketing department.","They work in the marketing department.","They are work in the marketing department."],"correctIndex":2,"hintPT":"Regra rápida: 'they' usa verbo base.","explainPT":"Com they, nada de -s no verbo: they work.","revealEN":"They work in the marketing department."},
-  {"id":"B08","type":"PickCorrectEN","promptPT":"Você descreve seu apartamento. Qual frase está correta?","audioTextEN":"It has two bedrooms.","options":["It have two bedrooms.","It has two bedrooms.","It having two bedrooms.","It is have two bedrooms."],"correctIndex":1,"hintPT":"'It' é he/she/it. E 'have' vira 'has'.","explainPT":"Terceira pessoa: it has (forma irregular de have).","revealEN":"It has two bedrooms."},
-  {"id":"B09","type":"Audio_to_PT","promptPT":"Ouça a frase e escolha o significado correto (PT).","audioTextEN":"She eats healthy food.","options":["Ela comeu comida saudável ontem.","Ela está comendo comida saudável agora.","Ela come comida saudável.","Ela vai comer comida saudável."],"correctIndex":2,"hintPT":"Sem 'yesterday/now/tomorrow' → pense em rotina/verdade geral.","explainPT":"Present Simple pode indicar hábito ou fato geral: 'She eats...'.","revealEN":"She eats healthy food."},
-  {"id":"B10","type":"PickCorrectEN","promptPT":"Qual frase fala de hábito no presente (rotina)?","audioTextEN":"I study English every day.","options":["I study English every day.","I am studying English every day.","I studied English every day.","I study English yesterday."],"correctIndex":0,"hintPT":"'Every day' indica repetição.","explainPT":"Rotina → Present Simple. 'Yesterday' não combina com presente.","revealEN":"I study English every day."},
-  {"id":"B11","type":"PickCorrectEN","promptPT":"Você quer perguntar se ele trabalha de manhã. Qual pergunta está correta?","audioTextEN":"Does he work in the morning?","options":["He works in the morning?","Does he work in the morning?","Does he works in the morning?","Work he in the morning?"],"correctIndex":1,"hintPT":"Com he/she/it, perguntas usam 'does'. E o verbo volta à base.","explainPT":"Pergunta: does + sujeito + verbo base (work).","revealEN":"Does he work in the morning?"},
-  {"id":"B12","type":"PickCorrectEN","promptPT":"Escolha a forma correta para dizer: 'Ele não mora aqui.'","audioTextEN":"He doesn't live here.","options":["He don't live here.","He doesn't live here.","He not live here.","He no live here."],"correctIndex":1,"hintPT":"Com 'he', a negativa usa 'doesn't'.","explainPT":"Doesn't = does not. Depois dele, verbo base: live.","revealEN":"He doesn't live here."},
-  {"id":"B13","type":"PickCorrectEN","promptPT":"Você quer saber onde ela trabalha. Qual pergunta está correta?","audioTextEN":"Where does she work?","options":["Where she works?","Where does she work?","Where works she?","Does where she work?"],"correctIndex":1,"hintPT":"Wh-word + auxiliar + sujeito + verbo base.","explainPT":"Em perguntas com Where/What/When: auxiliar vem antes do sujeito.","revealEN":"Where does she work?"},
-  {"id":"B14","type":"PickCorrectEN","promptPT":"Você quer saber quando a pessoa costuma chegar. Qual pergunta está correta?","audioTextEN":"When do you usually arrive?","options":["When you usually arrive?","When do you usually arrive?","When does you usually arrive?","When you arrive usually?"],"correctIndex":1,"hintPT":"Com 'you', o auxiliar é 'do'.","explainPT":"Pergunta: When + do + you + verbo base + advérbio.","revealEN":"When do you usually arrive?"},
-  {"id":"B15","type":"PickCorrectEN","promptPT":"Na loja, você quer perguntar: 'O que é isso em inglês?' Qual frase está correta?","audioTextEN":"What is this in English?","options":["What this is in English?","What is this in English?","What this in English?","What are this in English?"],"correctIndex":1,"hintPT":"Com 'to be', não usamos do/does.","explainPT":"Pergunta com 'to be': What + is + sujeito.","revealEN":"What is this in English?"},
-  {"id":"B16","type":"PickCorrectEN","promptPT":"Você está dando direção ao turista. Qual frase está correta?","audioTextEN":"The museum is next to the park.","options":["The museum next to the park.","The museum are next to the park.","The museum is next to the park.","The museum be next to the park."],"correctIndex":2,"hintPT":"Localização quase sempre precisa do verbo 'to be'.","explainPT":"Sujeito singular (museum) → 'is'.","revealEN":"The museum is next to the park."},
-  {"id":"B17","type":"PickCorrectEN","promptPT":"Você quer dizer que gosta de pizza. Qual frase está correta?","audioTextEN":"I like pizza.","options":["I liking pizza.","I likes pizza.","I like pizza.","I am like pizza."],"correctIndex":2,"hintPT":"Com 'I', use o verbo base. E 'like' não precisa de 'am'.","explainPT":"Present Simple: I like + objeto.","revealEN":"I like pizza."},
-  {"id":"B18","type":"PickCorrectEN","promptPT":"Você está preenchendo formulário. Como dizer corretamente: 'Eu trabalho como engenheiro'?","audioTextEN":"I work as an engineer.","options":["I work as engineer.","I working as an engineer.","I work as an engineer.","I works as an engineer."],"correctIndex":2,"hintPT":"Antes de 'engineer', normalmente entra um artigo. E com 'I' o verbo não ganha 's'.","explainPT":"Som de vogal em 'engineer' → 'an'. E: I work.","revealEN":"I work as an engineer."},
-  {"id":"B19","type":"PickCorrectEN","promptPT":"Você apresenta um amigo francês. Qual frase está correta?","audioTextEN":"He is French.","options":["He French.","He is French.","He are French.","He have French."],"correctIndex":1,"hintPT":"Nacionalidade usa o verbo 'to be'.","explainPT":"Para características/nacionalidade: he is + adjetivo.","revealEN":"He is French."},
-  {"id":"B20","type":"PickCorrectEN","promptPT":"Como perguntar com que frequência a pessoa vai à academia?","audioTextEN":"How often do you go to the gym?","options":["How often you go to the gym?","How often do you go to the gym?","How often does you go to the gym?","How often you do go to the gym?"],"correctIndex":1,"hintPT":"Pergunta de hábito com 'you' → usa 'do'.","explainPT":"Estrutura: How often + do + you + verbo base.","revealEN":"How often do you go to the gym?"},
-  {"id":"B21","type":"Audio_to_PT","promptPT":"Ouça e escolha o significado correto.","audioTextEN":"She lives in London and works at a bank.","options":["Ela morou em Londres no passado.","Ela está trabalhando em um banco agora.","Ela mora em Londres e trabalha em um banco.","Ela vai morar em Londres em breve."],"correctIndex":2,"hintPT":"Dois verbos no Present Simple → informações atuais/rotina.","explainPT":"Lives/works indicam onde ela mora e trabalha (situação atual).","revealEN":"She lives in London and works at a bank."},
-  {"id":"B22","type":"PickCorrectEN","promptPT":"Qual frase indica ação acontecendo agora (em progresso)?","audioTextEN":"I am reading a book.","options":["I am reading a book.","I reading a book.","I read a book.","I am read a book."],"correctIndex":0,"hintPT":"Ação em progresso: 'am/is/are' + verbo com -ing.","explainPT":"Present Continuous: I am + reading.","revealEN":"I am reading a book."},
-  {"id":"B23","type":"PickCorrectEN","promptPT":"Você quer saber o preço de uma camiseta. Qual pergunta está correta?","audioTextEN":"How much is this t-shirt?","options":["How much this t-shirt is?","How much is this t-shirt?","How much cost this t-shirt?","How many is this t-shirt?"],"correctIndex":1,"hintPT":"Preço: 'How much' + verbo 'to be' invertido.","explainPT":"Pergunta padrão: How much is/are + item?","revealEN":"How much is this t-shirt?"},
-  {"id":"B24","type":"PickCorrectEN","promptPT":"Você quer dizer que ela sabe nadar muito bem. Qual frase está correta?","audioTextEN":"She can swim very well.","options":["She can swim very well.","She can swims very well.","She can swimming very well.","She can is swim very well."],"correctIndex":0,"hintPT":"Depois de 'can', o verbo fica na forma base.","explainPT":"Modal + verbo base: can swim.","revealEN":"She can swim very well."},
-  {"id":"B25","type":"PickCorrectEN","promptPT":"Qual frase está 100% correta (negativa + rotina) usando 'they'?","audioTextEN":"They don't work on weekends, but they study English on Saturdays.","options":["They don't work on weekends, but they study English on Saturdays.","They doesn't work on weekends, but they study English on Saturdays.","They don't work on weekends, but they studying English on Saturdays.","They don't works on weekends, but they study English on Saturdays."],"correctIndex":0,"hintPT":"'They' usa 'don't' e verbo base: work/study.","explainPT":"Plural: don't + verbo base. Após 'but', a regra continua igual.","revealEN":"They don't work on weekends, but they study English on Saturdays."}
-];
+const BANK = {
+  basic: [
+    {"id":"B01","type":"PT_to_EN","promptPT":"Você está em uma aula e precisa se apresentar. Qual frase em inglês está correta?","audioTextEN":"I live in São Paulo.","options":["I live in São Paulo.","I lives in São Paulo.","I living in São Paulo.","I lived in São Paulo."],"correctIndex":0,"hintPT":"Pense: você está falando do presente (agora) ou do passado?","explainPT":"Com 'I', o verbo fica na forma base no Present Simple (live).","revealEN":"I live in São Paulo."},
+    {"id":"B02","type":"PickCorrectEN","promptPT":"Seu colega descreve rotina. Qual frase está correta e combina com hábito?","audioTextEN":"I usually wake up at six.","options":["I usually wake up at six.","I am usually waking up at six.","I usually waking up at six.","I was usually waking up at six."],"correctIndex":0,"hintPT":"A palavra 'usually' fala de frequência (rotina), não de 'agora'.","explainPT":"Advérbios de frequência (usually/always/sometimes) puxam o Present Simple.","revealEN":"I usually wake up at six."},
+    {"id":"B03","type":"PickCorrectEN","promptPT":"Você está descrevendo sua melhor amiga. Escolha a frase correta em inglês.","audioTextEN":"She works as a teacher.","options":["She work as a teacher.","She works as a teacher.","She working as a teacher.","She is work as a teacher."],"correctIndex":1,"hintPT":"Compare com 'I work...'. O que muda com 'She'?","explainPT":"Com he/she/it, geralmente usamos verbo com -s/-es no Present Simple.","revealEN":"She works as a teacher."},
+    {"id":"B04","type":"PickCorrectEN","promptPT":"No restaurante, você quer dizer que não bebe café. Escolha a frase correta.","audioTextEN":"I do not drink coffee.","options":["I not drink coffee.","I do not drink coffee.","I no drink coffee.","I doesn't drink coffee."],"correctIndex":1,"hintPT":"Na negativa do Present Simple com 'I', você precisa de um auxiliar.","explainPT":"Negativa: do + not + verbo base (drink).","revealEN":"I do not drink coffee."},
+    {"id":"B05","type":"PickCorrectEN","promptPT":"Você quer saber o hobby de alguém. Qual pergunta está correta?","audioTextEN":"What do you do on weekends?","options":["What you do on weekends?","What do you do on weekends?","What does you do on weekends?","What you doing on weekends?"],"correctIndex":1,"hintPT":"Pergunta no Present Simple geralmente precisa de 'do/does'.","explainPT":"Estrutura: Wh-word + do + subject + verbo base.","revealEN":"What do you do on weekends?"},
+    {"id":"B06","type":"PickCorrectEN","promptPT":"Você está falando de algo que vocês fazem juntos no domingo. Qual frase está correta?","audioTextEN":"We cook together on Sundays.","options":["We cooks together on Sundays.","We cook together on Sundays.","We cooking together on Sundays.","We are cook together on Sundays."],"correctIndex":1,"hintPT":"'We' é plural. O verbo costuma ficar na forma base.","explainPT":"Com we/you/they, o verbo fica na forma base no Present Simple.","revealEN":"We cook together on Sundays."},
+    {"id":"B07","type":"PickCorrectEN","promptPT":"Você fala sobre seus colegas (eles). Qual frase está correta?","audioTextEN":"They work in the marketing department.","options":["They works in the marketing department.","They working in the marketing department.","They work in the marketing department.","They are work in the marketing department."],"correctIndex":2,"hintPT":"Regra rápida: 'they' usa verbo base.","explainPT":"Com they, nada de -s no verbo: they work.","revealEN":"They work in the marketing department."},
+    {"id":"B08","type":"PickCorrectEN","promptPT":"Você descreve seu apartamento. Qual frase está correta?","audioTextEN":"It has two bedrooms.","options":["It have two bedrooms.","It has two bedrooms.","It having two bedrooms.","It is have two bedrooms."],"correctIndex":1,"hintPT":"'It' é he/she/it. E 'have' vira 'has'.","explainPT":"Terceira pessoa: it has (forma irregular de have).","revealEN":"It has two bedrooms."},
+    {"id":"B09","type":"Audio_to_PT","promptPT":"Ouça a frase e escolha o significado correto (PT).","audioTextEN":"She eats healthy food.","options":["Ela comeu comida saudável ontem.","Ela está comendo comida saudável agora.","Ela come comida saudável.","Ela vai comer comida saudável."],"correctIndex":2,"hintPT":"Sem 'yesterday/now/tomorrow' → pense em rotina/verdade geral.","explainPT":"Present Simple pode indicar hábito ou fato geral: 'She eats...'.","revealEN":"She eats healthy food."},
+    {"id":"B10","type":"PickCorrectEN","promptPT":"Qual frase fala de hábito no presente (rotina)?","audioTextEN":"I study English every day.","options":["I study English every day.","I am studying English every day.","I studied English every day.","I study English yesterday."],"correctIndex":0,"hintPT":"'Every day' indica repetição.","explainPT":"Rotina → Present Simple. 'Yesterday' não combina com presente.","revealEN":"I study English every day."},
+    {"id":"B11","type":"PickCorrectEN","promptPT":"Você quer perguntar se ele trabalha de manhã. Qual pergunta está correta?","audioTextEN":"Does he work in the morning?","options":["He works in the morning?","Does he work in the morning?","Does he works in the morning?","Work he in the morning?"],"correctIndex":1,"hintPT":"Com he/she/it, perguntas usam 'does'. E o verbo volta à base.","explainPT":"Pergunta: does + sujeito + verbo base (work).","revealEN":"Does he work in the morning?"},
+    {"id":"B12","type":"PickCorrectEN","promptPT":"Escolha a forma correta para dizer: 'Ele não mora aqui.'","audioTextEN":"He doesn't live here.","options":["He don't live here.","He doesn't live here.","He not live here.","He no live here."],"correctIndex":1,"hintPT":"Com 'he', a negativa usa 'doesn't'.","explainPT":"Doesn't = does not. Depois dele, verbo base: live.","revealEN":"He doesn't live here."},
+    {"id":"B13","type":"PickCorrectEN","promptPT":"Você quer saber onde ela trabalha. Qual pergunta está correta?","audioTextEN":"Where does she work?","options":["Where she works?","Where does she work?","Where works she?","Does where she work?"],"correctIndex":1,"hintPT":"Wh-word + auxiliar + sujeito + verbo base.","explainPT":"Em perguntas com Where/What/When: auxiliar vem antes do sujeito.","revealEN":"Where does she work?"},
+    {"id":"B14","type":"PickCorrectEN","promptPT":"Você quer saber quando a pessoa costuma chegar. Qual pergunta está correta?","audioTextEN":"When do you usually arrive?","options":["When you usually arrive?","When do you usually arrive?","When does you usually arrive?","When you arrive usually?"],"correctIndex":1,"hintPT":"Com 'you', o auxiliar é 'do'.","explainPT":"Pergunta: When + do + you + verbo base + advérbio.","revealEN":"When do you usually arrive?"},
+    {"id":"B15","type":"PickCorrectEN","promptPT":"Na loja, você quer perguntar: 'O que é isso em inglês?' Qual frase está correta?","audioTextEN":"What is this in English?","options":["What this is in English?","What is this in English?","What this in English?","What are this in English?"],"correctIndex":1,"hintPT":"Com 'to be', não usamos do/does.","explainPT":"Pergunta com 'to be': What + is + sujeito.","revealEN":"What is this in English?"},
+    {"id":"B16","type":"PickCorrectEN","promptPT":"Você está dando direção ao turista. Qual frase está correta?","audioTextEN":"The museum is next to the park.","options":["The museum next to the park.","The museum are next to the park.","The museum is next to the park.","The museum be next to the park."],"correctIndex":2,"hintPT":"Localização quase sempre precisa do verbo 'to be'.","explainPT":"Sujeito singular (museum) → 'is'.","revealEN":"The museum is next to the park."},
+    {"id":"B17","type":"PickCorrectEN","promptPT":"Você quer dizer que gosta de pizza. Qual frase está correta?","audioTextEN":"I like pizza.","options":["I liking pizza.","I likes pizza.","I like pizza.","I am like pizza."],"correctIndex":2,"hintPT":"Com 'I', use o verbo base. E 'like' não precisa de 'am'.","explainPT":"Present Simple: I like + objeto.","revealEN":"I like pizza."},
+    {"id":"B18","type":"PickCorrectEN","promptPT":"Você está preenchendo formulário. Como dizer corretamente: 'Eu trabalho como engenheiro'?","audioTextEN":"I work as an engineer.","options":["I work as engineer.","I working as an engineer.","I work as an engineer.","I works as an engineer."],"correctIndex":2,"hintPT":"Antes de 'engineer', normalmente entra um artigo. E com 'I' o verbo não ganha 's'.","explainPT":"Som de vogal em 'engineer' → 'an'. E: I work.","revealEN":"I work as an engineer."},
+    {"id":"B19","type":"PickCorrectEN","promptPT":"Você apresenta um amigo francês. Qual frase está correta?","audioTextEN":"He is French.","options":["He French.","He is French.","He are French.","He have French."],"correctIndex":1,"hintPT":"Nacionalidade usa o verbo 'to be'.","explainPT":"Para características/nacionalidade: he is + adjetivo.","revealEN":"He is French."},
+    {"id":"B20","type":"PickCorrectEN","promptPT":"Como perguntar com que frequência a pessoa vai à academia?","audioTextEN":"How often do you go to the gym?","options":["How often you go to the gym?","How often do you go to the gym?","How often does you go to the gym?","How often you do go to the gym?"],"correctIndex":1,"hintPT":"Pergunta de hábito com 'you' → usa 'do'.","explainPT":"Estrutura: How often + do + you + verbo base.","revealEN":"How often do you go to the gym?"},
+    {"id":"B21","type":"Audio_to_PT","promptPT":"Ouça e escolha o significado correto.","audioTextEN":"She lives in London and works at a bank.","options":["Ela morou em Londres no passado.","Ela está trabalhando em um banco agora.","Ela mora em Londres e trabalha em um banco.","Ela vai morar em Londres em breve."],"correctIndex":2,"hintPT":"Dois verbos no Present Simple → informações atuais/rotina.","explainPT":"Lives/works indicam onde ela mora e trabalha (situação atual).","revealEN":"She lives in London and works at a bank."},
+    {"id":"B22","type":"PickCorrectEN","promptPT":"Qual frase indica ação acontecendo agora (em progresso)?","audioTextEN":"I am reading a book.","options":["I am reading a book.","I reading a book.","I read a book.","I am read a book."],"correctIndex":0,"hintPT":"Ação em progresso: 'am/is/are' + verbo com -ing.","explainPT":"Present Continuous: I am + reading.","revealEN":"I am reading a book."},
+    {"id":"B23","type":"PickCorrectEN","promptPT":"Você quer saber o preço de uma camiseta. Qual pergunta está correta?","audioTextEN":"How much is this t-shirt?","options":["How much this t-shirt is?","How much is this t-shirt?","How much cost this t-shirt?","How many is this t-shirt?"],"correctIndex":1,"hintPT":"Preço: 'How much' + verbo 'to be' invertido.","explainPT":"Pergunta padrão: How much is/are + item?","revealEN":"How much is this t-shirt?"},
+    {"id":"B24","type":"PickCorrectEN","promptPT":"Você quer dizer que ela sabe nadar muito bem. Qual frase está correta?","audioTextEN":"She can swim very well.","options":["She can swim very well.","She can swims very well.","She can swimming very well.","She can is swim very well."],"correctIndex":0,"hintPT":"Depois de 'can', o verbo fica na forma base.","explainPT":"Modal + verbo base: can swim.","revealEN":"She can swim very well."},
+    {"id":"B25","type":"PickCorrectEN","promptPT":"Qual frase está 100% correta (negativa + rotina) usando 'they'?","audioTextEN":"They don't work on weekends, but they study English on Saturdays.","options":["They don't work on weekends, but they study English on Saturdays.","They doesn't work on weekends, but they study English on Saturdays.","They don't work on weekends, but they studying English on Saturdays.","They don't works on weekends, but they study English on Saturdays."],"correctIndex":0,"hintPT":"'They' usa 'don't' e verbo base: work/study.","explainPT":"Plural: don't + verbo base. Após 'but', a regra continua igual.","revealEN":"They don't work on weekends, but they study English on Saturdays."}
+  ]
+};
 
 /* =========================
    ESTADO
    ========================= */
+let activeLevel = "basic";
+let pool = [];            // questões do nível (clonadas)
 let idx = 0;
 let locked = false;
 let scoreOk = 0;
 let scoreBad = 0;
+let rendered = null;      // questão renderizada (com alternativas embaralhadas)
 
 /* =========================
-   HELPERS
+   ELEMENTOS
    ========================= */
+const elScorePill = document.getElementById("scorePill");
+
+const homeScreen = document.getElementById("homeScreen");
+const quizScreen = document.getElementById("quizScreen");
+const completeScreen = document.getElementById("completeScreen");
+
 const elPrompt = document.getElementById("prompt");
 const elMeta = document.getElementById("meta");
 const elOptions = document.getElementById("options");
+
 const elHintPanel = document.getElementById("hintPanel");
 const elHintText = document.getElementById("hintText");
+
 const elResultPanel = document.getElementById("resultPanel");
 const elResultTitle = document.getElementById("resultTitle");
 const elExplainText = document.getElementById("explainText");
 const elRevealBox = document.getElementById("revealBox");
+
 const elNextBtn = document.getElementById("nextBtn");
 const elProgressText = document.getElementById("progressText");
-const elScorePill = document.getElementById("scorePill");
 
+const elCompleteSummary = document.getElementById("completeSummary");
+
+/* =========================
+   UTIL
+   ========================= */
 function updateScorePill(){
   elScorePill.textContent = `Score: ${scoreOk} ✅ | ${scoreBad} ❌`;
 }
 
-function speak(text, rate=0.92){
-  if (!("speechSynthesis" in window)) return;
-  window.speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = "en-US";
-  u.rate = rate;
-  window.speechSynthesis.speak(u);
-}
-
-/* =========================
-   RENDER
-   ========================= */
-function loadQuestion(){
-  locked = false;
-
-  const q = bank[idx];
-  elPrompt.textContent = q.promptPT;
-
-  elMeta.textContent = `Questão ${idx+1} / ${bank.length} • ${q.id} • Tipo: ${q.type}`;
-  elProgressText.textContent = "Responda e depois clique em Próxima.";
-
-  // panels
-  elHintPanel.classList.remove("show");
-  elResultPanel.classList.remove("show");
-  elNextBtn.style.display = "none";
-
-  elHintText.textContent = q.hintPT;
-
-  // options
-  elOptions.innerHTML = "";
-  q.options.forEach((opt, i) => {
-    const b = document.createElement("button");
-    b.className = "opt";
-    b.textContent = opt;
-    b.onclick = () => choose(i, b);
-    elOptions.appendChild(b);
-  });
-}
-
-function choose(choiceIndex, buttonEl){
-  if (locked) return;
-  locked = true;
-
-  const q = bank[idx];
-  const isCorrect = choiceIndex === q.correctIndex;
-
-  // mark buttons
-  const btns = [...elOptions.querySelectorAll("button")];
-  btns.forEach((b, i) => {
-    if (i === q.correctIndex) b.classList.add("correct");
-    if (i === choiceIndex && !isCorrect) b.classList.add("wrong");
-    b.disabled = true;
-  });
-
-  // feedback
-  if (isCorrect){
-    scoreOk++;
-    document.getElementById("success").currentTime = 0;
-    document.getElementById("success").play();
-    elResultTitle.textContent = "✅ Correto!";
-  } else {
-    scoreBad++;
-    document.getElementById("fail").currentTime = 0;
-    document.getElementById("fail").play();
-    elResultTitle.textContent = "❌ Quase! Vamos corrigir.";
-  }
-
-  updateScorePill();
-
-  // explain + reveal only after answering
-  elExplainText.textContent = q.explainPT;
-  elRevealBox.innerHTML = `
-    <strong>Frase em inglês (reforço):</strong><br/>
-    ${escapeHtml(q.revealEN)}
-  `;
-
-  elResultPanel.classList.add("show");
-  elNextBtn.style.display = "inline-block";
-  elProgressText.textContent = "Agora você pode ouvir de novo, ver dica e seguir.";
+function show(screen){
+  [homeScreen, quizScreen, completeScreen].forEach(s => s.classList.remove("active"));
+  screen.classList.add("active");
 }
 
 function escapeHtml(str){
@@ -349,37 +324,72 @@ function escapeHtml(str){
     .replaceAll("'","&#039;");
 }
 
-/* =========================
-   CONTROLS
-   ========================= */
-function playAudio(){
-  const q = bank[idx];
-  speak(q.audioTextEN, 0.92);
+function speak(text, rate=0.92){
+  if (!("speechSynthesis" in window)) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = "en-US";
+  u.rate = rate;
+  window.speechSynthesis.speak(u);
 }
 
-function repeatSlow(){
-  const q = bank[idx];
-  speak(q.audioTextEN, 0.75);
+function playSfx(ok){
+  const a = document.getElementById(ok ? "success" : "fail");
+  a.currentTime = 0;
+  a.play();
 }
 
-function toggleHint(){
-  elHintPanel.classList.toggle("show");
-}
-
-function nextQuestion(){
-  idx++;
-  if (idx >= bank.length){
-    alert(`✅ Você terminou o Básico!\n\nScore final:\n✅ ${scoreOk}\n❌ ${scoreBad}`);
-    idx = 0;
-    scoreOk = 0;
-    scoreBad = 0;
-    updateScorePill();
+function shuffle(arr){
+  // Fisher–Yates
+  for (let i = arr.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
   }
+  return arr;
+}
+
+/* =========================
+   NORMALIZA + EMBARALHA
+   - embaralha opções e recalcula correctIndex
+   - suporta 4 ou 5 opções (A–E)
+   ========================= */
+function buildRenderedQuestion(q){
+  const opts = q.options.map((text, originalIndex) => ({ text, originalIndex }));
+  shuffle(opts);
+
+  const newCorrectIndex = opts.findIndex(o => o.originalIndex === q.correctIndex);
+
+  return {
+    ...q,
+    options: opts.map(o => o.text),
+    correctIndex: newCorrectIndex
+  };
+}
+
+function optionLabel(i){
+  return ["A","B","C","D","E"][i] || String(i+1);
+}
+
+/* =========================
+   FLOW
+   ========================= */
+function startLevel(level){
+  activeLevel = level;
+  pool = structuredClone(BANK[level] || []);
+  idx = 0;
+  scoreOk = 0;
+  scoreBad = 0;
+  updateScorePill();
+  show(quizScreen);
   loadQuestion();
 }
 
+function goHome(){
+  show(homeScreen);
+}
+
 function resetProgress(){
-  if (!confirm("Resetar pontuação e voltar para a Questão 1?")) return;
+  if (!confirm("Resetar pontuação e voltar para a primeira questão deste nível?")) return;
   idx = 0;
   scoreOk = 0;
   scoreBad = 0;
@@ -387,11 +397,94 @@ function resetProgress(){
   loadQuestion();
 }
 
+function comingSoon(){
+  alert("🚧 Em breve! Vamos montar a avaliação e os próximos níveis.");
+}
+
 /* =========================
-   START
+   RENDER
    ========================= */
+function loadQuestion(){
+  locked = false;
+  elHintPanel.classList.remove("show");
+  elResultPanel.classList.remove("show");
+  elNextBtn.style.display = "none";
+  elOptions.innerHTML = "";
+
+  if (idx >= pool.length){
+    // finished
+    elCompleteSummary.textContent =
+      `Você concluiu o nível ${activeLevel.toUpperCase()}.\n✅ ${scoreOk} acertos • ❌ ${scoreBad} erros`;
+    show(completeScreen);
+    return;
+  }
+
+  const q = pool[idx];
+  rendered = buildRenderedQuestion(q);
+
+  elPrompt.textContent = rendered.promptPT;
+  elMeta.textContent = `Questão ${idx+1} / ${pool.length} • ${rendered.id} • Tipo: ${rendered.type}`;
+  elProgressText.textContent = "Responda. Depois veja a correção e clique em Próxima.";
+
+  elHintText.textContent = rendered.hintPT;
+
+  rendered.options.forEach((opt, i) => {
+    const b = document.createElement("button");
+    b.className = "opt";
+    b.innerHTML = `<strong>${optionLabel(i)})</strong> ${escapeHtml(opt)}`;
+    b.onclick = () => choose(i, b);
+    elOptions.appendChild(b);
+  });
+}
+
+function choose(choiceIndex){
+  if (locked) return;
+  locked = true;
+
+  const q = rendered;
+  const isCorrect = choiceIndex === q.correctIndex;
+
+  // mark all
+  const btns = [...elOptions.querySelectorAll("button")];
+  btns.forEach((b, i) => {
+    if (i === q.correctIndex) b.classList.add("correct");
+    if (i === choiceIndex && !isCorrect) b.classList.add("wrong");
+    b.disabled = true;
+  });
+
+  if (isCorrect){ scoreOk++; elResultTitle.textContent = "✅ Correto!"; }
+  else { scoreBad++; elResultTitle.textContent = "❌ Quase! Vamos corrigir."; }
+  updateScorePill();
+  playSfx(isCorrect);
+
+  elExplainText.textContent = q.explainPT;
+  elRevealBox.innerHTML = `<strong>Frase em inglês (reforço):</strong><br/>${escapeHtml(q.revealEN)}`;
+
+  elResultPanel.classList.add("show");
+  elNextBtn.style.display = "inline-block";
+}
+
+function nextQuestion(){
+  idx++;
+  loadQuestion();
+}
+
+function toggleHint(){
+  elHintPanel.classList.toggle("show");
+}
+
+function playAudio(){
+  if (!rendered) return;
+  speak(rendered.audioTextEN, 0.92);
+}
+
+function repeatSlow(){
+  if (!rendered) return;
+  speak(rendered.audioTextEN, 0.75);
+}
+
+/* start at home */
 updateScorePill();
-loadQuestion();
 </script>
 </body>
 </html>
