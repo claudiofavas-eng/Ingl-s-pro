@@ -7,25 +7,25 @@
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
     body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;background:#e0e7ff;color:#0f172a}
-    .container{max-width:720px;margin:0 auto;padding:18px;min-height:100vh}
+    .container{max-width:760px;margin:0 auto;padding:18px;min-height:100vh}
     .header{
       background:linear-gradient(135deg,#4f46e5,#2563eb);
       color:#fff;padding:18px;border-radius:20px;margin-bottom:14px;position:relative;
       box-shadow:0 18px 40px rgba(0,0,0,.14);
     }
-    .header h1{font-size:1.5em;margin-bottom:6px}
+    .header h1{font-size:1.55em;margin-bottom:6px}
     .header p{opacity:.9}
     .card{
       background:#fff;border-radius:20px;box-shadow:0 14px 30px rgba(0,0,0,.10);
       padding:18px;margin-bottom:14px
     }
-    .row{display:flex;gap:10px;flex-wrap:wrap}
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
     .pill{
       background:#eef2ff;color:#1e293b;border:1px solid #c7d2fe;border-radius:999px;
-      padding:8px 12px;font-weight:700;font-size:.95em
+      padding:8px 12px;font-weight:800;font-size:.95em
     }
     .btn{
-      border:none;border-radius:14px;padding:12px 14px;font-weight:800;cursor:pointer;
+      border:none;border-radius:14px;padding:12px 14px;font-weight:900;cursor:pointer;
       transition:transform .06s ease, filter .2s ease;
       display:inline-flex;align-items:center;justify-content:center;gap:8px
     }
@@ -40,8 +40,11 @@
     .screen.active{display:block}
 
     .level-grid{display:grid;grid-template-columns:1fr;gap:10px}
-    @media(min-width:620px){ .level-grid{grid-template-columns:1fr 1fr} }
+    @media(min-width:640px){ .level-grid{grid-template-columns:1fr 1fr} }
 
+    .divider{height:1px;background:#e5e7eb;margin:14px 0}
+
+    /* Quiz options */
     .option{
       border:2px solid #e2e8f0;background:#f8fafc;border-radius:16px;
       padding:12px 12px;cursor:pointer;transition:all .15s ease;display:flex;gap:10px;align-items:flex-start
@@ -55,44 +58,46 @@
     .option.correct{border-color:#10b981;background:#ecfdf5}
     .option.wrong{border-color:#ef4444;background:#fef2f2}
 
-    .q-title{font-size:1.2em;font-weight:900;margin-bottom:8px}
+    .q-title{font-size:1.2em;font-weight:950;margin-bottom:8px}
     .q-sub{color:#475569;margin-bottom:12px;line-height:1.35}
-    .divider{height:1px;background:#e5e7eb;margin:14px 0}
-
-    .hintBox{
-      background:#fff7ed;border:2px solid #fdba74;border-radius:16px;padding:12px;color:#7c2d12
-    }
-    .explainBox{
-      background:#eff6ff;border:2px solid #93c5fd;border-radius:16px;padding:12px;color:#1e3a8a
-    }
-    .audioRow{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}
     .tiny{font-size:.92em;color:#64748b}
-
-    .topbar{
-      display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:10px
-    }
 
     .progressWrap{background:#eef2ff;border-radius:999px;overflow:hidden;height:12px;border:1px solid #c7d2fe}
     .progressBar{height:12px;background:#4f46e5;width:0%}
-    .footerActions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
 
-    /* Flash feedback */
+    .hintBox{background:#fff7ed;border:2px solid #fdba74;border-radius:16px;padding:12px;color:#7c2d12}
+    .explainBox{background:#eff6ff;border:2px solid #93c5fd;border-radius:16px;padding:12px;color:#1e3a8a}
+    .goodBox{background:#ecfdf5;border:2px solid #10b981;border-radius:16px;padding:12px;color:#14532d}
+    .badBox{background:#fef2f2;border:2px solid #ef4444;border-radius:16px;padding:12px;color:#7f1d1d}
+
+    .topbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:10px}
+
     .flash{position:fixed;inset:0;pointer-events:none;opacity:0;transition:opacity .18s ease}
     .flash.on{opacity:.18}
     .flash.good{background:#22c55e}
     .flash.bad{background:#ef4444}
+
+    .input{
+      width:100%;padding:14px;border-radius:16px;border:2px solid #d1d5db;
+      font-size:1.05em;outline:none
+    }
+    .input:focus{border-color:#4f46e5}
+    .badge{
+      display:inline-flex;align-items:center;gap:6px;
+      padding:6px 10px;border-radius:999px;font-weight:900;font-size:.9em;
+      border:1px solid #e5e7eb;background:#f8fafc;color:#0f172a
+    }
   </style>
 </head>
 <body>
   <div class="flash" id="flash"></div>
 
   <div class="container">
-
     <!-- HOME -->
     <div id="homeScreen" class="screen active">
       <div class="header">
         <h1>🎯 Inglês Pro</h1>
-        <p>Claudio • aula gamificada (Básico → Pré-Intermediário)</p>
+        <p>Aula com teoria + prática (Básico → Pré-Intermediário)</p>
       </div>
 
       <div class="card">
@@ -103,8 +108,8 @@
         </div>
 
         <div class="level-grid">
-          <button class="btn btn-primary btn-wide" onclick="startLevel('basic')">📘 Básico (A1)</button>
-          <button class="btn btn-primary btn-wide" onclick="startLevel('preintermediate')">📗 Pré-Intermediário (A2)</button>
+          <button class="btn btn-primary btn-wide" onclick="startLesson('basic')">📘 Aula Básico (A1)</button>
+          <button class="btn btn-primary btn-wide" onclick="startLesson('preintermediate')">📗 Aula Pré-Intermediário (A2)</button>
         </div>
 
         <div class="divider"></div>
@@ -115,7 +120,7 @@
         </div>
 
         <p class="tiny" style="margin-top:10px">
-          Dica: no GitHub Pages, qualquer alteração no <strong>index.html</strong> pode levar alguns segundos pra atualizar.
+          Nesta versão, cada aula mistura: <strong>Teoria curta</strong> → <strong>Quiz A–E</strong> → <strong>Escrita flexível</strong> → <strong>Escrita exata</strong>.
         </p>
       </div>
     </div>
@@ -124,28 +129,26 @@
     <div id="statsScreen" class="screen">
       <div class="header">
         <h1>📊 Seu Progresso</h1>
-        <p>Resumo rápido do que você já fez</p>
+        <p>Resumo do que você já fez</p>
       </div>
-
       <div class="card" id="statsBox"></div>
-
       <div class="card">
         <button class="btn btn-primary btn-wide" onclick="goHome()">← Voltar</button>
       </div>
     </div>
 
-    <!-- QUIZ -->
-    <div id="quizScreen" class="screen">
+    <!-- LESSON -->
+    <div id="lessonScreen" class="screen">
       <div class="header">
-        <h1 id="quizHeader">🧠 Aula</h1>
-        <p id="quizSub">Responda, peça dica e ouça o áudio.</p>
+        <h1 id="lessonHeader">📘 Aula</h1>
+        <p id="lessonSub">Teoria + prática + escrita</p>
       </div>
 
       <div class="card">
         <div class="topbar">
-          <div style="min-width:220px">
-            <div class="tiny" id="qCounter">Questão 1/10</div>
-            <div class="progressWrap" aria-label="Progresso">
+          <div style="min-width:240px">
+            <div class="tiny" id="stepCounter">Etapa 1/4</div>
+            <div class="progressWrap">
               <div class="progressBar" id="progressBar"></div>
             </div>
           </div>
@@ -158,26 +161,15 @@
 
         <div class="divider"></div>
 
-        <div class="q-title" id="qTitle">Carregando…</div>
-        <div class="q-sub" id="qPrompt"></div>
+        <div id="contentArea"></div>
 
-        <div class="audioRow">
-          <button class="btn btn-ghost" onclick="speakCurrent(0.9)">🔊 Ouvir</button>
-          <button class="btn btn-ghost" onclick="speakCurrent(0.75)">🐢 Ouvir devagar</button>
+        <div class="divider"></div>
+
+        <div class="row" id="actionRow">
+          <!-- botões dinâmicos -->
         </div>
 
-        <div id="optionsBox" style="display:grid;gap:10px"></div>
-
-        <div class="footerActions">
-          <button class="btn btn-warning" onclick="toggleHint()">💡 Dica</button>
-          <button class="btn btn-primary" id="checkBtn" onclick="checkAnswer()">✅ Verificar</button>
-          <button class="btn btn-primary" id="nextBtn" style="display:none" onclick="nextQuestion()">➡️ Próxima</button>
-        </div>
-
-        <div id="hintArea" style="display:none;margin-top:12px" class="hintBox"></div>
-        <div id="explainArea" style="display:none;margin-top:12px" class="explainBox"></div>
-
-        <p class="tiny" style="margin-top:12px" id="tipFooter"></p>
+        <p class="tiny" id="footerTip" style="margin-top:10px"></p>
       </div>
     </div>
 
@@ -185,18 +177,14 @@
 
 <script>
 /* =========================
-   0) UTIL / STORAGE
+   STORAGE
 ========================= */
-const STORE_KEY = "inglesPro_v3";
-const nowISO = () => new Date().toISOString();
-const todayKey = () => new Date().toLocaleDateString("pt-BR");
+const STORE_KEY = "inglesPro_v4";
+const LETTERS = ["A","B","C","D","E"];
 
 function loadState(){
-  try{
-    return JSON.parse(localStorage.getItem(STORE_KEY) || "{}");
-  }catch(e){
-    return {};
-  }
+  try{ return JSON.parse(localStorage.getItem(STORE_KEY) || "{}"); }
+  catch(e){ return {}; }
 }
 function saveState(patch){
   const s = loadState();
@@ -204,11 +192,14 @@ function saveState(patch){
   localStorage.setItem(STORE_KEY, JSON.stringify(merged));
   return merged;
 }
-
-function clamp(n,min,max){ return Math.max(min, Math.min(max,n)); }
-
+function todayKey(){ return new Date().toLocaleDateString("pt-BR"); }
+function calcAccuracy(state){
+  const c = state.totalCorrect||0;
+  const w = state.totalWrong||0;
+  const t = c+w;
+  return t ? Math.round((c/t)*100) : 0;
+}
 function shuffle(arr){
-  // Fisher-Yates (in-place copy)
   const a = arr.slice();
   for(let i=a.length-1;i>0;i--){
     const j = Math.floor(Math.random()*(i+1));
@@ -216,414 +207,232 @@ function shuffle(arr){
   }
   return a;
 }
+function clamp(n,min,max){ return Math.max(min, Math.min(max,n)); }
 
 /* =========================
-   1) BANCO DE QUESTÕES
-   (Básico + Pré-Intermediário)
+   AUDIO (TTS)
 ========================= */
-const BANK = {
-  basic: [
-    {
-      id:"B01",
-      promptPT:"Escolha a frase correta para o ambiente de trabalho.",
-      audioTextEN:"I help my team.",
-      options:[
-        "I help my team.",
-        "I helps my team.",
-        "I helping my team.",
-        "I helped my team every day.",
-        "I am help my team."
-      ],
-      correctIndex:0,
-      hintPT:"Observe quem faz a ação (I / he / she / they).",
-      explainPT:"Com I, o verbo fica na forma base (help), sem “s”."
-    },
-    {
-      id:"B02",
-      promptPT:"O que essa frase significa?",
-      audioTextEN:"I wake up early.",
-      options:[
-        "Eu acordo cedo.",
-        "Eu acordei cedo ontem.",
-        "Eu estou acordando agora.",
-        "Eu vou acordar cedo amanhã.",
-        "Eu estava acordando cedo."
-      ],
-      correctIndex:0,
-      hintPT:"A frase fala de hábito ou de um momento específico?",
-      explainPT:"Presente simples geralmente indica rotina/hábito."
-    },
-    {
-      id:"B03",
-      promptPT:"Você está viajando. Qual frase faz sentido?",
-      audioTextEN:"I go to the airport.",
-      options:[
-        "I go to the airport.",
-        "I goes to the airport.",
-        "I going to the airport.",
-        "I went go to the airport.",
-        "I am go to the airport."
-      ],
-      correctIndex:0,
-      hintPT:"Com I, qual forma do verbo usamos?",
-      explainPT:"I + verbo base (go)."
-    },
-    {
-      id:"B04",
-      promptPT:"Complete a frase.",
-      audioTextEN:"At school, I study English.",
-      options:[
-        "study",
-        "studies",
-        "studying",
-        "studied",
-        "studyed"
-      ],
-      correctIndex:0,
-      hintPT:"Pense em algo que você faz com frequência.",
-      explainPT:"Ação habitual → Present Simple (study)."
-    },
-    {
-      id:"B05",
-      promptPT:"Qual frase combina com cinema?",
-      audioTextEN:"I like this movie.",
-      options:[
-        "Eu gosto desse filme.",
-        "Eu estou fazendo um filme.",
-        "Eu gostei desse filme ontem.",
-        "Eu vou gostar desse filme amanhã.",
-        "Eu estou gostando desse filme agora."
-      ],
-      correctIndex:0,
-      hintPT:"‘Like’ aqui é preferência geral.",
-      explainPT:"Like no presente indica gosto/preferência."
-    },
-    {
-      id:"B06",
-      promptPT:"Escolha a frase correta.",
-      audioTextEN:"She works at the office.",
-      options:[
-        "She work at the office.",
-        "She works at the office.",
-        "She working at the office.",
-        "She worked at the office every day.",
-        "She is work at the office."
-      ],
-      correctIndex:1,
-      hintPT:"Observe o sujeito: é I ou she?",
-      explainPT:"He/She/It → verbo recebe “s” (works)."
-    },
-    {
-      id:"B07",
-      promptPT:"Qual frase fala de algo que você faz sempre?",
-      audioTextEN:"I watch movies on weekends.",
-      options:[
-        "I watch movies on weekends.",
-        "I am watching a movie now.",
-        "I watched a movie yesterday.",
-        "I will watch a movie tomorrow.",
-        "I watching movies on weekends."
-      ],
-      correctIndex:0,
-      hintPT:"On weekends indica rotina.",
-      explainPT:"Presente simples + rotina."
-    },
-    {
-      id:"B08",
-      promptPT:"Escolha a frase mais natural.",
-      audioTextEN:"I have coffee in the morning.",
-      options:[
-        "I have coffee in the morning.",
-        "I am have coffee in the morning.",
-        "I having coffee in the morning.",
-        "I having coffee every morning.",
-        "I have coffees in the morning."
-      ],
-      correctIndex:0,
-      hintPT:"Veja qual frase soa natural e completa.",
-      explainPT:"Estrutura simples do Present Simple."
-    },
-    {
-      id:"B09",
-      promptPT:"O que essa frase quer dizer?",
-      audioTextEN:"I am from Brazil.",
-      options:[
-        "Eu sou do Brasil.",
-        "Eu estou no Brasil agora.",
-        "Eu vou para o Brasil.",
-        "Eu gosto do Brasil.",
-        "Eu moro no Brasil."
-      ],
-      correctIndex:0,
-      hintPT:"From indica origem.",
-      explainPT:"I am from… = eu sou de / eu venho de."
-    },
-    {
-      id:"B10",
-      promptPT:"Qual frase fala de rotina no trabalho?",
-      audioTextEN:"I check my emails every morning.",
-      options:[
-        "I check my emails every morning.",
-        "I am checking my emails now.",
-        "I checked my emails yesterday.",
-        "I will check my emails tomorrow.",
-        "I checking my emails every morning."
-      ],
-      correctIndex:0,
-      hintPT:"Every morning indica hábito.",
-      explainPT:"Present Simple + rotina."
-    },
-    {
-      id:"B11",
-      promptPT:"Escolha a frase correta para descrever rotina dos seus pais.",
-      audioTextEN:"They live in a big house.",
-      options:[
-        "They lives in a big house.",
-        "They live in a big house.",
-        "They living in a big house.",
-        "They lived in a big house now.",
-        "They are live in a big house."
-      ],
-      correctIndex:1,
-      hintPT:"They é plural. Plural leva 's' no verbo?",
-      explainPT:"Com They (plural), verbo fica na base (live)."
-    },
-    {
-      id:"B12",
-      promptPT:"Complete a frase.",
-      audioTextEN:"We go to the park on Sundays.",
-      options:[
-        "go",
-        "goes",
-        "going",
-        "went",
-        "gone"
-      ],
-      correctIndex:0,
-      hintPT:"We = nós. Verbo fica como no I.",
-      explainPT:"We + verbo base (go)."
-    },
-    {
-      id:"B13",
-      promptPT:"Como você diz que não gosta de café?",
-      audioTextEN:"I do not like coffee.",
-      options:[
-        "I not like coffee.",
-        "I do not like coffee.",
-        "I no like coffee.",
-        "I am not like coffee.",
-        "I don't likes coffee."
-      ],
-      correctIndex:1,
-      hintPT:"Negativa no presente usa do/does.",
-      explainPT:"I do not (don’t) + verbo base."
-    },
-    {
-      id:"B14",
-      promptPT:"Escolha a frase correta para dizer que ele não trabalha no sábado.",
-      audioTextEN:"He does not work on Saturday.",
-      options:[
-        "He do not works on Saturday.",
-        "He does not work on Saturday.",
-        "He not works on Saturday.",
-        "He does not works on Saturday.",
-        "He doesn't works on Saturday."
-      ],
-      correctIndex:1,
-      hintPT:"O 's' vai no auxiliar ou no verbo?",
-      explainPT:"Does + verbo base (work), sem 's' no verbo."
-    },
-    {
-      id:"B15",
-      promptPT:"Como você pergunta se a pessoa estuda inglês?",
-      audioTextEN:"Do you study English?",
-      options:[
-        "You study English?",
-        "Are you study English?",
-        "Do you study English?",
-        "Does you study English?",
-        "Do you studies English?"
-      ],
-      correctIndex:2,
-      hintPT:"Pergunta no presente: do/does + sujeito + verbo base.",
-      explainPT:"Com You usamos DO."
-    }
-  ],
+function speak(text, rate=0.9){
+  if(!("speechSynthesis" in window)) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = "en-US";
+  u.rate = rate;
+  speechSynthesis.speak(u);
+}
 
-  preintermediate: [
-    {
-      id:"P01",
-      promptPT:"Você está falando do que está acontecendo AGORA. Qual frase está correta?",
-      audioTextEN:"I am studying right now.",
-      options:["I am studying right now.","I study right now.","I studying right now.","I am study right now.","I studied right now."],
-      correctIndex:0,
-      hintPT:"Procure um sinal de 'agora': right now/at the moment/now.",
-      explainPT:"Ação em progresso: am/is/are + verbo com -ing."
-    },
-    {
-      id:"P02",
-      promptPT:"Rotina/hábito. Qual frase está correta?",
-      audioTextEN:"I study English every day.",
-      options:["I am studying English every day.","I study English every day.","I studies English every day.","I studying English every day.","I study English yesterday."],
-      correctIndex:1,
-      hintPT:"Every day = hábito.",
-      explainPT:"Hábito → Present Simple."
-    },
-    {
-      id:"P03",
-      promptPT:"Você quer dizer que NÃO tem tempo hoje. Qual frase está correta?",
-      audioTextEN:"I don't have time today.",
-      options:["I no have time today.","I don't have time today.","I doesn't have time today.","I am not have time today.","I not have time today."],
-      correctIndex:1,
-      hintPT:"Negativa no Present Simple precisa de auxiliar (do/does).",
-      explainPT:"Com I/you/we/they: don't + verbo base."
-    },
-    {
-      id:"P04",
-      promptPT:"Qual pergunta está correta para perguntar ONDE fica o banheiro?",
-      audioTextEN:"Where is the bathroom?",
-      options:["Where the bathroom is?","Where is the bathroom?","Where does the bathroom is?","Where are the bathroom?","Where is bathroom?"],
-      correctIndex:1,
-      hintPT:"Com 'to be' (is/are) não usamos do/does.",
-      explainPT:"Where + is/are + sujeito."
-    },
-    {
-      id:"P05",
-      promptPT:"Viagem: pedir a conta de forma educada. Qual frase é melhor?",
-      audioTextEN:"Could I have the bill, please?",
-      options:["Could I have the bill, please?","Can I to have the bill, please?","Could I has the bill, please?","I have the bill, please?","Do you have bill?"],
-      correctIndex:0,
-      hintPT:"Pedido educado: Could I…? (sem 'to' antes do verbo).",
-      explainPT:"Depois de could/can, verbo fica na base."
-    },
-    {
-      id:"P06",
-      promptPT:"Você quer dizer que foi ao cinema ontem. Qual frase está correta?",
-      audioTextEN:"I went to the cinema yesterday.",
-      options:["I go to the cinema yesterday.","I went to the cinema yesterday.","I goed to the cinema yesterday.","I was go to the cinema yesterday.","I am going to the cinema yesterday."],
-      correctIndex:1,
-      hintPT:"Yesterday = passado → Past Simple.",
-      explainPT:"Past Simple de go é irregular: went."
-    },
-    {
-      id:"P07",
-      promptPT:"Você quer dizer que já terminou a tarefa. Qual frase está correta?",
-      audioTextEN:"I finished my homework.",
-      options:["I finish my homework.","I finished my homework.","I finishing my homework.","I have finish my homework.","I was finished my homework."],
-      correctIndex:1,
-      hintPT:"Ação concluída no passado (mesmo que recente).",
-      explainPT:"Finished = Past Simple."
-    },
-    {
-      id:"P08",
-      promptPT:"Futuro planejado (intenção). Qual frase está correta?",
-      audioTextEN:"I'm going to travel next month.",
-      options:["I going to travel next month.","I'm going to travel next month.","I will to travel next month.","I'm go travel next month.","I traveled next month."],
-      correctIndex:1,
-      hintPT:"Plano: be + going to + verbo base.",
-      explainPT:"I'm going to + verb."
-    },
-    {
-      id:"P09",
-      promptPT:"Comparativo: sua casa é maior que a minha. Qual frase está correta?",
-      audioTextEN:"Your house is bigger than mine.",
-      options:["Your house is more big than mine.","Your house is bigger than mine.","Your house are bigger than mine.","Your house is big than mine.","Your house is biggest than mine."],
-      correctIndex:1,
-      hintPT:"Adjetivo curto: big → bigger.",
-      explainPT:"bigger + than."
-    },
-    {
-      id:"P10",
-      promptPT:"Quantidades: você precisa comprar pão. Qual frase é correta?",
-      audioTextEN:"I need some bread.",
-      options:["I need some bread.","I need a bread.","I need many bread.","I need breads.","I need few bread."],
-      correctIndex:0,
-      hintPT:"Bread é incontável.",
-      explainPT:"Incontável: some bread."
-    },
-    {
-      id:"P11",
-      promptPT:"Preço: qual pergunta está correta?",
-      audioTextEN:"How much does it cost?",
-      options:["How much it costs?","How much does it cost?","How much do it cost?","How much does it costs?","How many does it cost?"],
-      correctIndex:1,
-      hintPT:"Pergunta com it (singular) usa does + verbo base.",
-      explainPT:"Does + cost (base)."
-    },
-    {
-      id:"P12",
-      promptPT:"Você quer dizer: 'Ela não gosta de acordar cedo'. Qual frase correta?",
-      audioTextEN:"She doesn't like waking up early.",
-      options:["She don't like waking up early.","She doesn't likes waking up early.","She doesn't like waking up early.","She not like waking up early.","She isn't like waking up early."],
-      correctIndex:2,
-      hintPT:"Com she/he/it: doesn't + verbo base.",
-      explainPT:"Doesn't + like (base)."
-    },
-    {
-      id:"P13",
-      promptPT:"There is/are: escolha a frase correta.",
-      audioTextEN:"There are two chairs in the room.",
-      options:["There is two chairs in the room.","There are two chairs in the room.","There have two chairs in the room.","It are two chairs in the room.","There are two chair in the room."],
-      correctIndex:1,
-      hintPT:"Plural → are.",
-      explainPT:"Two chairs = plural → there are."
-    },
-    {
-      id:"P14",
-      promptPT:"Contável: qual frase está correta?",
-      audioTextEN:"I have a few friends in this city.",
-      options:["I have a few friends in this city.","I have a little friends in this city.","I have few friend in this city.","I have much friends in this city.","I have many friend in this city."],
-      correctIndex:0,
-      hintPT:"Friends é contável/plural.",
-      explainPT:"Countable plural: a few friends."
-    },
-    {
-      id:"P15",
-      promptPT:"Incontável: qual frase está correta?",
-      audioTextEN:"I have a little time today.",
-      options:["I have a little time today.","I have a few time today.","I have many time today.","I have a time today.","I have much times today."],
-      correctIndex:0,
-      hintPT:"Time é incontável.",
-      explainPT:"Uncountable: a little time."
+/* =========================
+   SFX
+========================= */
+let audioCtx = null;
+function beep(type){
+  try{
+    if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+    const ctx = audioCtx;
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.connect(g); g.connect(ctx.destination);
+    const t0 = ctx.currentTime;
+
+    if(type==="good"){
+      o.type="sine";
+      o.frequency.setValueAtTime(880,t0);
+      o.frequency.exponentialRampToValueAtTime(1320,t0+0.08);
+      g.gain.setValueAtTime(0.001,t0);
+      g.gain.exponentialRampToValueAtTime(0.12,t0+0.01);
+      g.gain.exponentialRampToValueAtTime(0.001,t0+0.18);
+      o.start(t0); o.stop(t0+0.20);
+    }else{
+      o.type="square";
+      o.frequency.setValueAtTime(220,t0);
+      o.frequency.exponentialRampToValueAtTime(110,t0+0.10);
+      g.gain.setValueAtTime(0.001,t0);
+      g.gain.exponentialRampToValueAtTime(0.16,t0+0.01);
+      g.gain.exponentialRampToValueAtTime(0.001,t0+0.22);
+      o.start(t0); o.stop(t0+0.24);
     }
-    // (Se quiser, eu adiciono já o pacote 40/80/120 do pré-intermediário no próximo envio)
-  ]
+  }catch(e){}
+}
+function flash(type){
+  const el = document.getElementById("flash");
+  el.className = "flash " + (type==="good" ? "good" : "bad");
+  requestAnimationFrame(()=> el.classList.add("on"));
+  setTimeout(()=> el.classList.remove("on"), 160);
+}
+
+/* =========================
+   BANKS (Básico + Pré)
+   - Quiz (A–E)
+   - Writing (flexível + exata)
+========================= */
+const LESSONS = {
+  basic: {
+    title: "📘 Básico (A1)",
+    theory: [
+      { title:"Padrão #1 (o mais importante)",
+        text:"Com I / You / We / They, o verbo fica na forma base (work, help, live). Com He / She / It, o verbo ganha -s (works, helps, lives).",
+        examples:["I work here.","She works here."],
+        common:"Erro comum: “I works…” (não)."
+      },
+      { title:"Padrão #2 (negativa e pergunta)",
+        text:"No Present Simple, a negativa e a pergunta usam DO/DOES. Depois do DO/DOES, o verbo volta para a forma base.",
+        examples:["I do not like coffee.","Does he work here?"],
+        common:"Erro comum: “Does he works?” (não)."
+      }
+    ],
+    quiz: [
+      { id:"B01", promptPT:"Escolha a frase correta para o ambiente de trabalho.", audio:"I help my team.",
+        options:["I help my team.","I helps my team.","I helping my team.","I helped my team every day.","I am help my team."],
+        correctIndex:0, hint:"Observe quem faz a ação (I / he / she / they).",
+        explain:"Com I, o verbo fica na forma base (help), sem “s”."
+      },
+      { id:"B02", promptPT:"O que essa frase significa?", audio:"I wake up early.",
+        options:["Eu acordo cedo.","Eu acordei cedo ontem.","Eu estou acordando agora.","Eu vou acordar cedo amanhã.","Eu estava acordando cedo."],
+        correctIndex:0, hint:"A frase fala de hábito ou de um momento específico?",
+        explain:"Presente simples geralmente indica rotina/hábito."
+      },
+      { id:"B03", promptPT:"Como você diz que não gosta de café?", audio:"I do not like coffee.",
+        options:["I not like coffee.","I do not like coffee.","I no like coffee.","I am not like coffee.","I don't likes coffee."],
+        correctIndex:1, hint:"Negativa no presente usa do/does.",
+        explain:"I do not (don’t) + verbo base."
+      },
+      { id:"B04", promptPT:"Como você pergunta se a pessoa estuda inglês?", audio:"Do you study English?",
+        options:["You study English?","Are you study English?","Do you study English?","Does you study English?","Do you studies English?"],
+        correctIndex:2, hint:"Pergunta no presente: do/does + sujeito + verbo base.",
+        explain:"Com You usamos DO."
+      },
+      { id:"B05", promptPT:"Escolha a frase correta.", audio:"She works at the office.",
+        options:["She work at the office.","She works at the office.","She working at the office.","She worked at the office every day.","She is work at the office."],
+        correctIndex:1, hint:"He/She/It pede verbo com -s.",
+        explain:"She → works."
+      }
+    ],
+    writing: [
+      // FLEXÍVEL
+      {
+        id:"BW_F1",
+        mode:"flex",
+        title:"✍️ Escreva a frase (flexível)",
+        promptPT:"Você está no trabalho. Escreva em inglês: “Eu ajudo meu time.”",
+        target:"I help my team.",
+        audio:"I help my team.",
+        hint:"Dica: comece com “I” e use o verbo na base (sem s)."
+      },
+      // EXATA
+      {
+        id:"BW_E1",
+        mode:"exact",
+        title:"🎯 Escreva exatamente assim",
+        promptPT:"Digite exatamente a frase abaixo (incluindo pontuação):",
+        target:"I help my team.",
+        audio:"I help my team.",
+        hint:"Dica: copie a frase com o ponto final."
+      }
+    ]
+  },
+
+  preintermediate: {
+    title: "📗 Pré-Intermediário (A2)",
+    theory: [
+      { title:"Simple x Continuous (agora vs rotina)",
+        text:"Right now / now / at the moment → Present Continuous (am/is/are + -ing). Every day / usually / on Mondays → Present Simple.",
+        examples:["I am studying right now.","I study English every day."],
+        common:"Erro comum: “I am study…” (falta -ing)."
+      },
+      { title:"Perguntas úteis (viagem e vida real)",
+        text:"Com ‘to be’ (is/are) você não usa do/does. Com verbos normais, use do/does.",
+        examples:["Where is the bathroom?","How much does it cost?"],
+        common:"Erro comum: “Where does the bathroom is?” (não)."
+      }
+    ],
+    quiz: [
+      { id:"P01", promptPT:"Você está falando do que está acontecendo AGORA. Qual frase está correta?", audio:"I am studying right now.",
+        options:["I am studying right now.","I study right now.","I studying right now.","I am study right now.","I studied right now."],
+        correctIndex:0, hint:"Right now indica ação em progresso.",
+        explain:"Present Continuous: am/is/are + -ing."
+      },
+      { id:"P02", promptPT:"Rotina/hábito. Qual frase está correta?", audio:"I study English every day.",
+        options:["I am studying English every day.","I study English every day.","I studies English every day.","I studying English every day.","I study English yesterday."],
+        correctIndex:1, hint:"Every day = hábito.",
+        explain:"Hábito → Present Simple."
+      },
+      { id:"P03", promptPT:"Qual pergunta está correta para perguntar ONDE fica o banheiro?", audio:"Where is the bathroom?",
+        options:["Where the bathroom is?","Where is the bathroom?","Where does the bathroom is?","Where are the bathroom?","Where is bathroom?"],
+        correctIndex:1, hint:"Com ‘to be’, não usamos do/does.",
+        explain:"Where + is/are + sujeito."
+      },
+      { id:"P04", promptPT:"Você foi ao cinema ontem. Qual frase está correta?", audio:"I went to the cinema yesterday.",
+        options:["I go to the cinema yesterday.","I went to the cinema yesterday.","I goed to the cinema yesterday.","I was go to the cinema yesterday.","I am going to the cinema yesterday."],
+        correctIndex:1, hint:"Yesterday = passado.",
+        explain:"Past Simple irregular: go → went."
+      },
+      { id:"P05", promptPT:"Preço: qual pergunta está correta?", audio:"How much does it cost?",
+        options:["How much it costs?","How much does it cost?","How much do it cost?","How much does it costs?","How many does it cost?"],
+        correctIndex:1, hint:"It (singular) → does + verbo base.",
+        explain:"Does + cost (base)."
+      }
+    ],
+    writing: [
+      { id:"PW_F1", mode:"flex",
+        title:"✍️ Escreva a frase (flexível)",
+        promptPT:"Escreva em inglês: “Eu estou estudando agora.”",
+        target:"I am studying now.",
+        audio:"I am studying now.",
+        hint:"Dica: use am + verbo com -ing."
+      },
+      { id:"PW_E1", mode:"exact",
+        title:"🎯 Escreva exatamente assim",
+        promptPT:"Digite exatamente a frase abaixo (incluindo pontuação):",
+        target:"I am studying right now.",
+        audio:"I am studying right now.",
+        hint:"Dica: right now = agora. Copie certinho."
+      }
+    ]
+  }
 };
 
 /* =========================
-   2) CONFIG / SESSÃO
+   SESSION STATE
 ========================= */
-const LETTERS = ["A","B","C","D","E"];
-
 let session = {
   levelKey: null,
-  originalBank: [],
-  remaining: [],
-  askedCount: 0,
-  targetCount: 12, // quantas questões por aula (pode ajustar)
-  current: null,
-  currentShuffledOptions: [],
+  stepIndex: 0,      // 0 teoria, 1 quiz, 2 writing flex, 3 writing exact, 4 result
+  quizOrder: [],
+  quizPos: 0,
+  currentQuiz: null,
+  shuffledOptions: [],
   correctText: "",
   selectedIndex: null,
   locked: false,
   usedHint: false,
+
+  // writing
+  currentWriting: null,
+  userText: "",
+  writingChecked: false,
+
+  // scoring
   correct: 0,
   wrong: 0
 };
 
 /* =========================
-   3) UI HELPERS
+   SCREENS
 ========================= */
 function showScreen(id){
   document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
   document.getElementById(id).classList.add("active");
 }
-
+function renderHomePills(){
+  const s = loadState();
+  document.getElementById("streakPill").textContent = `🔥 Streak: ${s.streak||0}`;
+  document.getElementById("xpPill").textContent = `⭐ XP: ${s.xp||0}`;
+  document.getElementById("accuracyPill").textContent = `🎯 Acerto: ${calcAccuracy(s)}%`;
+}
 function goHome(){
   renderHomePills();
   showScreen("homeScreen");
 }
-
 function openStats(){
   const s = loadState();
   const statsBox = document.getElementById("statsBox");
@@ -638,228 +447,290 @@ function openStats(){
 
     <div class="divider"></div>
 
-    <p style="font-weight:900;margin-bottom:6px">📘 Básico</p>
-    <p class="tiny">Concluídas: <strong>${(basic.completedSessions||0)}</strong> • Melhor acerto: <strong>${(basic.bestAcc||0)}%</strong></p>
+    <p style="font-weight:950;margin-bottom:6px">📘 Básico</p>
+    <p class="tiny">Aulas concluídas: <strong>${(basic.completedSessions||0)}</strong> • Melhor acerto: <strong>${(basic.bestAcc||0)}%</strong></p>
 
     <div class="divider"></div>
 
-    <p style="font-weight:900;margin-bottom:6px">📗 Pré-Intermediário</p>
-    <p class="tiny">Concluídas: <strong>${(pre.completedSessions||0)}</strong> • Melhor acerto: <strong>${(pre.bestAcc||0)}%</strong></p>
-
-    <div class="divider"></div>
-
-    <p class="tiny">Dica: Se quiser, eu adiciono “teste de nível” e trilha automática (A1→A2→B1…).</p>
+    <p style="font-weight:950;margin-bottom:6px">📗 Pré-Intermediário</p>
+    <p class="tiny">Aulas concluídas: <strong>${(pre.completedSessions||0)}</strong> • Melhor acerto: <strong>${(pre.bestAcc||0)}%</strong></p>
   `;
   showScreen("statsScreen");
 }
-
-function calcAccuracy(state){
-  const c = state.totalCorrect||0;
-  const w = state.totalWrong||0;
-  const t = c+w;
-  return t ? Math.round((c/t)*100) : 0;
+function resetAll(){
+  const ok = confirm("Tem certeza que quer resetar TUDO?");
+  if(!ok) return;
+  localStorage.removeItem(STORE_KEY);
+  renderHomePills();
+  alert("Resetado ✅");
 }
-
-function renderHomePills(){
-  const s = loadState();
-  document.getElementById("streakPill").textContent = `🔥 Streak: ${s.streak||0}`;
-  document.getElementById("xpPill").textContent = `⭐ XP: ${s.xp||0}`;
-  document.getElementById("accuracyPill").textContent = `🎯 Acerto: ${calcAccuracy(s)}%`;
+function confirmExitHome(){
+  const ok = confirm("Voltar ao início agora? (a aula atual reinicia)");
+  if(ok) goHome();
 }
-
-/* =========================
-   4) AUDIO (TTS)
-========================= */
-function speak(text, rate=0.9){
-  if(!("speechSynthesis" in window)) return;
-  speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = "en-US";
-  u.rate = rate;
-  speechSynthesis.speak(u);
-}
-function speakCurrent(rate){
-  if(!session.current) return;
-  speak(session.current.audioTextEN, rate);
+function confirmEndPartial(){
+  const ok = confirm("Encerrar parcial e voltar ao início?");
+  if(ok) goHome();
 }
 
 /* =========================
-   5) FEEDBACK SOUNDS
+   START LESSON
 ========================= */
-let audioCtx = null;
-function beep(type){
-  try{
-    if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
-    const ctx = audioCtx;
-    const o = ctx.createOscillator();
-    const g = ctx.createGain();
-    o.connect(g); g.connect(ctx.destination);
-
-    const t0 = ctx.currentTime;
-    if(type==="good"){
-      o.type = "sine";
-      o.frequency.setValueAtTime(880, t0);
-      o.frequency.exponentialRampToValueAtTime(1320, t0+0.08);
-      g.gain.setValueAtTime(0.001, t0);
-      g.gain.exponentialRampToValueAtTime(0.12, t0+0.01);
-      g.gain.exponentialRampToValueAtTime(0.001, t0+0.18);
-      o.start(t0); o.stop(t0+0.20);
-    }else{
-      o.type = "square";
-      o.frequency.setValueAtTime(220, t0);
-      o.frequency.exponentialRampToValueAtTime(110, t0+0.10);
-      g.gain.setValueAtTime(0.001, t0);
-      g.gain.exponentialRampToValueAtTime(0.16, t0+0.01);
-      g.gain.exponentialRampToValueAtTime(0.001, t0+0.22);
-      o.start(t0); o.stop(t0+0.24);
-    }
-  }catch(e){}
-}
-
-function flash(type){
-  const el = document.getElementById("flash");
-  el.className = "flash " + (type==="good" ? "good" : "bad");
-  requestAnimationFrame(()=> el.classList.add("on"));
-  setTimeout(()=> el.classList.remove("on"), 160);
-}
-
-/* =========================
-   6) CORE: START / LOAD Q
-========================= */
-function startLevel(levelKey){
-  const bank = BANK[levelKey];
-  if(!bank || !bank.length){
-    alert("Esse nível ainda não tem questões.");
-    return;
-  }
+function startLesson(levelKey){
+  const L = LESSONS[levelKey];
+  if(!L) return alert("Nível não encontrado.");
 
   session.levelKey = levelKey;
-  session.originalBank = bank.slice();
-  session.remaining = shuffle(bank); // embaralha ordem das questões
-  session.askedCount = 0;
-  session.targetCount = levelKey==="basic" ? 12 : 12; // pode ajustar por nível
-  session.current = null;
-  session.currentShuffledOptions = [];
+  session.stepIndex = 0;
+
+  session.correct = 0;
+  session.wrong = 0;
+
+  // quiz order
+  session.quizOrder = shuffle(L.quiz);
+  session.quizPos = 0;
+  session.currentQuiz = null;
+  session.shuffledOptions = [];
   session.correctText = "";
   session.selectedIndex = null;
   session.locked = false;
   session.usedHint = false;
-  session.correct = 0;
-  session.wrong = 0;
 
-  document.getElementById("quizHeader").textContent =
-    levelKey==="basic" ? "📘 Básico (A1)" : "📗 Pré-Intermediário (A2)";
+  // writing
+  session.currentWriting = null;
+  session.userText = "";
+  session.writingChecked = false;
 
-  document.getElementById("quizSub").textContent =
-    "Escolha uma alternativa. Use dica e áudio quando precisar.";
+  document.getElementById("lessonHeader").textContent = L.title;
+  document.getElementById("lessonSub").textContent = "Teoria curta → quiz → escrita (flex + exata)";
 
-  nextQuestion(true);
-  showScreen("quizScreen");
+  renderStep();
+  showScreen("lessonScreen");
 }
 
-function pickNextQuestion(){
-  // Se acabou, reembaralha e continua (para ter banco grande e sem travar)
-  if(session.remaining.length === 0){
-    session.remaining = shuffle(session.originalBank);
+/* =========================
+   PROGRESS BAR + COUNTERS
+========================= */
+function setProgress(){
+  // Steps: 0 theory, 1 quiz, 2 writing flex, 3 writing exact, 4 result
+  const totalSteps = 5;
+  const step = clamp(session.stepIndex+1, 1, totalSteps);
+  document.getElementById("stepCounter").textContent = `Etapa ${step}/${totalSteps}`;
+  document.getElementById("progressBar").style.width = `${Math.round(((step-1)/(totalSteps))*100)}%`;
+}
+
+/* =========================
+   STEP RENDER
+========================= */
+function renderStep(){
+  setProgress();
+
+  const L = LESSONS[session.levelKey];
+  const area = document.getElementById("contentArea");
+  const actions = document.getElementById("actionRow");
+  const footer = document.getElementById("footerTip");
+  area.innerHTML = "";
+  actions.innerHTML = "";
+  footer.textContent = "";
+
+  if(session.stepIndex === 0){
+    // THEORY
+    const blocks = L.theory.map((t, idx)=>`
+      <div class="card" style="box-shadow:none;border:2px solid #e5e7eb;background:#fafafa;margin-bottom:10px">
+        <div class="row" style="justify-content:space-between">
+          <div style="font-weight:950">${idx+1}) ${t.title}</div>
+          <span class="badge">🎬 microaula</span>
+        </div>
+        <div style="margin-top:8px;line-height:1.45;color:#0f172a">${t.text}</div>
+        <div class="divider"></div>
+        <div class="tiny"><strong>Exemplos:</strong> ${t.examples.join(" • ")}</div>
+        <div class="tiny" style="margin-top:6px"><strong>Erro comum:</strong> ${t.common}</div>
+      </div>
+    `).join("");
+
+    area.innerHTML = `
+      <div class="q-title">📚 Teoria rápida (1 minuto)</div>
+      <div class="q-sub">Leia e ouça exemplos. Depois você vai pra prática.</div>
+      ${blocks}
+      <div class="row">
+        <button class="btn btn-ghost" onclick="speakTheoryExamples()">🔊 Ouvir exemplos</button>
+      </div>
+    `;
+
+    actions.innerHTML = `
+      <button class="btn btn-primary" onclick="goNextStep()">🚀 Ir para o Quiz</button>
+    `;
+    footer.textContent = "Meta: entender o padrão — não decorar regra.";
+    return;
   }
-  return session.remaining.pop();
+
+  if(session.stepIndex === 1){
+    // QUIZ
+    renderQuizQuestion();
+    return;
+  }
+
+  if(session.stepIndex === 2){
+    // WRITING FLEX
+    session.currentWriting = L.writing.find(w=>w.mode==="flex");
+    renderWriting();
+    return;
+  }
+
+  if(session.stepIndex === 3){
+    // WRITING EXACT
+    session.currentWriting = L.writing.find(w=>w.mode==="exact");
+    renderWriting();
+    return;
+  }
+
+  if(session.stepIndex === 4){
+    // RESULT
+    const total = session.correct + session.wrong;
+    const acc = total ? Math.round((session.correct/total)*100) : 0;
+
+    area.innerHTML = `
+      <div class="q-title">✅ Aula concluída!</div>
+      <div class="row" style="margin:10px 0">
+        <div class="pill">🎯 Acerto: ${acc}%</div>
+        <div class="pill">✅ Certas: ${session.correct}</div>
+        <div class="pill">❌ Erradas: ${session.wrong}</div>
+      </div>
+      <div class="divider"></div>
+      <div class="q-sub">
+        Agora você está pronto pra repetir a aula e melhorar a precisão.
+        O ideal é: <strong>acerto acima de 80%</strong> antes de subir de nível.
+      </div>
+    `;
+
+    actions.innerHTML = `
+      <button class="btn btn-primary" onclick="finishLesson()">🏁 Salvar e voltar ao início</button>
+    `;
+    footer.textContent = "Se quiser, eu adiciono “revisão de erros” automaticamente no final.";
+    return;
+  }
 }
 
-function buildShuffledQuestion(q){
-  // embaralha opções e recalcula índice correto
-  const correctText = q.options[q.correctIndex];
-  const shuffled = shuffle(q.options);
+function goNextStep(){
+  session.stepIndex++;
+  renderStep();
+}
 
-  // garante variação boa: se por acaso cair sempre A, a chance é baixa,
-  // mas aqui reforçamos com um "re-shuffle" quando cai em A repetido muito.
-  // (Simplão: se correto cair em A 3x seguidas, reembaralha)
-  // Vamos manter um histórico por sessão.
+/* =========================
+   THEORY AUDIO
+========================= */
+function speakTheoryExamples(){
+  const L = LESSONS[session.levelKey];
+  const all = [];
+  L.theory.forEach(t => t.examples.forEach(e=>all.push(e)));
+  speak(all.join(" ... "), 0.9);
+}
+
+/* =========================
+   QUIZ LOGIC
+========================= */
+function buildShuffledQuiz(q){
+  const correctText = q.options[q.correctIndex];
+  let opts = shuffle(q.options);
+
+  // Anti "cair sempre na A": se cair na mesma letra 2x seguidas, tenta um reshuffle
   if(!session._lastCorrectLetters) session._lastCorrectLetters = [];
-  let idx = shuffled.indexOf(correctText);
+  let idx = opts.indexOf(correctText);
   let letter = LETTERS[idx] || "A";
-  const last = session._lastCorrectLetters.slice(-2);
-  if(last.length===2 && last[0]===letter && last[1]===letter){
-    // reembaralha uma vez pra tentar mudar
+  const last2 = session._lastCorrectLetters.slice(-2);
+  if(last2.length===2 && last2[0]===letter && last2[1]===letter){
     const resh = shuffle(q.options);
-    const idx2 = resh.indexOf(correctText);
-    shuffled.splice(0, shuffled.length, ...resh);
-    idx = idx2;
+    opts = resh;
+    idx = opts.indexOf(correctText);
     letter = LETTERS[idx] || "A";
   }
   session._lastCorrectLetters.push(letter);
 
-  return {
-    ...q,
-    _correctText: correctText,
-    _shuffledOptions: shuffled
-  };
+  return { ...q, _correctText: correctText, _opts: opts };
 }
 
-/* =========================
-   7) RENDER
-========================= */
-function renderQuestion(){
-  const q = session.current;
-  const optionsBox = document.getElementById("optionsBox");
+function renderQuizQuestion(){
+  const L = LESSONS[session.levelKey];
+  const area = document.getElementById("contentArea");
+  const actions = document.getElementById("actionRow");
+  const footer = document.getElementById("footerTip");
 
-  document.getElementById("hintArea").style.display = "none";
-  document.getElementById("explainArea").style.display = "none";
-  document.getElementById("checkBtn").style.display = "inline-flex";
-  document.getElementById("nextBtn").style.display = "none";
-  session.selectedIndex = null;
+  if(session.quizPos >= session.quizOrder.length){
+    // terminou quiz
+    goNextStep();
+    return;
+  }
+
   session.locked = false;
   session.usedHint = false;
+  session.selectedIndex = null;
 
-  const total = session.targetCount;
-  const n = clamp(session.askedCount, 1, total);
-  document.getElementById("qCounter").textContent = `Questão ${n}/${total}`;
-  document.getElementById("progressBar").style.width = `${Math.round((n-1)/total*100)}%`;
+  const qRaw = session.quizOrder[session.quizPos];
+  const q = buildShuffledQuiz(qRaw);
+  session.currentQuiz = q;
 
-  document.getElementById("qTitle").textContent = `🎯 ${q.promptPT}`;
-  document.getElementById("qPrompt").textContent = "Escolha a melhor alternativa:";
+  area.innerHTML = `
+    <div class="row" style="justify-content:space-between;align-items:flex-start">
+      <div>
+        <div class="q-title">🧠 Quiz A–E (${session.quizPos+1}/${session.quizOrder.length})</div>
+        <div class="q-sub"><strong>Pergunta (PT):</strong> ${q.promptPT}</div>
+      </div>
+      <span class="badge">⚡ rápido</span>
+    </div>
 
-  // Observação pequena com a letra correta (para debug interno) — DESLIGADO:
-  document.getElementById("tipFooter").textContent =
-    `Tema: ${session.levelKey} • Use 🔊 pra ouvir a frase em inglês.`;
+    <div class="row" style="margin:8px 0">
+      <button class="btn btn-ghost" onclick="speak('${escapeJS(q.audio)}', 0.9)">🔊 Ouvir</button>
+      <button class="btn btn-ghost" onclick="speak('${escapeJS(q.audio)}', 0.75)">🐢 Devagar</button>
+      <button class="btn btn-warning" onclick="showHintQuiz()">💡 Dica</button>
+    </div>
 
-  optionsBox.innerHTML = "";
-  q._shuffledOptions.forEach((text, idx)=>{
+    <div id="hintBox" style="display:none" class="hintBox"></div>
+    <div id="optionsBox" style="display:grid;gap:10px;margin-top:10px"></div>
+    <div id="feedbackBox" style="display:none;margin-top:12px"></div>
+  `;
+
+  const optsBox = document.getElementById("optionsBox");
+  q._opts.forEach((text, idx)=>{
     const div = document.createElement("div");
     div.className = "option";
-    div.onclick = ()=> selectOption(idx);
-
-    const letter = LETTERS[idx] || "?";
+    div.onclick = ()=> selectOptionQuiz(idx);
     div.innerHTML = `
-      <div class="opt-letter">${letter}</div>
+      <div class="opt-letter">${LETTERS[idx]}</div>
       <div style="flex:1">
-        <div style="font-weight:900">${text}</div>
+        <div style="font-weight:950">${text}</div>
       </div>
     `;
-    optionsBox.appendChild(div);
+    optsBox.appendChild(div);
   });
+
+  actions.innerHTML = `
+    <button class="btn btn-primary" id="checkBtn" onclick="checkQuiz()">✅ Verificar</button>
+    <button class="btn btn-primary" id="nextBtn" style="display:none" onclick="nextQuiz()">➡️ Próxima</button>
+  `;
+
+  footer.textContent = "Dica boa não entrega a resposta — ela aponta o padrão.";
 }
 
-function selectOption(idx){
+function escapeJS(s){
+  return String(s).replace(/\\/g,"\\\\").replace(/'/g,"\\'");
+}
+
+function showHintQuiz(){
+  const q = session.currentQuiz;
+  session.usedHint = true;
+  const box = document.getElementById("hintBox");
+  box.style.display = "block";
+  box.innerHTML = `<strong>💡 Dica:</strong> ${q.hint}`;
+}
+
+function selectOptionQuiz(idx){
   if(session.locked) return;
   session.selectedIndex = idx;
   const children = [...document.getElementById("optionsBox").children];
-  children.forEach((c,i)=>{
-    c.classList.toggle("selected", i===idx);
-  });
+  children.forEach((c,i)=> c.classList.toggle("selected", i===idx));
 }
 
-function toggleHint(){
-  if(!session.current) return;
-  session.usedHint = true;
-  const hintArea = document.getElementById("hintArea");
-  hintArea.innerHTML = `<strong>💡 Dica:</strong> ${session.current.hintPT || "Observe o padrão da frase."}`;
-  hintArea.style.display = "block";
-}
-
-/* =========================
-   8) CHECK / NEXT / END
-========================= */
-function checkAnswer(){
+function checkQuiz(){
   if(session.locked) return;
 
   if(session.selectedIndex===null){
@@ -869,129 +740,309 @@ function checkAnswer(){
 
   session.locked = true;
 
-  const q = session.current;
+  const q = session.currentQuiz;
   const correctText = q._correctText;
-  const chosenText = q._shuffledOptions[session.selectedIndex];
-  const isCorrect = chosenText === correctText;
+  const chosenText = q._opts[session.selectedIndex];
+  const ok = chosenText === correctText;
 
   const optionsEls = [...document.getElementById("optionsBox").children];
   optionsEls.forEach((el, idx)=>{
-    const t = q._shuffledOptions[idx];
+    const t = q._opts[idx];
     if(t === correctText) el.classList.add("correct");
-    if(idx === session.selectedIndex && !isCorrect) el.classList.add("wrong");
+    if(idx === session.selectedIndex && !ok) el.classList.add("wrong");
   });
 
-  const explain = document.getElementById("explainArea");
-  explain.innerHTML = `
-    <div style="font-weight:900;margin-bottom:6px">${isCorrect ? "✅ Correto!" : "❌ Quase!"}</div>
-    <div class="tiny" style="margin-bottom:8px"><strong>Frase (EN):</strong> ${q.audioTextEN}</div>
-    <div><strong>Por quê:</strong> ${q.explainPT || "Boa! Continue observando o padrão."}</div>
+  const fb = document.getElementById("feedbackBox");
+  fb.style.display = "block";
+  fb.className = ok ? "goodBox" : "badBox";
+  fb.innerHTML = `
+    <div style="font-weight:950;margin-bottom:6px">${ok ? "✅ Correto!" : "❌ Quase!"}</div>
+    <div class="tiny" style="margin-bottom:6px"><strong>Frase (EN):</strong> ${q.audio}</div>
+    <div><strong>Por quê:</strong> ${q.explain}</div>
   `;
-  explain.style.display = "block";
 
-  // feedback audiovisual
-  if(isCorrect){
+  if(ok){
     session.correct++;
     beep("good"); flash("good");
+    addXP(10);
   }else{
     session.wrong++;
     beep("bad"); flash("bad");
+    addXP(2);
+
+    // errou? deixa o quiz mais "dinâmico": troca a próxima questão por outra aleatória do banco
+    // (sem repetir a mesma imediatamente)
+    const L = LESSONS[session.levelKey];
+    const pool = L.quiz.filter(x => x.id !== q.id);
+    if(pool.length){
+      const swap = pool[Math.floor(Math.random()*pool.length)];
+      session.quizOrder[session.quizPos] = swap; // substitui a atual para “não travar”
+    }
   }
-
-  // XP e stats globais
-  const s = loadState();
-  const addXP = isCorrect ? 10 : 2;
-  const totalCorrect = (s.totalCorrect||0) + (isCorrect?1:0);
-  const totalWrong = (s.totalWrong||0) + (isCorrect?0:1);
-  let xp = (s.xp||0) + addXP;
-
-  saveState({ xp, totalCorrect, totalWrong });
 
   document.getElementById("checkBtn").style.display = "none";
   document.getElementById("nextBtn").style.display = "inline-flex";
-
-  // Se errou: para ficar “dinâmico”, já prepara um “recurso”:
-  // na próxima, prioriza outra questão (não repete a mesma).
 }
 
-function nextQuestion(isFirst=false){
-  // Se já completou a meta, encerra
-  if(!isFirst && session.askedCount >= session.targetCount){
-    finishSession();
+function nextQuiz(){
+  session.quizPos++;
+  renderQuizQuestion();
+}
+
+/* =========================
+   WRITING (FLEX + EXACT)
+========================= */
+function normalizeText(s){
+  return String(s)
+    .trim()
+    .toLowerCase()
+    .replace(/[“”"]/g,'"')
+    .replace(/[’]/g,"'")
+    .replace(/\s+/g," ")
+    .replace(/[!?]/g,"") // não tira ponto aqui, pq no exato a gente compara com pontuação
+    ;
+}
+
+function stripPunctuation(s){
+  return String(s).replace(/[.,;:]/g,"").trim();
+}
+
+// avaliação flexível: pontua por padrões essenciais
+function evalFlexible(user, target){
+  const u0 = normalizeText(user);
+  const t0 = normalizeText(target);
+
+  const u = stripPunctuation(u0);
+  const t = stripPunctuation(t0);
+
+  // critérios simples (expansíveis)
+  const res = { ok:false, score:0, max:4, notes:[] };
+
+  // 1) mesmas palavras-chave (conjunto mínimo)
+  const mustWords = t.split(" ").filter(Boolean);
+
+  // regra: aceita se tiver >= 70% das palavras alvo na resposta
+  const uw = new Set(u.split(" ").filter(Boolean));
+  let hit = 0;
+  mustWords.forEach(w=>{ if(uw.has(w)) hit++; });
+
+  const ratio = mustWords.length ? (hit/mustWords.length) : 0;
+  if(ratio >= 0.70){ res.score++; } else {
+    res.notes.push("Faltaram palavras importantes da frase.");
+  }
+
+  // 2) ordem básica (começar com sujeito esperado se existir)
+  const tFirst = mustWords[0];
+  const uFirst = u.split(" ")[0] || "";
+  if(tFirst && uFirst === tFirst){ res.score++; }
+  else res.notes.push("A frase geralmente começa com o sujeito (I / She / They...).");
+
+  // 3) auxiliar quando existir no target
+  if(t.includes(" do not ") || t.includes(" don't ")){
+    if(u.includes("do not") || u.includes("don't")) res.score++;
+    else res.notes.push("Negativa no presente precisa de DO + NOT (ou DON'T).");
+  } else if(t.includes(" does not ") || t.includes(" doesn't ")){
+    if(u.includes("does not") || u.includes("doesn't")) res.score++;
+    else res.notes.push("Com he/she/it, a negativa usa DOESN'T.");
+  } else {
+    // se não é negativa, dá ponto por “não usar auxiliar errado”
+    if(!(u.includes("does") && u.includes("works"))){ res.score++; }
+    else res.notes.push("Cuidado: se usar DOES, o verbo fica na base (work).");
+  }
+
+  // 4) verbo com -ing quando o target tiver -ing
+  if(t.includes("ing")){
+    if(u.includes("ing")) res.score++;
+    else res.notes.push("Aqui é ação em progresso: use verbo com -ing.");
+  }else{
+    // se target não tem ing, penaliza ing desnecessário só se atrapalhar
+    res.score++;
+  }
+
+  res.ok = res.score >= 3; // passa com 3/4
+  return res;
+}
+
+function evalExact(user, target){
+  // exato: compara normalizado mas mantendo ponto final e vírgula
+  const u = String(user).trim();
+  const t = String(target).trim();
+  // permite diferença de espaços
+  const u2 = u.replace(/\s+/g," ");
+  const t2 = t.replace(/\s+/g," ");
+  return { ok: u2 === t2 };
+}
+
+function renderWriting(){
+  const area = document.getElementById("contentArea");
+  const actions = document.getElementById("actionRow");
+  const footer = document.getElementById("footerTip");
+  const w = session.currentWriting;
+
+  session.userText = "";
+  session.writingChecked = false;
+
+  const tag = w.mode === "flex"
+    ? `<span class="badge">🧠 flexível</span>`
+    : `<span class="badge">🎯 exata</span>`;
+
+  area.innerHTML = `
+    <div class="row" style="justify-content:space-between;align-items:flex-start">
+      <div>
+        <div class="q-title">${w.title}</div>
+        <div class="q-sub">${w.promptPT}</div>
+      </div>
+      ${tag}
+    </div>
+
+    <div class="row" style="margin:8px 0">
+      <button class="btn btn-ghost" onclick="speak('${escapeJS(w.audio)}', 0.9)">🔊 Ouvir</button>
+      <button class="btn btn-ghost" onclick="speak('${escapeJS(w.audio)}', 0.75)">🐢 Devagar</button>
+      <button class="btn btn-warning" onclick="showHintWriting()">💡 Dica</button>
+    </div>
+
+    <div id="hintBoxW" style="display:none" class="hintBox"></div>
+
+    <div class="divider"></div>
+
+    ${w.mode==="exact" ? `
+      <div class="tiny" style="margin-bottom:8px"><strong>Frase-alvo:</strong> ${w.target}</div>
+    ` : `
+      <div class="tiny" style="margin-bottom:8px"><strong>Meta:</strong> escrever com o padrão correto (variações são aceitas).</div>
+    `}
+
+    <input id="writingInput" class="input" placeholder="Digite sua resposta..." />
+
+    <div id="writingFeedback" style="display:none;margin-top:12px"></div>
+  `;
+
+  actions.innerHTML = `
+    <button class="btn btn-primary" onclick="checkWriting()">✅ Verificar</button>
+    <button class="btn btn-primary" id="nextWritingBtn" style="display:none" onclick="nextWriting()">➡️ Próxima</button>
+  `;
+
+  footer.textContent = w.mode==="exact"
+    ? "Modo exato: aqui é para treinar precisão (como se fosse prova)."
+    : "Modo flexível: aqui é para ganhar fluência com feedback inteligente.";
+}
+
+function showHintWriting(){
+  const w = session.currentWriting;
+  const box = document.getElementById("hintBoxW");
+  box.style.display = "block";
+  box.innerHTML = `<strong>💡 Dica:</strong> ${w.hint}`;
+}
+
+function checkWriting(){
+  const w = session.currentWriting;
+  const input = document.getElementById("writingInput");
+  const text = input.value;
+  if(!text.trim()){
+    alert("Digite alguma coisa 😉");
     return;
   }
 
-  // se errou na última, aumenta chance de puxar outra do mesmo nível (já é)
-  const qRaw = pickNextQuestion();
-  const q = buildShuffledQuestion(qRaw);
-
-  session.current = q;
-  session.askedCount = session.askedCount + 1;
-
-  renderQuestion();
-
-  // fala automático só na primeira questão (pra não ficar chato)
-  if(isFirst){
-    setTimeout(()=> speakCurrent(0.9), 250);
+  let result;
+  if(w.mode==="exact"){
+    result = evalExact(text, w.target);
+  }else{
+    result = evalFlexible(text, w.target);
   }
+
+  const fb = document.getElementById("writingFeedback");
+  fb.style.display = "block";
+
+  if(result.ok){
+    session.correct++;
+    beep("good"); flash("good");
+    addXP(w.mode==="exact" ? 14 : 12);
+
+    fb.className = "goodBox";
+    fb.innerHTML = `
+      <div style="font-weight:950;margin-bottom:6px">✅ Bom! Você acertou.</div>
+      <div class="tiny" style="margin-bottom:8px"><strong>Resposta sugerida:</strong> ${w.target}</div>
+      ${w.mode==="flex" ? `<div class="tiny">Ótimo: você usou o padrão principal.</div>` : `<div class="tiny">Perfeito: exato como precisa.</div>`}
+    `;
+  }else{
+    session.wrong++;
+    beep("bad"); flash("bad");
+    addXP(3);
+
+    fb.className = "badBox";
+    if(w.mode==="exact"){
+      fb.innerHTML = `
+        <div style="font-weight:950;margin-bottom:6px">❌ Quase! (modo exato)</div>
+        <div class="tiny" style="margin-bottom:8px"><strong>O correto é:</strong> ${w.target}</div>
+        <div class="tiny">Dica: copie exatamente, inclusive o ponto final.</div>
+      `;
+    }else{
+      const notes = (result.notes||[]).slice(0,3).map(n=>`<li>${n}</li>`).join("");
+      fb.innerHTML = `
+        <div style="font-weight:950;margin-bottom:6px">❌ Quase! (modo flexível)</div>
+        <div class="tiny" style="margin-bottom:8px"><strong>Resposta sugerida:</strong> ${w.target}</div>
+        <div class="tiny" style="margin-bottom:6px"><strong>O que melhorar:</strong></div>
+        <ul class="tiny" style="margin-left:18px;line-height:1.4">${notes || "<li>Use o padrão da teoria.</li>"}</ul>
+      `;
+    }
+  }
+
+  document.getElementById("nextWritingBtn").style.display = "inline-flex";
 }
 
-function finishSession(){
-  // Atualiza streak (só se ainda não marcou hoje)
+function nextWriting(){
+  // depois do flex vai pro exact, depois do exact vai pro result
+  goNextStep();
+}
+
+/* =========================
+   XP + GLOBAL STATS
+========================= */
+function addXP(points){
   const s = loadState();
-  const lastDay = s.lastDay || null;
+  const xp = (s.xp||0) + points;
+  const totalCorrect = (s.totalCorrect||0) + 0; // atualizado no finish
+  const totalWrong = (s.totalWrong||0) + 0;
+  saveState({ xp, totalCorrect, totalWrong });
+}
+
+/* =========================
+   FINISH LESSON
+========================= */
+function finishLesson(){
+  const s = loadState();
   const today = todayKey();
+
+  // streak simples (1 por dia)
   let streak = s.streak || 0;
+  if(s.lastDay !== today) streak++;
 
-  if(lastDay !== today){
-    // se foi “ontem” ou qualquer outro, a gente incrementa
-    // (simples: incrementa sempre que for novo dia)
-    streak = streak + 1;
-  }
-
-  // accuracy da sessão
   const total = session.correct + session.wrong;
   const acc = total ? Math.round((session.correct/total)*100) : 0;
 
   // stats por nível
-  const level = s[session.levelKey] || {};
+  const key = session.levelKey;
+  const level = s[key] || {};
   const completedSessions = (level.completedSessions||0) + 1;
   const bestAcc = Math.max(level.bestAcc||0, acc);
+
+  // atualiza globais de acerto/erro
+  const totalCorrect = (s.totalCorrect||0) + session.correct;
+  const totalWrong = (s.totalWrong||0) + session.wrong;
 
   saveState({
     streak,
     lastDay: today,
-    [session.levelKey]: { ...level, completedSessions, bestAcc }
+    totalCorrect,
+    totalWrong,
+    [key]: { ...level, completedSessions, bestAcc }
   });
 
-  alert(`✅ Aula concluída!\n\nAcerto: ${acc}%\nCertas: ${session.correct}\nErradas: ${session.wrong}\nXP ganho: +${session.correct*10 + session.wrong*2}`);
-
+  alert(`✅ Aula salva!\nAcerto: ${acc}%\nCertas: ${session.correct}\nErradas: ${session.wrong}`);
   goHome();
 }
 
-function confirmExitHome(){
-  const ok = confirm("Quer voltar ao início agora? (o progresso parcial desta aula fica salvo só no geral, mas a aula atual reinicia)");
-  if(ok) goHome();
-}
-
-function confirmEndPartial(){
-  const ok = confirm("Encerrar parcial e voltar ao início?");
-  if(ok){
-    // não conta como sessão concluída, mas mantém XP já ganho
-    goHome();
-  }
-}
-
-function resetAll(){
-  const ok = confirm("Tem certeza que quer resetar TUDO? (XP, streak, progresso)");
-  if(!ok) return;
-  localStorage.removeItem(STORE_KEY);
-  renderHomePills();
-  alert("Resetado ✅");
-}
-
 /* =========================
-   INIT
+   NAV
 ========================= */
 renderHomePills();
 </script>
