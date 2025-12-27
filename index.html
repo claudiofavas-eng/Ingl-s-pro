@@ -1,1050 +1,2115 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Inglês Pro - Claudio</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Inglês Rápido — Turbo</title>
   <style>
-    *{margin:0;padding:0;box-sizing:border-box}
-    body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial,sans-serif;background:#e0e7ff;color:#0f172a}
-    .container{max-width:760px;margin:0 auto;padding:18px;min-height:100vh}
-    .header{
-      background:linear-gradient(135deg,#4f46e5,#2563eb);
-      color:#fff;padding:18px;border-radius:20px;margin-bottom:14px;position:relative;
-      box-shadow:0 18px 40px rgba(0,0,0,.14);
+    :root{
+      --bg:#020617;
+      --card:#0b1226;
+      --stroke:#1f2a44;
+      --text:#e5e7eb;
+      --muted:#9ca3af;
+      --green:#22c55e;
+      --red:#ef4444;
+      --blue:#3b82f6;
+      --yellow:#f59e0b;
+      --shadow: 0 12px 32px rgba(0,0,0,.45);
+      --radius: 16px;
     }
-    .header h1{font-size:1.55em;margin-bottom:6px}
-    .header p{opacity:.9}
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;
+      background: radial-gradient(1200px 700px at 30% 0%, rgba(59,130,246,.22), transparent 55%),
+                  radial-gradient(900px 600px at 80% 10%, rgba(34,197,94,.18), transparent 55%),
+                  var(--bg);
+      color: var(--text);
+    }
+    .app{ max-width: 1050px; margin:0 auto; padding: 16px; }
+    header{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px; padding: 10px 2px 16px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+    }
+    .logo{
+      width:36px;height:36px;border-radius:12px;
+      background: linear-gradient(135deg,var(--blue),var(--green));
+      box-shadow: var(--shadow);
+    }
+    .brand h1{ font-size:16px; margin:0; }
+    .brand .sub{ font-size:12px; color:var(--muted); margin-top:2px; }
+    nav{ display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
+    button{
+      border:1px solid var(--stroke);
+      background: rgba(11,18,38,.7);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 8px 12px;
+      cursor:pointer;
+      font-weight:600;
+      transition: transform .06s ease, background .15s ease, border-color .15s ease;
+      user-select:none;
+    }
+    button:active{ transform: scale(.98); }
+    button.primary{
+      border:none;
+      background: linear-gradient(135deg,var(--blue),var(--green));
+      color:#07111f;
+      box-shadow: 0 10px 30px rgba(59,130,246,.25);
+    }
+    button.danger{
+      border:none;
+      background: linear-gradient(135deg,var(--red),#fb7185);
+      color:#1a0a0a;
+    }
+    button.ghost{
+      background: transparent;
+    }
+    button.active{
+      border-color: rgba(34,197,94,.55);
+      background: rgba(34,197,94,.10);
+    }
+    .grid{ display:grid; gap:12px; }
+    @media(min-width:860px){ .grid.two{ grid-template-columns: 1.5fr 1fr; } }
     .card{
-      background:#fff;border-radius:20px;box-shadow:0 14px 30px rgba(0,0,0,.10);
-      padding:18px;margin-bottom:14px
+      background: rgba(11,18,38,.55);
+      border:1px solid var(--stroke);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 14px;
     }
-    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .space{ justify-content:space-between; }
     .pill{
-      background:#eef2ff;color:#1e293b;border:1px solid #c7d2fe;border-radius:999px;
-      padding:8px 12px;font-weight:800;font-size:.95em
+      display:inline-flex; align-items:center; gap:6px;
+      padding: 5px 10px;
+      border:1px solid var(--stroke);
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 12px;
+      background: rgba(2,6,23,.35);
     }
-    .btn{
-      border:none;border-radius:14px;padding:12px 14px;font-weight:900;cursor:pointer;
-      transition:transform .06s ease, filter .2s ease;
-      display:inline-flex;align-items:center;justify-content:center;gap:8px
+    .pill strong{ color: var(--text); font-weight:700; }
+    .stats{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:10px;
     }
-    .btn:active{transform:scale(.98)}
-    .btn-primary{background:#4f46e5;color:#fff}
-    .btn-ghost{background:#f1f5f9;color:#0f172a}
-    .btn-danger{background:#ef4444;color:#fff}
-    .btn-success{background:#10b981;color:#fff}
-    .btn-warning{background:#f59e0b;color:#111827}
-    .btn-wide{width:100%}
-    .screen{display:none}
-    .screen.active{display:block}
-
-    .level-grid{display:grid;grid-template-columns:1fr;gap:10px}
-    @media(min-width:640px){ .level-grid{grid-template-columns:1fr 1fr} }
-
-    .divider{height:1px;background:#e5e7eb;margin:14px 0}
-
-    /* Quiz options */
-    .option{
-      border:2px solid #e2e8f0;background:#f8fafc;border-radius:16px;
-      padding:12px 12px;cursor:pointer;transition:all .15s ease;display:flex;gap:10px;align-items:flex-start
+    @media(max-width:520px){ .stats{ grid-template-columns: 1fr; } }
+    .stat{
+      padding:12px;
+      border-radius: var(--radius);
+      border:1px solid var(--stroke);
+      background: rgba(2,6,23,.35);
+      text-align:center;
     }
-    .option:hover{filter:brightness(.98)}
-    .opt-letter{
-      min-width:34px;height:34px;border-radius:12px;background:#e0e7ff;color:#1e293b;
-      display:flex;align-items:center;justify-content:center;font-weight:900
+    .stat .k{ font-size:11px; color:var(--muted); letter-spacing:.12em; text-transform:uppercase; }
+    .stat .v{ font-size:18px; font-weight:800; margin-top:4px; }
+    .progress{
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(2,6,23,.35);
+      border:1px solid var(--stroke);
+      overflow:hidden;
     }
-    .option.selected{border-color:#4f46e5;background:#eef2ff}
-    .option.correct{border-color:#10b981;background:#ecfdf5}
-    .option.wrong{border-color:#ef4444;background:#fef2f2}
-
-    .q-title{font-size:1.2em;font-weight:950;margin-bottom:8px}
-    .q-sub{color:#475569;margin-bottom:12px;line-height:1.35}
-    .tiny{font-size:.92em;color:#64748b}
-
-    .progressWrap{background:#eef2ff;border-radius:999px;overflow:hidden;height:12px;border:1px solid #c7d2fe}
-    .progressBar{height:12px;background:#4f46e5;width:0%}
-
-    .hintBox{background:#fff7ed;border:2px solid #fdba74;border-radius:16px;padding:12px;color:#7c2d12}
-    .explainBox{background:#eff6ff;border:2px solid #93c5fd;border-radius:16px;padding:12px;color:#1e3a8a}
-    .goodBox{background:#ecfdf5;border:2px solid #10b981;border-radius:16px;padding:12px;color:#14532d}
-    .badBox{background:#fef2f2;border:2px solid #ef4444;border-radius:16px;padding:12px;color:#7f1d1d}
-
-    .topbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:10px}
-
-    .flash{position:fixed;inset:0;pointer-events:none;opacity:0;transition:opacity .18s ease}
-    .flash.on{opacity:.18}
-    .flash.good{background:#22c55e}
-    .flash.bad{background:#ef4444}
-
-    .input{
-      width:100%;padding:14px;border-radius:16px;border:2px solid #d1d5db;
-      font-size:1.05em;outline:none
+    .progress > div{
+      height:100%;
+      width:0%;
+      background: linear-gradient(90deg,var(--green),var(--blue));
+      transition: width .2s ease;
     }
-    .input:focus{border-color:#4f46e5}
-    .badge{
-      display:inline-flex;align-items:center;gap:6px;
-      padding:6px 10px;border-radius:999px;font-weight:900;font-size:.9em;
-      border:1px solid #e5e7eb;background:#f8fafc;color:#0f172a
+    .muted{ color: var(--muted); font-size: 12px; }
+    .h2{ font-size: 15px; font-weight:800; margin:0; }
+    .h3{ font-size: 13px; font-weight:800; margin:0; }
+    .screen{ display:none; }
+    .screen.active{ display:block; }
+    .qwrap{
+      border-radius: var(--radius);
+      border:1px solid var(--stroke);
+      background: rgba(2,6,23,.35);
+      padding: 12px;
+      margin-top: 10px;
     }
+    .qmeta{
+      display:flex; gap:8px; flex-wrap:wrap; align-items:center; justify-content:space-between;
+      margin-bottom: 8px;
+    }
+    .tag{
+      display:inline-flex;
+      align-items:center; gap:6px;
+      font-size:12px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border:1px solid var(--stroke);
+      background: rgba(11,18,38,.55);
+      color: var(--muted);
+    }
+    .tag b{ color: var(--text); }
+    .big{
+      font-size: 16px;
+      font-weight:800;
+      margin: 6px 0 0;
+      line-height: 1.25;
+    }
+    .prompt{
+      font-size: 13px;
+      color: var(--text);
+      margin-top: 6px;
+      line-height: 1.35;
+    }
+    .en{
+      font-size: 14px;
+      font-weight:800;
+      margin-top: 8px;
+      padding: 10px;
+      border-radius: 12px;
+      border: 1px dashed rgba(148,163,184,.35);
+      background: rgba(2,6,23,.25);
+    }
+    .options{ margin-top: 10px; display:grid; gap:8px; }
+    .opt{
+      text-align:left;
+      border-radius: 999px;
+      padding: 10px 12px;
+      border:1px solid var(--stroke);
+      background: rgba(11,18,38,.55);
+      font-weight:700;
+      cursor:pointer;
+    }
+    .opt:hover{ border-color: rgba(96,165,250,.55); }
+    .opt.correct{ border-color: rgba(34,197,94,.75); background: rgba(34,197,94,.12); }
+    .opt.wrong{ border-color: rgba(239,68,68,.75); background: rgba(239,68,68,.12); }
+    .feedback{
+      margin-top: 10px;
+      border-radius: 14px;
+      border: 1px solid var(--stroke);
+      background: rgba(11,18,38,.45);
+      padding: 10px;
+      font-size: 13px;
+      line-height: 1.35;
+    }
+    .feedback.good{ border-color: rgba(34,197,94,.55); }
+    .feedback.bad{ border-color: rgba(239,68,68,.55); }
+    .flash{
+      position: fixed;
+      inset: 0;
+      pointer-events:none;
+      opacity:0;
+      transition: opacity .14s ease;
+    }
+    .flash.good{ background: rgba(34,197,94,.14); }
+    .flash.bad{ background: rgba(239,68,68,.14); }
+    .flash.show{ opacity: 1; }
+    .inputRow{
+      display:flex; gap:8px; flex-wrap:wrap; margin-top: 10px; align-items:center;
+    }
+    input[type="text"], textarea{
+      width:100%;
+      border-radius: 14px;
+      border:1px solid var(--stroke);
+      background: rgba(2,6,23,.35);
+      color: var(--text);
+      padding: 10px 12px;
+      font-size: 14px;
+      outline: none;
+    }
+    .split{
+      display:grid; gap:10px;
+    }
+    @media(min-width:860px){ .split{ grid-template-columns: 1.3fr .7fr; } }
+    .kbd{
+      font-family: ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+      font-size: 12px;
+      color: var(--muted);
+      border:1px solid var(--stroke);
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(2,6,23,.35);
+    }
+    .bank{
+      display:flex; gap:6px; flex-wrap:wrap; margin-top: 6px;
+    }
+    .mini{
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .divider{ height:1px; background: rgba(148,163,184,.18); margin: 10px 0; }
+    .list{ margin:0; padding-left: 18px; color: var(--muted); font-size: 12px; line-height:1.35; }
+    .list b{ color: var(--text); }
   </style>
 </head>
 <body>
-  <div class="flash" id="flash"></div>
+  <div class="flash good" id="flashGood"></div>
+  <div class="flash bad" id="flashBad"></div>
 
-  <div class="container">
+  <div class="app">
+    <header>
+      <div class="brand">
+        <div class="logo"></div>
+        <div>
+          <h1>Inglês Rápido — Turbo</h1>
+          <div class="sub">Gamificado + Treinador inteligente (A1 → C1) • Sem repetição</div>
+        </div>
+      </div>
+      <nav>
+        <button id="tabHome" class="active">Início</button>
+        <button id="tabTrain">Treinar</button>
+        <button id="tabReview">Revisão</button>
+        <button id="tabSettings" class="ghost">⚙️</button>
+      </nav>
+    </header>
+
     <!-- HOME -->
-    <div id="homeScreen" class="screen active">
-      <div class="header">
-        <h1>🎯 Inglês Pro</h1>
-        <p>Aula com teoria + prática (Básico → Pré-Intermediário)</p>
+    <section class="screen active" id="screenHome">
+      <div class="stats">
+        <div class="stat">
+          <div class="k">XP</div>
+          <div class="v" id="xpValue">0</div>
+        </div>
+        <div class="stat">
+          <div class="k">Streak</div>
+          <div class="v"><span id="streakValue">0</span> 🔥</div>
+        </div>
+        <div class="stat">
+          <div class="k">Nível atual</div>
+          <div class="v" id="levelValue">A1</div>
+        </div>
       </div>
 
-      <div class="card">
-        <div class="row" style="margin-bottom:10px">
-          <div class="pill" id="streakPill">🔥 Streak: 0</div>
-          <div class="pill" id="xpPill">⭐ XP: 0</div>
-          <div class="pill" id="accuracyPill">🎯 Acerto: 0%</div>
+      <div class="grid two" style="margin-top:12px;">
+        <div class="card">
+          <div class="row space">
+            <div>
+              <div class="h2">Comece agora (modo jogo)</div>
+              <div class="muted">Rounds curtos. Errou → troca a questão. Acertou → sobe a dificuldade.</div>
+            </div>
+            <button class="primary" id="btnStartNow">Começar</button>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="row" style="gap:8px;">
+            <span class="pill"><strong>Meta do dia</strong> • 10 rounds</span>
+            <span class="pill"><strong>Sem repetição</strong> • sessão atual</span>
+            <span class="pill"><strong>Áudio</strong> • TTS</span>
+            <span class="pill"><strong>Tipos</strong> • ABCDE / Digitar / Montar</span>
+          </div>
+
+          <div style="margin-top:10px;">
+            <div class="row space">
+              <div class="muted">Progresso de hoje</div>
+              <div class="kbd"><span id="todayCount">0</span>/10</div>
+            </div>
+            <div class="progress" style="margin-top:6px;"><div id="todayBar"></div></div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="h3">Escolha o nível</div>
+          <div class="bank" id="levelButtons"></div>
+
+          <div class="muted" style="margin-top:8px;">
+            Dica: você pode misturar tudo (trabalho, viagem, escola, cinema, cultura...) — o app cuida do nível.
+          </div>
         </div>
 
-        <div class="level-grid">
-          <button class="btn btn-primary btn-wide" onclick="startLesson('basic')">📘 Aula Básico (A1)</button>
-          <button class="btn btn-primary btn-wide" onclick="startLesson('preintermediate')">📗 Aula Pré-Intermediário (A2)</button>
+        <div class="card">
+          <div class="h2">Como esse app “puxa pra aprender”</div>
+          <ul class="list">
+            <li><b>Mastery por habilidade</b>: cada erro baixa a barra daquela habilidade.</li>
+            <li><b>Recuperação automática</b>: errou 2x no mesmo alvo → mini treino guiado.</li>
+            <li><b>Sem repetição</b>: questões são geradas + embaralhadas, com controle de IDs usados.</li>
+            <li><b>Feedback forte</b>: som + flash verde/vermelho + explicação curta.</li>
+          </ul>
+
+          <div class="divider"></div>
+
+          <div class="row space">
+            <div>
+              <div class="h3">Desafio rápido</div>
+              <div class="muted">Faça 5 rounds sem errar</div>
+            </div>
+            <button id="btnChallenge" class="primary">Valendo</button>
+          </div>
+
+          <div style="margin-top:10px;">
+            <div class="row space">
+              <div class="muted">Mastery médio (nível atual)</div>
+              <div class="kbd" id="avgMastery">0%</div>
+            </div>
+            <div class="progress" style="margin-top:6px;"><div id="masteryBar"></div></div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- TRAIN -->
+    <section class="screen" id="screenTrain">
+      <div class="card">
+        <div class="row space">
+          <div>
+            <div class="h2" id="trainTitle">Treino • A1</div>
+            <div class="muted" id="trainSubtitle">Rounds misturados e dinâmicos</div>
+          </div>
+          <div class="row">
+            <button id="btnHear" class="secondary">🔊 Ouvir</button>
+            <button id="btnSkip" class="secondary">Trocar</button>
+            <button id="btnBackHome" class="secondary">Voltar</button>
+          </div>
         </div>
 
-        <div class="divider"></div>
+        <div class="qwrap" id="qWrap">
+          <div class="qmeta">
+            <div class="row" style="gap:6px;">
+              <span class="tag"><b id="qLevel">A1</b></span>
+              <span class="tag">Tema: <b id="qTheme">—</b></span>
+              <span class="tag">Habilidade: <b id="qSkill">—</b></span>
+              <span class="tag">Tipo: <b id="qType">—</b></span>
+            </div>
+            <span class="kbd">Round <span id="roundN">1</span></span>
+          </div>
 
-        <div class="row">
-          <button class="btn btn-ghost" onclick="openStats()">📊 Progresso</button>
-          <button class="btn btn-danger" onclick="resetAll()">🧨 Resetar tudo</button>
-        </div>
+          <div class="big" id="qPT">—</div>
+          <div class="prompt" id="qPrompt">—</div>
 
-        <p class="tiny" style="margin-top:10px">
-          Nesta versão, cada aula mistura: <strong>Teoria curta</strong> → <strong>Quiz A–E</strong> → <strong>Escrita flexível</strong> → <strong>Escrita exata</strong>.
-        </p>
-      </div>
-    </div>
+          <div class="en" id="qEN">—</div>
 
-    <!-- STATS -->
-    <div id="statsScreen" class="screen">
-      <div class="header">
-        <h1>📊 Seu Progresso</h1>
-        <p>Resumo do que você já fez</p>
-      </div>
-      <div class="card" id="statsBox"></div>
-      <div class="card">
-        <button class="btn btn-primary btn-wide" onclick="goHome()">← Voltar</button>
-      </div>
-    </div>
+          <div id="mcqBlock">
+            <div class="options" id="opts"></div>
+          </div>
 
-    <!-- LESSON -->
-    <div id="lessonScreen" class="screen">
-      <div class="header">
-        <h1 id="lessonHeader">📘 Aula</h1>
-        <p id="lessonSub">Teoria + prática + escrita</p>
-      </div>
+          <div id="typingBlock" style="display:none;">
+            <div class="muted">Digite a resposta em inglês (tolerante a pequenas variações).</div>
+            <div class="inputRow">
+              <input type="text" id="typingInput" placeholder="Digite aqui..." />
+              <button class="primary" id="btnCheckTyping">Verificar</button>
+            </div>
+            <div class="muted mini" id="typingTip"></div>
+          </div>
 
-      <div class="card">
-        <div class="topbar">
-          <div style="min-width:240px">
-            <div class="tiny" id="stepCounter">Etapa 1/4</div>
-            <div class="progressWrap">
-              <div class="progressBar" id="progressBar"></div>
+          <div id="orderBlock" style="display:none;">
+            <div class="muted">Monte a frase clicando nas palavras na ordem correta.</div>
+            <div class="bank" id="wordBank"></div>
+            <div class="divider"></div>
+            <div class="muted">Sua frase:</div>
+            <div class="en" id="builtSentence">—</div>
+            <div class="row" style="margin-top:8px;">
+              <button class="secondary" id="btnUndoWord">Desfazer</button>
+              <button class="secondary" id="btnClearWords">Limpar</button>
+              <button class="primary" id="btnCheckOrder">Verificar</button>
             </div>
           </div>
 
+          <div class="feedback" id="feedback" style="display:none;"></div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="row space">
+          <div class="row" style="gap:8px;">
+            <span class="pill">XP: <strong id="xpInRun">0</strong></span>
+            <span class="pill">Acertos: <strong id="hitsInRun">0</strong></span>
+            <span class="pill">Erros: <strong id="missInRun">0</strong></span>
+          </div>
+          <div class="row" style="gap:8px;">
+            <button id="btnEndSession" class="danger">Encerrar</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- REVIEW -->
+    <section class="screen" id="screenReview">
+      <div class="card">
+        <div class="row space">
+          <div>
+            <div class="h2">Revisão inteligente</div>
+            <div class="muted">Foca nas habilidades que você mais errou (sem repetir).</div>
+          </div>
           <div class="row">
-            <button class="btn btn-ghost" onclick="confirmEndPartial()">⏸ Encerrar parcial</button>
-            <button class="btn btn-danger" onclick="confirmExitHome()">🏠 Início</button>
+            <button id="btnReviewStart" class="primary">Revisar agora</button>
+            <button id="btnReviewBack" class="secondary">Voltar</button>
           </div>
         </div>
 
         <div class="divider"></div>
 
-        <div id="contentArea"></div>
+        <div class="muted">Top habilidades fracas (nível atual):</div>
+        <div class="bank" id="weakSkills"></div>
 
         <div class="divider"></div>
 
-        <div class="row" id="actionRow">
-          <!-- botões dinâmicos -->
+        <div class="muted">Frases salvas para fixar (as que você errou e depois acertou):</div>
+        <ul class="list" id="savedPhrases"></ul>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section class="screen" id="screenSettings">
+      <div class="card">
+        <div class="row space">
+          <div>
+            <div class="h2">Configurações</div>
+            <div class="muted">Ajuste áudio, reset do banco e armazenamento local.</div>
+          </div>
+          <button id="btnSettingsBack" class="secondary">Voltar</button>
         </div>
 
-        <p class="tiny" id="footerTip" style="margin-top:10px"></p>
+        <div class="divider"></div>
+
+        <div class="row space" style="align-items:flex-start;">
+          <div style="max-width:720px;">
+            <div class="h3">Áudio (TTS)</div>
+            <div class="muted">Se o “Ouvir” não falar no celular, toque em qualquer botão primeiro e tente de novo (bloqueio do navegador).</div>
+            <div class="row" style="margin-top:8px;">
+              <button class="secondary" id="btnTestVoice">Testar voz</button>
+              <button class="secondary" id="btnStopVoice">Parar voz</button>
+              <span class="pill">Voz: <strong id="voiceName">auto</strong></span>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="h3">Sem repetição (controle)</div>
+            <ul class="list">
+              <li>Na sessão atual, o app <b>não repete</b> ID de questão.</li>
+              <li>Se você quiser “zerar tudo” pra gerar novas combinações, use o reset abaixo.</li>
+            </ul>
+
+            <div class="row" style="margin-top:10px;">
+              <button class="danger" id="btnResetAll">Reset total (XP + banco + mastery)</button>
+              <button class="secondary" id="btnResetBank">Reset só do banco (sem perder XP)</button>
+            </div>
+          </div>
+
+          <div class="card" style="background: rgba(2,6,23,.25); border-style:dashed; max-width:320px;">
+            <div class="h3">Premium (ideias prontas)</div>
+            <ul class="list">
+              <li>Voz com sotaques + diálogos reais.</li>
+              <li>Modo “Dueto” (fala) com nota.</li>
+              <li>Comunidade + desafios semanais.</li>
+              <li>Plano diário automático e ranking.</li>
+            </ul>
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
 
   </div>
 
 <script>
-/* =========================
-   STORAGE
-========================= */
-const STORE_KEY = "inglesPro_v4";
-const LETTERS = ["A","B","C","D","E"];
+(() => {
+  // ==========================
+  // UTIL
+  // ==========================
+  const $ = (id) => document.getElementById(id);
 
-function loadState(){
-  try{ return JSON.parse(localStorage.getItem(STORE_KEY) || "{}"); }
-  catch(e){ return {}; }
-}
-function saveState(patch){
-  const s = loadState();
-  const merged = { ...s, ...patch };
-  localStorage.setItem(STORE_KEY, JSON.stringify(merged));
-  return merged;
-}
-function todayKey(){ return new Date().toLocaleDateString("pt-BR"); }
-function calcAccuracy(state){
-  const c = state.totalCorrect||0;
-  const w = state.totalWrong||0;
-  const t = c+w;
-  return t ? Math.round((c/t)*100) : 0;
-}
-function shuffle(arr){
-  const a = arr.slice();
-  for(let i=a.length-1;i>0;i--){
-    const j = Math.floor(Math.random()*(i+1));
-    [a[i],a[j]]=[a[j],a[i]];
-  }
-  return a;
-}
-function clamp(n,min,max){ return Math.max(min, Math.min(max,n)); }
-
-/* =========================
-   AUDIO (TTS)
-========================= */
-function speak(text, rate=0.9){
-  if(!("speechSynthesis" in window)) return;
-  speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = "en-US";
-  u.rate = rate;
-  speechSynthesis.speak(u);
-}
-
-/* =========================
-   SFX
-========================= */
-let audioCtx = null;
-function beep(type){
-  try{
-    if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
-    const ctx = audioCtx;
-    const o = ctx.createOscillator();
-    const g = ctx.createGain();
-    o.connect(g); g.connect(ctx.destination);
-    const t0 = ctx.currentTime;
-
-    if(type==="good"){
-      o.type="sine";
-      o.frequency.setValueAtTime(880,t0);
-      o.frequency.exponentialRampToValueAtTime(1320,t0+0.08);
-      g.gain.setValueAtTime(0.001,t0);
-      g.gain.exponentialRampToValueAtTime(0.12,t0+0.01);
-      g.gain.exponentialRampToValueAtTime(0.001,t0+0.18);
-      o.start(t0); o.stop(t0+0.20);
-    }else{
-      o.type="square";
-      o.frequency.setValueAtTime(220,t0);
-      o.frequency.exponentialRampToValueAtTime(110,t0+0.10);
-      g.gain.setValueAtTime(0.001,t0);
-      g.gain.exponentialRampToValueAtTime(0.16,t0+0.01);
-      g.gain.exponentialRampToValueAtTime(0.001,t0+0.22);
-      o.start(t0); o.stop(t0+0.24);
+  const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
+  const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+  const shuffle = (arr) => {
+    const a = arr.slice();
+    for (let i=a.length-1; i>0; i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [a[i], a[j]] = [a[j], a[i]];
     }
-  }catch(e){}
-}
-function flash(type){
-  const el = document.getElementById("flash");
-  el.className = "flash " + (type==="good" ? "good" : "bad");
-  requestAnimationFrame(()=> el.classList.add("on"));
-  setTimeout(()=> el.classList.remove("on"), 160);
-}
-
-/* =========================
-   BANKS (Básico + Pré)
-   - Quiz (A–E)
-   - Writing (flexível + exata)
-========================= */
-const LESSONS = {
-  basic: {
-    title: "📘 Básico (A1)",
-    theory: [
-      { title:"Padrão #1 (o mais importante)",
-        text:"Com I / You / We / They, o verbo fica na forma base (work, help, live). Com He / She / It, o verbo ganha -s (works, helps, lives).",
-        examples:["I work here.","She works here."],
-        common:"Erro comum: “I works…” (não)."
-      },
-      { title:"Padrão #2 (negativa e pergunta)",
-        text:"No Present Simple, a negativa e a pergunta usam DO/DOES. Depois do DO/DOES, o verbo volta para a forma base.",
-        examples:["I do not like coffee.","Does he work here?"],
-        common:"Erro comum: “Does he works?” (não)."
-      }
-    ],
-    quiz: [
-      { id:"B01", promptPT:"Escolha a frase correta para o ambiente de trabalho.", audio:"I help my team.",
-        options:["I help my team.","I helps my team.","I helping my team.","I helped my team every day.","I am help my team."],
-        correctIndex:0, hint:"Observe quem faz a ação (I / he / she / they).",
-        explain:"Com I, o verbo fica na forma base (help), sem “s”."
-      },
-      { id:"B02", promptPT:"O que essa frase significa?", audio:"I wake up early.",
-        options:["Eu acordo cedo.","Eu acordei cedo ontem.","Eu estou acordando agora.","Eu vou acordar cedo amanhã.","Eu estava acordando cedo."],
-        correctIndex:0, hint:"A frase fala de hábito ou de um momento específico?",
-        explain:"Presente simples geralmente indica rotina/hábito."
-      },
-      { id:"B03", promptPT:"Como você diz que não gosta de café?", audio:"I do not like coffee.",
-        options:["I not like coffee.","I do not like coffee.","I no like coffee.","I am not like coffee.","I don't likes coffee."],
-        correctIndex:1, hint:"Negativa no presente usa do/does.",
-        explain:"I do not (don’t) + verbo base."
-      },
-      { id:"B04", promptPT:"Como você pergunta se a pessoa estuda inglês?", audio:"Do you study English?",
-        options:["You study English?","Are you study English?","Do you study English?","Does you study English?","Do you studies English?"],
-        correctIndex:2, hint:"Pergunta no presente: do/does + sujeito + verbo base.",
-        explain:"Com You usamos DO."
-      },
-      { id:"B05", promptPT:"Escolha a frase correta.", audio:"She works at the office.",
-        options:["She work at the office.","She works at the office.","She working at the office.","She worked at the office every day.","She is work at the office."],
-        correctIndex:1, hint:"He/She/It pede verbo com -s.",
-        explain:"She → works."
-      }
-    ],
-    writing: [
-      // FLEXÍVEL
-      {
-        id:"BW_F1",
-        mode:"flex",
-        title:"✍️ Escreva a frase (flexível)",
-        promptPT:"Você está no trabalho. Escreva em inglês: “Eu ajudo meu time.”",
-        target:"I help my team.",
-        audio:"I help my team.",
-        hint:"Dica: comece com “I” e use o verbo na base (sem s)."
-      },
-      // EXATA
-      {
-        id:"BW_E1",
-        mode:"exact",
-        title:"🎯 Escreva exatamente assim",
-        promptPT:"Digite exatamente a frase abaixo (incluindo pontuação):",
-        target:"I help my team.",
-        audio:"I help my team.",
-        hint:"Dica: copie a frase com o ponto final."
-      }
-    ]
-  },
-
-  preintermediate: {
-    title: "📗 Pré-Intermediário (A2)",
-    theory: [
-      { title:"Simple x Continuous (agora vs rotina)",
-        text:"Right now / now / at the moment → Present Continuous (am/is/are + -ing). Every day / usually / on Mondays → Present Simple.",
-        examples:["I am studying right now.","I study English every day."],
-        common:"Erro comum: “I am study…” (falta -ing)."
-      },
-      { title:"Perguntas úteis (viagem e vida real)",
-        text:"Com ‘to be’ (is/are) você não usa do/does. Com verbos normais, use do/does.",
-        examples:["Where is the bathroom?","How much does it cost?"],
-        common:"Erro comum: “Where does the bathroom is?” (não)."
-      }
-    ],
-    quiz: [
-      { id:"P01", promptPT:"Você está falando do que está acontecendo AGORA. Qual frase está correta?", audio:"I am studying right now.",
-        options:["I am studying right now.","I study right now.","I studying right now.","I am study right now.","I studied right now."],
-        correctIndex:0, hint:"Right now indica ação em progresso.",
-        explain:"Present Continuous: am/is/are + -ing."
-      },
-      { id:"P02", promptPT:"Rotina/hábito. Qual frase está correta?", audio:"I study English every day.",
-        options:["I am studying English every day.","I study English every day.","I studies English every day.","I studying English every day.","I study English yesterday."],
-        correctIndex:1, hint:"Every day = hábito.",
-        explain:"Hábito → Present Simple."
-      },
-      { id:"P03", promptPT:"Qual pergunta está correta para perguntar ONDE fica o banheiro?", audio:"Where is the bathroom?",
-        options:["Where the bathroom is?","Where is the bathroom?","Where does the bathroom is?","Where are the bathroom?","Where is bathroom?"],
-        correctIndex:1, hint:"Com ‘to be’, não usamos do/does.",
-        explain:"Where + is/are + sujeito."
-      },
-      { id:"P04", promptPT:"Você foi ao cinema ontem. Qual frase está correta?", audio:"I went to the cinema yesterday.",
-        options:["I go to the cinema yesterday.","I went to the cinema yesterday.","I goed to the cinema yesterday.","I was go to the cinema yesterday.","I am going to the cinema yesterday."],
-        correctIndex:1, hint:"Yesterday = passado.",
-        explain:"Past Simple irregular: go → went."
-      },
-      { id:"P05", promptPT:"Preço: qual pergunta está correta?", audio:"How much does it cost?",
-        options:["How much it costs?","How much does it cost?","How much do it cost?","How much does it costs?","How many does it cost?"],
-        correctIndex:1, hint:"It (singular) → does + verbo base.",
-        explain:"Does + cost (base)."
-      }
-    ],
-    writing: [
-      { id:"PW_F1", mode:"flex",
-        title:"✍️ Escreva a frase (flexível)",
-        promptPT:"Escreva em inglês: “Eu estou estudando agora.”",
-        target:"I am studying now.",
-        audio:"I am studying now.",
-        hint:"Dica: use am + verbo com -ing."
-      },
-      { id:"PW_E1", mode:"exact",
-        title:"🎯 Escreva exatamente assim",
-        promptPT:"Digite exatamente a frase abaixo (incluindo pontuação):",
-        target:"I am studying right now.",
-        audio:"I am studying right now.",
-        hint:"Dica: right now = agora. Copie certinho."
-      }
-    ]
-  }
-};
-
-/* =========================
-   SESSION STATE
-========================= */
-let session = {
-  levelKey: null,
-  stepIndex: 0,      // 0 teoria, 1 quiz, 2 writing flex, 3 writing exact, 4 result
-  quizOrder: [],
-  quizPos: 0,
-  currentQuiz: null,
-  shuffledOptions: [],
-  correctText: "",
-  selectedIndex: null,
-  locked: false,
-  usedHint: false,
-
-  // writing
-  currentWriting: null,
-  userText: "",
-  writingChecked: false,
-
-  // scoring
-  correct: 0,
-  wrong: 0
-};
-
-/* =========================
-   SCREENS
-========================= */
-function showScreen(id){
-  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-}
-function renderHomePills(){
-  const s = loadState();
-  document.getElementById("streakPill").textContent = `🔥 Streak: ${s.streak||0}`;
-  document.getElementById("xpPill").textContent = `⭐ XP: ${s.xp||0}`;
-  document.getElementById("accuracyPill").textContent = `🎯 Acerto: ${calcAccuracy(s)}%`;
-}
-function goHome(){
-  renderHomePills();
-  showScreen("homeScreen");
-}
-function openStats(){
-  const s = loadState();
-  const statsBox = document.getElementById("statsBox");
-  const basic = s.basic || {};
-  const pre = s.preintermediate || {};
-  statsBox.innerHTML = `
-    <div class="row" style="margin-bottom:12px">
-      <div class="pill">🔥 Streak: ${s.streak||0}</div>
-      <div class="pill">⭐ XP: ${s.xp||0}</div>
-      <div class="pill">🎯 Acerto: ${calcAccuracy(s)}%</div>
-    </div>
-
-    <div class="divider"></div>
-
-    <p style="font-weight:950;margin-bottom:6px">📘 Básico</p>
-    <p class="tiny">Aulas concluídas: <strong>${(basic.completedSessions||0)}</strong> • Melhor acerto: <strong>${(basic.bestAcc||0)}%</strong></p>
-
-    <div class="divider"></div>
-
-    <p style="font-weight:950;margin-bottom:6px">📗 Pré-Intermediário</p>
-    <p class="tiny">Aulas concluídas: <strong>${(pre.completedSessions||0)}</strong> • Melhor acerto: <strong>${(pre.bestAcc||0)}%</strong></p>
-  `;
-  showScreen("statsScreen");
-}
-function resetAll(){
-  const ok = confirm("Tem certeza que quer resetar TUDO?");
-  if(!ok) return;
-  localStorage.removeItem(STORE_KEY);
-  renderHomePills();
-  alert("Resetado ✅");
-}
-function confirmExitHome(){
-  const ok = confirm("Voltar ao início agora? (a aula atual reinicia)");
-  if(ok) goHome();
-}
-function confirmEndPartial(){
-  const ok = confirm("Encerrar parcial e voltar ao início?");
-  if(ok) goHome();
-}
-
-/* =========================
-   START LESSON
-========================= */
-function startLesson(levelKey){
-  const L = LESSONS[levelKey];
-  if(!L) return alert("Nível não encontrado.");
-
-  session.levelKey = levelKey;
-  session.stepIndex = 0;
-
-  session.correct = 0;
-  session.wrong = 0;
-
-  // quiz order
-  session.quizOrder = shuffle(L.quiz);
-  session.quizPos = 0;
-  session.currentQuiz = null;
-  session.shuffledOptions = [];
-  session.correctText = "";
-  session.selectedIndex = null;
-  session.locked = false;
-  session.usedHint = false;
-
-  // writing
-  session.currentWriting = null;
-  session.userText = "";
-  session.writingChecked = false;
-
-  document.getElementById("lessonHeader").textContent = L.title;
-  document.getElementById("lessonSub").textContent = "Teoria curta → quiz → escrita (flex + exata)";
-
-  renderStep();
-  showScreen("lessonScreen");
-}
-
-/* =========================
-   PROGRESS BAR + COUNTERS
-========================= */
-function setProgress(){
-  // Steps: 0 theory, 1 quiz, 2 writing flex, 3 writing exact, 4 result
-  const totalSteps = 5;
-  const step = clamp(session.stepIndex+1, 1, totalSteps);
-  document.getElementById("stepCounter").textContent = `Etapa ${step}/${totalSteps}`;
-  document.getElementById("progressBar").style.width = `${Math.round(((step-1)/(totalSteps))*100)}%`;
-}
-
-/* =========================
-   STEP RENDER
-========================= */
-function renderStep(){
-  setProgress();
-
-  const L = LESSONS[session.levelKey];
-  const area = document.getElementById("contentArea");
-  const actions = document.getElementById("actionRow");
-  const footer = document.getElementById("footerTip");
-  area.innerHTML = "";
-  actions.innerHTML = "";
-  footer.textContent = "";
-
-  if(session.stepIndex === 0){
-    // THEORY
-    const blocks = L.theory.map((t, idx)=>`
-      <div class="card" style="box-shadow:none;border:2px solid #e5e7eb;background:#fafafa;margin-bottom:10px">
-        <div class="row" style="justify-content:space-between">
-          <div style="font-weight:950">${idx+1}) ${t.title}</div>
-          <span class="badge">🎬 microaula</span>
-        </div>
-        <div style="margin-top:8px;line-height:1.45;color:#0f172a">${t.text}</div>
-        <div class="divider"></div>
-        <div class="tiny"><strong>Exemplos:</strong> ${t.examples.join(" • ")}</div>
-        <div class="tiny" style="margin-top:6px"><strong>Erro comum:</strong> ${t.common}</div>
-      </div>
-    `).join("");
-
-    area.innerHTML = `
-      <div class="q-title">📚 Teoria rápida (1 minuto)</div>
-      <div class="q-sub">Leia e ouça exemplos. Depois você vai pra prática.</div>
-      ${blocks}
-      <div class="row">
-        <button class="btn btn-ghost" onclick="speakTheoryExamples()">🔊 Ouvir exemplos</button>
-      </div>
-    `;
-
-    actions.innerHTML = `
-      <button class="btn btn-primary" onclick="goNextStep()">🚀 Ir para o Quiz</button>
-    `;
-    footer.textContent = "Meta: entender o padrão — não decorar regra.";
-    return;
-  }
-
-  if(session.stepIndex === 1){
-    // QUIZ
-    renderQuizQuestion();
-    return;
-  }
-
-  if(session.stepIndex === 2){
-    // WRITING FLEX
-    session.currentWriting = L.writing.find(w=>w.mode==="flex");
-    renderWriting();
-    return;
-  }
-
-  if(session.stepIndex === 3){
-    // WRITING EXACT
-    session.currentWriting = L.writing.find(w=>w.mode==="exact");
-    renderWriting();
-    return;
-  }
-
-  if(session.stepIndex === 4){
-    // RESULT
-    const total = session.correct + session.wrong;
-    const acc = total ? Math.round((session.correct/total)*100) : 0;
-
-    area.innerHTML = `
-      <div class="q-title">✅ Aula concluída!</div>
-      <div class="row" style="margin:10px 0">
-        <div class="pill">🎯 Acerto: ${acc}%</div>
-        <div class="pill">✅ Certas: ${session.correct}</div>
-        <div class="pill">❌ Erradas: ${session.wrong}</div>
-      </div>
-      <div class="divider"></div>
-      <div class="q-sub">
-        Agora você está pronto pra repetir a aula e melhorar a precisão.
-        O ideal é: <strong>acerto acima de 80%</strong> antes de subir de nível.
-      </div>
-    `;
-
-    actions.innerHTML = `
-      <button class="btn btn-primary" onclick="finishLesson()">🏁 Salvar e voltar ao início</button>
-    `;
-    footer.textContent = "Se quiser, eu adiciono “revisão de erros” automaticamente no final.";
-    return;
-  }
-}
-
-function goNextStep(){
-  session.stepIndex++;
-  renderStep();
-}
-
-/* =========================
-   THEORY AUDIO
-========================= */
-function speakTheoryExamples(){
-  const L = LESSONS[session.levelKey];
-  const all = [];
-  L.theory.forEach(t => t.examples.forEach(e=>all.push(e)));
-  speak(all.join(" ... "), 0.9);
-}
-
-/* =========================
-   QUIZ LOGIC
-========================= */
-function buildShuffledQuiz(q){
-  const correctText = q.options[q.correctIndex];
-  let opts = shuffle(q.options);
-
-  // Anti "cair sempre na A": se cair na mesma letra 2x seguidas, tenta um reshuffle
-  if(!session._lastCorrectLetters) session._lastCorrectLetters = [];
-  let idx = opts.indexOf(correctText);
-  let letter = LETTERS[idx] || "A";
-  const last2 = session._lastCorrectLetters.slice(-2);
-  if(last2.length===2 && last2[0]===letter && last2[1]===letter){
-    const resh = shuffle(q.options);
-    opts = resh;
-    idx = opts.indexOf(correctText);
-    letter = LETTERS[idx] || "A";
-  }
-  session._lastCorrectLetters.push(letter);
-
-  return { ...q, _correctText: correctText, _opts: opts };
-}
-
-function renderQuizQuestion(){
-  const L = LESSONS[session.levelKey];
-  const area = document.getElementById("contentArea");
-  const actions = document.getElementById("actionRow");
-  const footer = document.getElementById("footerTip");
-
-  if(session.quizPos >= session.quizOrder.length){
-    // terminou quiz
-    goNextStep();
-    return;
-  }
-
-  session.locked = false;
-  session.usedHint = false;
-  session.selectedIndex = null;
-
-  const qRaw = session.quizOrder[session.quizPos];
-  const q = buildShuffledQuiz(qRaw);
-  session.currentQuiz = q;
-
-  area.innerHTML = `
-    <div class="row" style="justify-content:space-between;align-items:flex-start">
-      <div>
-        <div class="q-title">🧠 Quiz A–E (${session.quizPos+1}/${session.quizOrder.length})</div>
-        <div class="q-sub"><strong>Pergunta (PT):</strong> ${q.promptPT}</div>
-      </div>
-      <span class="badge">⚡ rápido</span>
-    </div>
-
-    <div class="row" style="margin:8px 0">
-      <button class="btn btn-ghost" onclick="speak('${escapeJS(q.audio)}', 0.9)">🔊 Ouvir</button>
-      <button class="btn btn-ghost" onclick="speak('${escapeJS(q.audio)}', 0.75)">🐢 Devagar</button>
-      <button class="btn btn-warning" onclick="showHintQuiz()">💡 Dica</button>
-    </div>
-
-    <div id="hintBox" style="display:none" class="hintBox"></div>
-    <div id="optionsBox" style="display:grid;gap:10px;margin-top:10px"></div>
-    <div id="feedbackBox" style="display:none;margin-top:12px"></div>
-  `;
-
-  const optsBox = document.getElementById("optionsBox");
-  q._opts.forEach((text, idx)=>{
-    const div = document.createElement("div");
-    div.className = "option";
-    div.onclick = ()=> selectOptionQuiz(idx);
-    div.innerHTML = `
-      <div class="opt-letter">${LETTERS[idx]}</div>
-      <div style="flex:1">
-        <div style="font-weight:950">${text}</div>
-      </div>
-    `;
-    optsBox.appendChild(div);
-  });
-
-  actions.innerHTML = `
-    <button class="btn btn-primary" id="checkBtn" onclick="checkQuiz()">✅ Verificar</button>
-    <button class="btn btn-primary" id="nextBtn" style="display:none" onclick="nextQuiz()">➡️ Próxima</button>
-  `;
-
-  footer.textContent = "Dica boa não entrega a resposta — ela aponta o padrão.";
-}
-
-function escapeJS(s){
-  return String(s).replace(/\\/g,"\\\\").replace(/'/g,"\\'");
-}
-
-function showHintQuiz(){
-  const q = session.currentQuiz;
-  session.usedHint = true;
-  const box = document.getElementById("hintBox");
-  box.style.display = "block";
-  box.innerHTML = `<strong>💡 Dica:</strong> ${q.hint}`;
-}
-
-function selectOptionQuiz(idx){
-  if(session.locked) return;
-  session.selectedIndex = idx;
-  const children = [...document.getElementById("optionsBox").children];
-  children.forEach((c,i)=> c.classList.toggle("selected", i===idx));
-}
-
-function checkQuiz(){
-  if(session.locked) return;
-
-  if(session.selectedIndex===null){
-    alert("Selecione uma alternativa primeiro 😉");
-    return;
-  }
-
-  session.locked = true;
-
-  const q = session.currentQuiz;
-  const correctText = q._correctText;
-  const chosenText = q._opts[session.selectedIndex];
-  const ok = chosenText === correctText;
-
-  const optionsEls = [...document.getElementById("optionsBox").children];
-  optionsEls.forEach((el, idx)=>{
-    const t = q._opts[idx];
-    if(t === correctText) el.classList.add("correct");
-    if(idx === session.selectedIndex && !ok) el.classList.add("wrong");
-  });
-
-  const fb = document.getElementById("feedbackBox");
-  fb.style.display = "block";
-  fb.className = ok ? "goodBox" : "badBox";
-  fb.innerHTML = `
-    <div style="font-weight:950;margin-bottom:6px">${ok ? "✅ Correto!" : "❌ Quase!"}</div>
-    <div class="tiny" style="margin-bottom:6px"><strong>Frase (EN):</strong> ${q.audio}</div>
-    <div><strong>Por quê:</strong> ${q.explain}</div>
-  `;
-
-  if(ok){
-    session.correct++;
-    beep("good"); flash("good");
-    addXP(10);
-  }else{
-    session.wrong++;
-    beep("bad"); flash("bad");
-    addXP(2);
-
-    // errou? deixa o quiz mais "dinâmico": troca a próxima questão por outra aleatória do banco
-    // (sem repetir a mesma imediatamente)
-    const L = LESSONS[session.levelKey];
-    const pool = L.quiz.filter(x => x.id !== q.id);
-    if(pool.length){
-      const swap = pool[Math.floor(Math.random()*pool.length)];
-      session.quizOrder[session.quizPos] = swap; // substitui a atual para “não travar”
-    }
-  }
-
-  document.getElementById("checkBtn").style.display = "none";
-  document.getElementById("nextBtn").style.display = "inline-flex";
-}
-
-function nextQuiz(){
-  session.quizPos++;
-  renderQuizQuestion();
-}
-
-/* =========================
-   WRITING (FLEX + EXACT)
-========================= */
-function normalizeText(s){
-  return String(s)
-    .trim()
+    return a;
+  };
+  const norm = (s) => (s || "")
     .toLowerCase()
-    .replace(/[“”"]/g,'"')
-    .replace(/[’]/g,"'")
+    .replace(/[’']/g,"'")
+    .replace(/[^a-z0-9\s\-\?]/g,"")
     .replace(/\s+/g," ")
-    .replace(/[!?]/g,"") // não tira ponto aqui, pq no exato a gente compara com pontuação
-    ;
-}
+    .trim();
 
-function stripPunctuation(s){
-  return String(s).replace(/[.,;:]/g,"").trim();
-}
+  const todayKey = () => {
+    const d = new Date();
+    const y = d.getFullYear();
+    const m = String(d.getMonth()+1).padStart(2,'0');
+    const day = String(d.getDate()).padStart(2,'0');
+    return `${y}-${m}-${day}`;
+  };
 
-// avaliação flexível: pontua por padrões essenciais
-function evalFlexible(user, target){
-  const u0 = normalizeText(user);
-  const t0 = normalizeText(target);
+  // ==========================
+  // STORAGE
+  // ==========================
+  const store = {
+    get(k, fallback){
+      try{
+        const v = localStorage.getItem(k);
+        return v ? JSON.parse(v) : fallback;
+      }catch{ return fallback; }
+    },
+    set(k, v){
+      localStorage.setItem(k, JSON.stringify(v));
+    }
+  };
 
-  const u = stripPunctuation(u0);
-  const t = stripPunctuation(t0);
+  const STATE_KEY = "eng_turbo_state_v3";
+  const DEFAULT = {
+    level: "A1",
+    xp: 0,
+    streak: 0,
+    lastDay: null,
+    todayRounds: 0,
+    mastery: {}, // skillKey -> 0..100
+    savedPhrases: [], // strings
+    usedIdsByLevel: {}, // level -> {session:[ids], dayKey:{...} optional}
+    audioEnabled: true,
+  };
 
-  // critérios simples (expansíveis)
-  const res = { ok:false, score:0, max:4, notes:[] };
+  let state = store.get(STATE_KEY, DEFAULT);
+  // merge safety
+  state = {...DEFAULT, ...state};
+  state.mastery = state.mastery || {};
+  state.savedPhrases = state.savedPhrases || [];
+  state.usedIdsByLevel = state.usedIdsByLevel || {};
 
-  // 1) mesmas palavras-chave (conjunto mínimo)
-  const mustWords = t.split(" ").filter(Boolean);
-
-  // regra: aceita se tiver >= 70% das palavras alvo na resposta
-  const uw = new Set(u.split(" ").filter(Boolean));
-  let hit = 0;
-  mustWords.forEach(w=>{ if(uw.has(w)) hit++; });
-
-  const ratio = mustWords.length ? (hit/mustWords.length) : 0;
-  if(ratio >= 0.70){ res.score++; } else {
-    res.notes.push("Faltaram palavras importantes da frase.");
+  // streak update
+  const tk = todayKey();
+  if (!state.lastDay){
+    state.lastDay = tk;
+    state.todayRounds = 0;
+    store.set(STATE_KEY, state);
+  } else if (state.lastDay !== tk){
+    // if yesterday, streak++
+    const last = new Date(state.lastDay + "T00:00:00");
+    const now = new Date(tk + "T00:00:00");
+    const diffDays = Math.round((now - last) / (1000*60*60*24));
+    if (diffDays === 1){
+      state.streak = (state.streak || 0) + 1;
+    } else {
+      state.streak = 0;
+    }
+    state.lastDay = tk;
+    state.todayRounds = 0;
+    store.set(STATE_KEY, state);
   }
 
-  // 2) ordem básica (começar com sujeito esperado se existir)
-  const tFirst = mustWords[0];
-  const uFirst = u.split(" ")[0] || "";
-  if(tFirst && uFirst === tFirst){ res.score++; }
-  else res.notes.push("A frase geralmente começa com o sujeito (I / She / They...).");
+  // ==========================
+  // AUDIO: SFX + TTS
+  // ==========================
+  let audioCtx = null;
+  function ensureAudio(){
+    if (!audioCtx){
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (audioCtx.state === "suspended"){
+      audioCtx.resume().catch(()=>{});
+    }
+  }
+  function beep(type){
+    // type: "good" | "bad"
+    try{
+      ensureAudio();
+      const now = audioCtx.currentTime;
+      const o = audioCtx.createOscillator();
+      const g = audioCtx.createGain();
+      o.connect(g); g.connect(audioCtx.destination);
 
-  // 3) auxiliar quando existir no target
-  if(t.includes(" do not ") || t.includes(" don't ")){
-    if(u.includes("do not") || u.includes("don't")) res.score++;
-    else res.notes.push("Negativa no presente precisa de DO + NOT (ou DON'T).");
-  } else if(t.includes(" does not ") || t.includes(" doesn't ")){
-    if(u.includes("does not") || u.includes("doesn't")) res.score++;
-    else res.notes.push("Com he/she/it, a negativa usa DOESN'T.");
-  } else {
-    // se não é negativa, dá ponto por “não usar auxiliar errado”
-    if(!(u.includes("does") && u.includes("works"))){ res.score++; }
-    else res.notes.push("Cuidado: se usar DOES, o verbo fica na base (work).");
+      if (type === "good"){
+        o.type = "sine";
+        o.frequency.setValueAtTime(880, now);
+        o.frequency.exponentialRampToValueAtTime(1320, now + 0.12);
+        g.gain.setValueAtTime(0.0001, now);
+        g.gain.exponentialRampToValueAtTime(0.28, now + 0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001, now + 0.18);
+        o.start(now); o.stop(now + 0.2);
+      } else {
+        o.type = "square";
+        o.frequency.setValueAtTime(140, now);
+        o.frequency.exponentialRampToValueAtTime(90, now + 0.12);
+        g.gain.setValueAtTime(0.0001, now);
+        g.gain.exponentialRampToValueAtTime(0.25, now + 0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001, now + 0.22);
+        o.start(now); o.stop(now + 0.24);
+      }
+    }catch{}
   }
 
-  // 4) verbo com -ing quando o target tiver -ing
-  if(t.includes("ing")){
-    if(u.includes("ing")) res.score++;
-    else res.notes.push("Aqui é ação em progresso: use verbo com -ing.");
-  }else{
-    // se target não tem ing, penaliza ing desnecessário só se atrapalhar
-    res.score++;
+  function flash(type){
+    const el = type === "good" ? $("flashGood") : $("flashBad");
+    el.classList.add("show");
+    setTimeout(()=> el.classList.remove("show"), 140);
   }
 
-  res.ok = res.score >= 3; // passa com 3/4
-  return res;
-}
-
-function evalExact(user, target){
-  // exato: compara normalizado mas mantendo ponto final e vírgula
-  const u = String(user).trim();
-  const t = String(target).trim();
-  // permite diferença de espaços
-  const u2 = u.replace(/\s+/g," ");
-  const t2 = t.replace(/\s+/g," ");
-  return { ok: u2 === t2 };
-}
-
-function renderWriting(){
-  const area = document.getElementById("contentArea");
-  const actions = document.getElementById("actionRow");
-  const footer = document.getElementById("footerTip");
-  const w = session.currentWriting;
-
-  session.userText = "";
-  session.writingChecked = false;
-
-  const tag = w.mode === "flex"
-    ? `<span class="badge">🧠 flexível</span>`
-    : `<span class="badge">🎯 exata</span>`;
-
-  area.innerHTML = `
-    <div class="row" style="justify-content:space-between;align-items:flex-start">
-      <div>
-        <div class="q-title">${w.title}</div>
-        <div class="q-sub">${w.promptPT}</div>
-      </div>
-      ${tag}
-    </div>
-
-    <div class="row" style="margin:8px 0">
-      <button class="btn btn-ghost" onclick="speak('${escapeJS(w.audio)}', 0.9)">🔊 Ouvir</button>
-      <button class="btn btn-ghost" onclick="speak('${escapeJS(w.audio)}', 0.75)">🐢 Devagar</button>
-      <button class="btn btn-warning" onclick="showHintWriting()">💡 Dica</button>
-    </div>
-
-    <div id="hintBoxW" style="display:none" class="hintBox"></div>
-
-    <div class="divider"></div>
-
-    ${w.mode==="exact" ? `
-      <div class="tiny" style="margin-bottom:8px"><strong>Frase-alvo:</strong> ${w.target}</div>
-    ` : `
-      <div class="tiny" style="margin-bottom:8px"><strong>Meta:</strong> escrever com o padrão correto (variações são aceitas).</div>
-    `}
-
-    <input id="writingInput" class="input" placeholder="Digite sua resposta..." />
-
-    <div id="writingFeedback" style="display:none;margin-top:12px"></div>
-  `;
-
-  actions.innerHTML = `
-    <button class="btn btn-primary" onclick="checkWriting()">✅ Verificar</button>
-    <button class="btn btn-primary" id="nextWritingBtn" style="display:none" onclick="nextWriting()">➡️ Próxima</button>
-  `;
-
-  footer.textContent = w.mode==="exact"
-    ? "Modo exato: aqui é para treinar precisão (como se fosse prova)."
-    : "Modo flexível: aqui é para ganhar fluência com feedback inteligente.";
-}
-
-function showHintWriting(){
-  const w = session.currentWriting;
-  const box = document.getElementById("hintBoxW");
-  box.style.display = "block";
-  box.innerHTML = `<strong>💡 Dica:</strong> ${w.hint}`;
-}
-
-function checkWriting(){
-  const w = session.currentWriting;
-  const input = document.getElementById("writingInput");
-  const text = input.value;
-  if(!text.trim()){
-    alert("Digite alguma coisa 😉");
-    return;
+  let voices = [];
+  function loadVoices(){
+    voices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+    const best =
+      voices.find(v => /en(-|_)us/i.test(v.lang)) ||
+      voices.find(v => /^en/i.test(v.lang)) ||
+      voices[0];
+    $("voiceName").textContent = best ? `${best.name} (${best.lang})` : "indisponível";
+  }
+  if (window.speechSynthesis){
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+    loadVoices();
   }
 
-  let result;
-  if(w.mode==="exact"){
-    result = evalExact(text, w.target);
-  }else{
-    result = evalFlexible(text, w.target);
+  function speak(text){
+    if (!state.audioEnabled) return;
+    if (!window.speechSynthesis) return;
+    try{
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      const best =
+        voices.find(v => /en(-|_)us/i.test(v.lang)) ||
+        voices.find(v => /^en/i.test(v.lang));
+      if (best) u.voice = best;
+      u.lang = best ? best.lang : "en-US";
+      u.rate = 0.95;
+      u.pitch = 1.0;
+      window.speechSynthesis.speak(u);
+    }catch{}
+  }
+  function stopSpeak(){
+    try{ window.speechSynthesis && window.speechSynthesis.cancel(); }catch{}
   }
 
-  const fb = document.getElementById("writingFeedback");
-  fb.style.display = "block";
+  // ==========================
+  // CONTENT GENERATION (NO REPETITION)
+  // ==========================
+  // Themes + slots to generate hundreds of unique questions per level
+  const THEMES = [
+    {k:"Trabalho", scenes:["reunião","chão de fábrica","e-mail","turno","treinamento","segurança"]},
+    {k:"Viagem", scenes:["aeroporto","hotel","mapa","taxi","check-in","passeio"]},
+    {k:"Escola", scenes:["sala de aula","prova","biblioteca","trabalho em grupo","professor","colegas"]},
+    {k:"Cinema", scenes:["filme","pipoca","trailer","ingresso","série","streaming"]},
+    {k:"Casa", scenes:["cozinha","rotina","família","limpeza","conta","visita"]},
+    {k:"Cidade", scenes:["rua","loja","restaurante","mercado","ônibus","parque"]},
+    {k:"Cultura", scenes:["música","show","esporte","internet","memes","notícias"]},
+    {k:"Segurança", scenes:["regras","EPI","procedimento","atenção","risco","alerta"]},
+  ];
 
-  if(result.ok){
-    session.correct++;
-    beep("good"); flash("good");
-    addXP(w.mode==="exact" ? 14 : 12);
+  const PEOPLE = [
+    {subj:"I", obj:"me", be:"am", do:"do"},
+    {subj:"You", obj:"you", be:"are", do:"do"},
+    {subj:"We", obj:"us", be:"are", do:"do"},
+    {subj:"They", obj:"them", be:"are", do:"do"},
+    {subj:"He", obj:"him", be:"is", do:"does"},
+    {subj:"She", obj:"her", be:"is", do:"does"},
+    {subj:"It", obj:"it", be:"is", do:"does"},
+  ];
 
-    fb.className = "goodBox";
-    fb.innerHTML = `
-      <div style="font-weight:950;margin-bottom:6px">✅ Bom! Você acertou.</div>
-      <div class="tiny" style="margin-bottom:8px"><strong>Resposta sugerida:</strong> ${w.target}</div>
-      ${w.mode==="flex" ? `<div class="tiny">Ótimo: você usou o padrão principal.</div>` : `<div class="tiny">Perfeito: exato como precisa.</div>`}
-    `;
-  }else{
-    session.wrong++;
-    beep("bad"); flash("bad");
-    addXP(3);
+  const VERBS_A1 = [
+    {v:"help", s:"helps", pt:"ajudar"},
+    {v:"work", s:"works", pt:"trabalhar"},
+    {v:"study", s:"studies", pt:"estudar"},
+    {v:"go", s:"goes", pt:"ir"},
+    {v:"like", s:"likes", pt:"gostar"},
+    {v:"watch", s:"watches", pt:"assistir"},
+    {v:"play", s:"plays", pt:"jogar"},
+    {v:"read", s:"reads", pt:"ler"},
+    {v:"drink", s:"drinks", pt:"beber"},
+    {v:"live", s:"lives", pt:"morar"},
+    {v:"need", s:"needs", pt:"precisar"},
+    {v:"want", s:"wants", pt:"querer"},
+    {v:"check", s:"checks", pt:"checar"},
+    {v:"speak", s:"speaks", pt:"falar"},
+  ];
 
-    fb.className = "badBox";
-    if(w.mode==="exact"){
-      fb.innerHTML = `
-        <div style="font-weight:950;margin-bottom:6px">❌ Quase! (modo exato)</div>
-        <div class="tiny" style="margin-bottom:8px"><strong>O correto é:</strong> ${w.target}</div>
-        <div class="tiny">Dica: copie exatamente, inclusive o ponto final.</div>
-      `;
-    }else{
-      const notes = (result.notes||[]).slice(0,3).map(n=>`<li>${n}</li>`).join("");
-      fb.innerHTML = `
-        <div style="font-weight:950;margin-bottom:6px">❌ Quase! (modo flexível)</div>
-        <div class="tiny" style="margin-bottom:8px"><strong>Resposta sugerida:</strong> ${w.target}</div>
-        <div class="tiny" style="margin-bottom:6px"><strong>O que melhorar:</strong></div>
-        <ul class="tiny" style="margin-left:18px;line-height:1.4">${notes || "<li>Use o padrão da teoria.</li>"}</ul>
-      `;
+  const TIME_WORDS = [
+    {en:"every day", pt:"todo dia"},
+    {en:"on weekends", pt:"nos fins de semana"},
+    {en:"in the morning", pt:"de manhã"},
+    {en:"at night", pt:"à noite"},
+    {en:"after work", pt:"depois do trabalho"},
+    {en:"on Fridays", pt:"às sextas"},
+    {en:"on Sundays", pt:"aos domingos"},
+  ];
+
+  const PLACES = [
+    {en:"at the office", pt:"no escritório"},
+    {en:"at school", pt:"na escola"},
+    {en:"at home", pt:"em casa"},
+    {en:"in the factory", pt:"na fábrica"},
+    {en:"at the airport", pt:"no aeroporto"},
+    {en:"in the hotel", pt:"no hotel"},
+    {en:"at the gym", pt:"na academia"},
+    {en:"in the restaurant", pt:"no restaurante"},
+  ];
+
+  // Skill system (per level)
+  const LEVELS = {
+    A1: {
+      label: "Básico A1",
+      skills: [
+        {k:"A1_PRESENT_IYOU", name:"Present Simple (I/You/We/They)"},
+        {k:"A1_PRESENT_HESHE", name:"Present Simple (He/She/It +s)"},
+        {k:"A1_NEG_DO", name:"Negativa (do/does + not)"},
+        {k:"A1_Q_DO", name:"Perguntas (Do/Does)"},
+        {k:"A1_BE", name:"Verb to be (am/is/are)"},
+        {k:"A1_ORDER", name:"Ordem de palavras (frase simples)"},
+      ]
+    },
+    A2: {
+      label: "Pré-Intermediário A2",
+      skills: [
+        {k:"A2_PAST", name:"Past Simple (regular/irregular comum)"},
+        {k:"A2_PLANS", name:"Planos (going to)"},
+        {k:"A2_COMPARE", name:"Comparativos (bigger / more)"},
+        {k:"A2_MODAL", name:"Can/Can't + pedidos simples"},
+        {k:"A2_ORDER", name:"Ordem em perguntas e negativas"},
+      ]
+    },
+    B1: {
+      label: "Intermediário B1",
+      skills: [
+        {k:"B1_STORY", name:"Story (past vs present)"},
+        {k:"B1_OPINION", name:"Opinião (because/so/however)"},
+        {k:"B1_WORK", name:"Trabalho (reuniões, prazos, e-mail)"},
+        {k:"B1_PHRASAL", name:"Phrasal verbs comuns (pick up, turn on...)"},
+      ]
+    },
+    B2: {
+      label: "Pré-Avançado B2",
+      skills: [
+        {k:"B2_NUANCE", name:"Nuance / tom (polite vs direct)"},
+        {k:"B2_PASSIVE", name:"Passive voice (básico)"},
+        {k:"B2_COND", name:"Conditionals (if...)"},
+      ]
+    },
+    C1: {
+      label: "Avançado C1",
+      skills: [
+        {k:"C1_DEBATE", name:"Debate (argumentação)"},
+        {k:"C1_REWRITE", name:"Reescrita (mais natural)"},
+        {k:"C1_LISTEN", name:"Listening difícil (simulado)"},
+      ]
+    }
+  };
+
+  // Mastery default
+  function masteryKey(level, skillK){ return `${level}:${skillK}`; }
+  function getMastery(level, skillK){
+    const k = masteryKey(level, skillK);
+    if (typeof state.mastery[k] !== "number") state.mastery[k] = 60; // start
+    return state.mastery[k];
+  }
+  function bumpMastery(level, skillK, delta){
+    const k = masteryKey(level, skillK);
+    const cur = getMastery(level, skillK);
+    state.mastery[k] = clamp(cur + delta, 0, 100);
+  }
+  function avgMastery(level){
+    const skills = LEVELS[level].skills;
+    const vals = skills.map(s => getMastery(level, s.k));
+    const avg = vals.reduce((a,b)=>a+b,0)/vals.length;
+    return Math.round(avg);
+  }
+
+  // Used IDs control (session no-repeat)
+  function getUsed(level){
+    state.usedIdsByLevel[level] = state.usedIdsByLevel[level] || { session: [], day: {} };
+    const obj = state.usedIdsByLevel[level];
+    obj.session = obj.session || [];
+    return obj.session;
+  }
+  function markUsed(level, id){
+    const used = getUsed(level);
+    used.push(id);
+  }
+  function wasUsed(level, id){
+    return getUsed(level).includes(id);
+  }
+  function resetBank(level){
+    state.usedIdsByLevel[level] = state.usedIdsByLevel[level] || {};
+    state.usedIdsByLevel[level].session = [];
+  }
+
+  // ==========================
+  // QUESTION FACTORY
+  // ==========================
+  // We generate many unique questions by mixing:
+  // - theme, scene, subject, verb, time, place, objects
+  const OBJECTS = {
+    trabalho: ["my team","the report","this meeting","my emails","the schedule","a new module"],
+    viagem: ["my passport","the ticket","the hotel","the map","this flight","the reservation"],
+    escola: ["English","this exercise","my homework","the lesson","my notebook","the test"],
+    cinema: ["this movie","the trailer","that scene","the subtitles","the series","the actor"],
+    casa: ["dinner","coffee","the house","my family","the bills","my routine"],
+    cidade: ["the bus","this store","the restaurant","the park","the market","the street"],
+    cultura: ["music","this song","the news","a podcast","the internet","this meme"],
+    seguranca: ["safety rules","my PPE","this procedure","the risk","this warning","the checklist"],
+  };
+
+  const IRREG_PAST = [
+    {base:"go", past:"went", pt:"ir"},
+    {base:"eat", past:"ate", pt:"comer"},
+    {base:"see", past:"saw", pt:"ver"},
+    {base:"have", past:"had", pt:"ter"},
+    {base:"make", past:"made", pt:"fazer"},
+    {base:"take", past:"took", pt:"pegar/levar"},
+    {base:"get", past:"got", pt:"conseguir/pegar"},
+    {base:"come", past:"came", pt:"vir"},
+  ];
+  const REG_PAST = [
+    {base:"work", past:"worked"},
+    {base:"study", past:"studied"},
+    {base:"watch", past:"watched"},
+    {base:"play", past:"played"},
+    {base:"visit", past:"visited"},
+    {base:"help", past:"helped"},
+    {base:"check", past:"checked"},
+  ];
+
+  function makeId(parts){
+    return parts.map(p=>String(p).replace(/\s+/g,"_").toLowerCase()).join("|");
+  }
+
+  function rotateCorrectIndex(seed){
+    // deterministic-ish distribution for ABCDE
+    // seed is a number; return 0..4
+    return seed % 5;
+  }
+
+  function makeMCQ({id, level, theme, skillK, pt, prompt, en, hint, why, options, correctIndex, tts}){
+    return {
+      id, level, theme, skillK,
+      type: "MCQ",
+      pt, prompt, en,
+      hint, why,
+      options,
+      correctIndex,
+      tts: tts || en
+    };
+  }
+
+  function makeTyping({id, level, theme, skillK, pt, prompt, en, answers, hint, why, tts}){
+    return {
+      id, level, theme, skillK,
+      type: "TYPING",
+      pt, prompt, en,
+      answers, // array of acceptable normalized answers
+      hint, why,
+      tts: tts || en
+    };
+  }
+
+  function makeOrder({id, level, theme, skillK, pt, prompt, en, words, hint, why, tts}){
+    return {
+      id, level, theme, skillK,
+      type: "ORDER",
+      pt, prompt, en,
+      words, // shuffled later
+      hint, why,
+      tts: tts || en
+    };
+  }
+
+  function genA1Pool(maxCount = 420){
+    const pool = [];
+    // generate many combinations; keep unique by ID
+    const seen = new Set();
+
+    const themes = THEMES;
+    let seed = 0;
+
+    for (const th of themes){
+      const tkey = th.k.toLowerCase();
+      const objs = OBJECTS[tkey] || ["this"];
+      for (const scene of th.scenes){
+        for (const p of PEOPLE){
+          const v = pick(VERBS_A1);
+          const tw = pick(TIME_WORDS);
+          const pl = pick(PLACES);
+          seed++;
+
+          // Skill selection by subject type
+          const is3 = ["He","She","It"].includes(p.subj);
+          const skillPS = is3 ? "A1_PRESENT_HESHE" : "A1_PRESENT_IYOU";
+
+          // 1) Present simple correct form (MCQ)
+          {
+            const obj = pick(objs);
+            const verb = is3 ? v.s : v.v;
+            const en = `${p.subj} ${verb} ${obj} ${tw.en}.`;
+            const pt = `Escolha a frase correta (${th.k} • ${scene}).`;
+            const prompt = `Pense: quem faz a ação? (${p.subj}) Isso muda o verbo?`;
+            const hint = is3 ? `Dica: com he/she/it o verbo geralmente ganha "s".` : `Dica: com I/you/we/they o verbo fica na forma base.`;
+            const why = is3
+              ? `Com ${p.subj}, no Present Simple, usamos verbo +s (ex.: works, helps).`
+              : `Com ${p.subj}, no Present Simple, usamos o verbo base (sem "s").`;
+
+            const wrong1 = `${p.subj} ${v.v} ${obj} ${tw.en}.`; // missing s
+            const wrong2 = `${p.subj} am ${v.v}ing ${obj} ${tw.en}.`.replace("am", p.be); // continuous wrong
+            const wrong3 = `${p.subj} ${v.v}ed ${obj} ${tw.en}.`; // fake past
+            const wrong4 = `${p.subj} ${v.v} ${obj} now.`; // time mismatch but acceptable distractor
+
+            const correct = en;
+            const raw = shuffle([correct, wrong1, wrong2, wrong3, wrong4]);
+
+            // force A-E rotation: choose which slot is correct
+            const desired = rotateCorrectIndex(seed);
+            // put correct in desired slot
+            raw.splice(raw.indexOf(correct), 1);
+            const options = [];
+            for (let i=0;i<5;i++){
+              options[i] = (i===desired) ? correct : raw.pop();
+            }
+
+            const id = makeId(["A1", th.k, scene, "PS", p.subj, v.v, obj, tw.en, pl.en, seed]);
+            if (!seen.has(id)){
+              seen.add(id);
+              pool.push(makeMCQ({
+                id, level:"A1", theme:th.k, skillK: skillPS,
+                pt, prompt,
+                en: correct,
+                hint, why,
+                options,
+                correctIndex: desired,
+                tts: `${p.subj} ${verb} ${obj} ${tw.en}`
+              }));
+            }
+          }
+
+          // 2) Negative do/does (MCQ)
+          {
+            seed++;
+            const obj = pick(objs);
+            const aux = is3 ? "does not" : "do not";
+            const en = `${p.subj} ${aux} ${v.v} ${obj}.`;
+            const pt = `Como dizer a negativa corretamente (${th.k} • ${scene})?`;
+            const prompt = `Observe o auxiliar: com ${p.subj} usamos ${is3 ? "does" : "do"}.`;
+            const hint = `Dica: na negativa, o "s" vai no auxiliar (does), e o verbo principal volta ao base.`;
+            const why = is3
+              ? `Com ${p.subj}, a negativa usa "does not" + verbo base (ex.: does not work).`
+              : `Com ${p.subj}, a negativa usa "do not" + verbo base.`;
+
+            const wrong1 = `${p.subj} not ${v.v} ${obj}.`;
+            const wrong2 = `${p.subj} ${is3 ? "do not" : "does not"} ${v.v} ${obj}.`;
+            const wrong3 = `${p.subj} ${aux} ${v.s} ${obj}.`; // should be base
+            const wrong4 = `${p.subj} don't ${v.v} ${obj}.`; // contraction; could be OK, but keep as distractor (we want full form)
+            const correct = en;
+
+            const raw = shuffle([correct, wrong1, wrong2, wrong3, wrong4]);
+            const desired = rotateCorrectIndex(seed);
+            raw.splice(raw.indexOf(correct), 1);
+            const options = [];
+            for (let i=0;i<5;i++){
+              options[i] = (i===desired) ? correct : raw.pop();
+            }
+
+            const id = makeId(["A1", th.k, scene, "NEG", p.subj, v.v, obj, seed]);
+            if (!seen.has(id)){
+              seen.add(id);
+              pool.push(makeMCQ({
+                id, level:"A1", theme:th.k, skillK:"A1_NEG_DO",
+                pt, prompt, en: correct,
+                hint, why,
+                options,
+                correctIndex: desired,
+                tts: `${p.subj} ${aux} ${v.v} ${obj}`
+              }));
+            }
+          }
+
+          // 3) Do/Does question (MCQ)
+          {
+            seed++;
+            const obj = pick(objs);
+            const aux = is3 ? "Does" : "Do";
+            const en = `${aux} ${p.subj.toLowerCase()} ${v.v} ${obj}?`.replace("i", "I");
+            const pt = `Escolha a pergunta correta (${th.k} • ${scene}).`;
+            const prompt = `Perguntas no Present Simple usam auxiliar antes do sujeito.`;
+            const hint = `Dica: ${aux} para ${is3 ? "he/she/it" : "I/you/we/they"}. Depois, verbo base.`;
+            const why = `Estrutura: ${aux} + sujeito + verbo base + complemento.`;
+
+            const wrong1 = `${p.subj} ${v.v} ${obj}?`;
+            const wrong2 = `${aux} ${p.subj.toLowerCase()} ${v.s} ${obj}?`.replace("i", "I");
+            const wrong3 = `Are ${p.subj.toLowerCase()} ${v.v}ing ${obj}?`.replace("i", "I");
+            const wrong4 = `${aux} ${p.subj.toLowerCase()} ${v.v}ed ${obj}?`.replace("i", "I");
+
+            const correct = en;
+            const raw = shuffle([correct, wrong1, wrong2, wrong3, wrong4]);
+            const desired = rotateCorrectIndex(seed);
+            raw.splice(raw.indexOf(correct), 1);
+            const options = [];
+            for (let i=0;i<5;i++){
+              options[i] = (i===desired) ? correct : raw.pop();
+            }
+
+            const id = makeId(["A1", th.k, scene, "Q", p.subj, v.v, obj, seed]);
+            if (!seen.has(id)){
+              seen.add(id);
+              pool.push(makeMCQ({
+                id, level:"A1", theme:th.k, skillK:"A1_Q_DO",
+                pt, prompt, en: correct,
+                hint, why, options,
+                correctIndex: desired,
+                tts: `${aux} ${p.subj.toLowerCase()} ${v.v} ${obj}`.replace("i", "I")
+              }));
+            }
+          }
+
+          // 4) Verb to be meaning (Typing)
+          {
+            seed++;
+            const city = pick(["Brazil","São Paulo","Piracicaba","Canada","Mexico","London"]);
+            const be = p.be;
+            const en = `${p.subj} ${be} from ${city}.`;
+            const pt = `Digite a frase correta (origem) (${th.k} • ${scene}).`;
+            const prompt = `Use verb to be: I am / You are / He is ...`;
+            const hint = `Dica: escolha a forma do "to be" correta para "${p.subj}".`;
+            const why = `No "to be": I am, you/we/they are, he/she/it is.`;
+
+            const id = makeId(["A1", th.k, scene, "BEFROM", p.subj, city, seed]);
+            if (!seen.has(id)){
+              seen.add(id);
+              pool.push(makeTyping({
+                id, level:"A1", theme:th.k, skillK:"A1_BE",
+                pt, prompt,
+                en,
+                answers: [norm(en)],
+                hint, why,
+                tts: `${p.subj} ${be} from ${city}`
+              }));
+            }
+          }
+
+          // 5) Order words (ORDER)
+          {
+            seed++;
+            const obj = pick(objs);
+            const verb = is3 ? v.s : v.v;
+            const en = `${p.subj} ${verb} ${obj}.`;
+            const pt = `Monte a frase (ordem correta) (${th.k} • ${scene}).`;
+            const prompt = `Ordem padrão: sujeito + verbo + complemento.`;
+            const hint = `Dica: comece pelo sujeito "${p.subj}".`;
+            const why = `Inglês é bem fixo: Subject → Verb → Object.`;
+
+            // words
+            const words = `${p.subj} ${verb} ${obj}.`
+              .replace(".","")
+              .split(" ")
+              .filter(Boolean);
+
+            const id = makeId(["A1", th.k, scene, "ORDER", p.subj, verb, obj, seed]);
+            if (!seen.has(id)){
+              seen.add(id);
+              pool.push(makeOrder({
+                id, level:"A1", theme:th.k, skillK:"A1_ORDER",
+                pt, prompt, en,
+                words,
+                hint, why,
+                tts: `${p.subj} ${verb} ${obj}`
+              }));
+            }
+          }
+
+          if (pool.length >= maxCount) break;
+        }
+        if (pool.length >= maxCount) break;
+      }
+      if (pool.length >= maxCount) break;
+    }
+    return pool;
+  }
+
+  function genA2Pool(maxCount = 360){
+    const pool = [];
+    const seen = new Set();
+    let seed = 1000;
+
+    const themes = THEMES;
+
+    for (const th of themes){
+      for (const scene of th.scenes){
+        seed++;
+
+        // Past simple (MCQ)
+        {
+          const isIr = Math.random() < 0.55;
+          const verb = isIr ? pick(IRREG_PAST) : pick(REG_PAST);
+          const subj = pick(["I","We","They","He","She"]);
+          const pt = `Escolha a frase no passado correta (${th.k} • ${scene}).`;
+          const prompt = `Procure o marcador de passado (yesterday / last night / last week).`;
+          const hint = `Dica: no passado, o verbo muda (worked / went).`;
+          const why = isIr
+            ? `Verbo irregular: ${verb.base} → ${verb.past}.`
+            : `Verbo regular: adiciona -ed (ex.: work → worked).`;
+
+          const time = pick(["yesterday","last night","last week","two days ago"]);
+          const obj = pick(["to the park","to the office","home","a movie","a new place"]);
+          const correct = `${subj} ${verb.past} ${obj} ${time}.`;
+
+          const wrong1 = `${subj} ${verb.base} ${obj} ${time}.`;
+          const wrong2 = `${subj} ${verb.past} ${obj} now.`;
+          const wrong3 = `${subj} did ${verb.past} ${obj} ${time}.`;
+          const wrong4 = `${subj} ${verb.base}ed ${obj} ${time}.`;
+
+          const raw = shuffle([correct, wrong1, wrong2, wrong3, wrong4]);
+          const desired = rotateCorrectIndex(seed);
+          raw.splice(raw.indexOf(correct), 1);
+          const options = [];
+          for (let i=0;i<5;i++){
+            options[i] = (i===desired) ? correct : raw.pop();
+          }
+
+          const id = makeId(["A2", th.k, scene, "PAST", subj, verb.base, obj, time, seed]);
+          if (!seen.has(id)){
+            seen.add(id);
+            pool.push(makeMCQ({
+              id, level:"A2", theme:th.k, skillK:"A2_PAST",
+              pt, prompt, en: correct,
+              hint, why, options,
+              correctIndex: desired,
+              tts: correct.replace(".","")
+            }));
+          }
+        }
+
+        // Going to plans (TYPING)
+        {
+          seed++;
+          const subj = pick(["I","We","They","He","She"]);
+          const place = pick(["to the airport","to the gym","to the meeting","to the cinema","to the store"]);
+          const correct = `${subj} am going to go ${place} tomorrow.`
+            .replace("I am", "I am")
+            .replace("He am", "He is")
+            .replace("She am", "She is")
+            .replace("We am", "We are")
+            .replace("They am", "They are");
+
+          const pt = `Digite um plano com "going to" (${th.k} • ${scene}).`;
+          const prompt = `Use: subject + am/is/are + going to + verb base.`;
+          const hint = `Dica: "I am", "he/she is", "we/they are".`;
+          const why = `Planos: am/is/are + going to + verbo base.`;
+
+          const id = makeId(["A2", th.k, scene, "GOINGTO", subj, place, seed]);
+          if (!seen.has(id)){
+            seen.add(id);
+            pool.push(makeTyping({
+              id, level:"A2", theme:th.k, skillK:"A2_PLANS",
+              pt, prompt, en: correct,
+              answers: [norm(correct)],
+              hint, why,
+              tts: correct.replace(".","")
+            }));
+          }
+        }
+
+        // Can/can't (MCQ)
+        {
+          seed++;
+          const subj = pick(["I","You","We","They","He","She"]);
+          const verb = pick(["swim","drive","help","cook","speak English","use this app"]);
+          const pt = `Escolha a frase correta com "can" (${th.k} • ${scene}).`;
+          const prompt = `Depois de "can", o verbo fica na forma base.`;
+          const hint = `Dica: "can" não usa "to" e não usa "s".`;
+          const why = `Modal "can" + verbo base: "She can swim".`;
+
+          const correct = `${subj} can ${verb}.`;
+          const wrong1 = `${subj} can ${verb}s.`;
+          const wrong2 = `${subj} can to ${verb}.`;
+          const wrong3 = `${subj} am can ${verb}.`.replace("am", (subj==="I"?"am":(subj==="He"||subj==="She"?"is":"are")));
+          const wrong4 = `${subj} can ${verb}ing.`;
+
+          const raw = shuffle([correct, wrong1, wrong2, wrong3, wrong4]);
+          const desired = rotateCorrectIndex(seed);
+          raw.splice(raw.indexOf(correct), 1);
+          const options = [];
+          for (let i=0;i<5;i++){
+            options[i] = (i===desired) ? correct : raw.pop();
+          }
+
+          const id = makeId(["A2", th.k, scene, "CAN", subj, verb, seed]);
+          if (!seen.has(id)){
+            seen.add(id);
+            pool.push(makeMCQ({
+              id, level:"A2", theme:th.k, skillK:"A2_MODAL",
+              pt, prompt, en: correct,
+              hint, why, options,
+              correctIndex: desired,
+              tts: correct.replace(".","")
+            }));
+          }
+        }
+
+        // Order (question order A2)
+        {
+          seed++;
+          const wh = pick(["Where","When","What","How often"]);
+          const subj = pick(["you","they","we","she","he"]);
+          const aux = (subj==="she"||subj==="he") ? "do" : "do"; // keep simple A2, we'll use do; and does variation in B1
+          const verb = pick(["go","work","study","meet","practice"]);
+          const rest = pick(["on weekends","in the morning","today","after work","at night"]);
+          const correct = `${wh} do ${subj} ${verb} ${rest}?`
+            .replace("do she","does she")
+            .replace("do he","does he");
+
+          const pt = `Monte a pergunta (ordem correta) (${th.k} • ${scene}).`;
+          const prompt = `Ordem: WH + do/does + sujeito + verbo base + complemento.`;
+          const hint = `Dica: "does" para he/she.`;
+          const why = `Perguntas A2: auxiliar antes do sujeito.`;
+
+          const words = correct.replace("?","").split(" ").filter(Boolean);
+          const id = makeId(["A2", th.k, scene, "ORDERQ", wh, subj, verb, rest, seed]);
+          if (!seen.has(id)){
+            seen.add(id);
+            pool.push(makeOrder({
+              id, level:"A2", theme:th.k, skillK:"A2_ORDER",
+              pt, prompt, en: correct,
+              words,
+              hint, why,
+              tts: correct.replace("?","")
+            }));
+          }
+        }
+
+        if (pool.length >= maxCount) break;
+      }
+      if (pool.length >= maxCount) break;
+    }
+
+    return pool;
+  }
+
+  function genB1Pool(maxCount = 240){
+    const pool = [];
+    const seen = new Set();
+    let seed = 2000;
+
+    const connectors = ["because","so","but","however"];
+    const phrasals = [
+      {v:"turn on", pt:"ligar"},
+      {v:"turn off", pt:"desligar"},
+      {v:"pick up", pt:"pegar/apanhar"},
+      {v:"find out", pt:"descobrir"},
+      {v:"set up", pt:"configurar"},
+    ];
+
+    for (const th of THEMES){
+      for (const scene of th.scenes){
+        seed++;
+
+        // Opinion with connectors (MCQ)
+        {
+          const c = pick(connectors);
+          const s1 = pick(["I like this plan","We need more time","They are late","The meeting is long"]);
+          const s2 = pick(["it is clear","we have a deadline","traffic is bad","the data is missing"]);
+          const correct = `${s1} ${c} ${s2}.`;
+          const wrong1 = `${s1} ${c} to ${s2}.`;
+          const wrong2 = `${s1} ${c} ${s2}?`;
+          const wrong3 = `${s1} ${c} ${s2} now.`;
+          const wrong4 = `${c} ${s1} ${s2}.`;
+
+          const pt = `Escolha a frase mais natural (B1) (${th.k} • ${scene}).`;
+          const prompt = `Conectores unem ideias. Escolha a ordem natural.`;
+          const hint = `Dica: normalmente a frase começa com a ideia principal.`;
+          const why = `Estrutura natural: ideia 1 + conector + ideia 2.`;
+
+          const raw = shuffle([correct, wrong1, wrong2, wrong3, wrong4]);
+          const desired = rotateCorrectIndex(seed);
+          raw.splice(raw.indexOf(correct), 1);
+          const options = [];
+          for (let i=0;i<5;i++){
+            options[i] = (i===desired) ? correct : raw.pop();
+          }
+
+          const id = makeId(["B1", th.k, scene, "CONN", c, seed, s1, s2]);
+          if (!seen.has(id)){
+            seen.add(id);
+            pool.push(makeMCQ({
+              id, level:"B1", theme:th.k, skillK:"B1_OPINION",
+              pt, prompt, en: correct,
+              hint, why, options,
+              correctIndex: desired,
+              tts: correct.replace(".","")
+            }));
+          }
+        }
+
+        // Work email tone (Typing - rewrite)
+        {
+          seed++;
+          const informal = pick([
+            "Send me this now.",
+            "I need the report today.",
+            "Fix this.",
+            "Call me."
+          ]);
+          const polite = pick([
+            "Could you please send this today?",
+            "Would you mind sharing the report today?",
+            "Can you help me fix this, please?",
+            "Could we have a quick call?"
+          ]);
+
+          const pt = `Digite uma versão mais educada (B1) (${th.k} • ${scene}).`;
+          const prompt = `Tente escrever de forma educada (polite).`;
+          const hint = `Dica: use "Could you...?" / "Would you mind...?" / "please".`;
+          const why = `No trabalho, "polite tone" aumenta clareza e colaboração.`;
+
+          const id = makeId(["B1", th.k, scene, "POLITE", seed, informal]);
+          if (!seen.has(id)){
+            seen.add(id);
+            pool.push(makeTyping({
+              id, level:"B1", theme:th.k, skillK:"B1_WORK",
+              pt,
+              prompt: `Transforme em algo educado: "${informal}"`,
+              en: polite,
+              answers: [norm(polite)], // simples (premium teria IA tolerante)
+              hint, why,
+              tts: polite
+            }));
+          }
+        }
+
+        // Phrasal verb (MCQ)
+        {
+          seed++;
+          const p = pick(phrasals);
+          const correct = `Please ${p.v} the lights.`;
+          const wrong1 = `Please ${p.v} on the lights.`;
+          const wrong2 = `Please ${p.v.replace(" ","")} the lights.`;
+          const wrong3 = `Please ${p.v} the light.`;
+          const wrong4 = `Please ${p.v} to the lights.`;
+
+          const pt = `Escolha a frase correta (phrasal verb) (${th.k} • ${scene}).`;
+          const prompt = `Phrasal verb funciona como “verbo único”.`;
+          const hint = `Dica: "${p.v}" = ${p.pt}.`;
+          const why = `Phrasal verbs são muito comuns em inglês real.`;
+
+          const raw = shuffle([correct, wrong1, wrong2, wrong3, wrong4]);
+          const desired = rotateCorrectIndex(seed);
+          raw.splice(raw.indexOf(correct), 1);
+          const options = [];
+          for (let i=0;i<5;i++){
+            options[i] = (i===desired) ? correct : raw.pop();
+          }
+
+          const id = makeId(["B1", th.k, scene, "PHRASAL", seed, p.v]);
+          if (!seen.has(id)){
+            seen.add(id);
+            pool.push(makeMCQ({
+              id, level:"B1", theme:th.k, skillK:"B1_PHRASAL",
+              pt, prompt, en: correct,
+              hint, why, options,
+              correctIndex: desired,
+              tts: correct.replace(".","")
+            }));
+          }
+        }
+
+        if (pool.length >= maxCount) break;
+      }
+      if (pool.length >= maxCount) break;
+    }
+
+    return pool;
+  }
+
+  function genB2Pool(maxCount = 160){
+    const pool = [];
+    const seen = new Set();
+    let seed = 3000;
+
+    const passives = [
+      {a:"They clean the room every day.", p:"The room is cleaned every day."},
+      {a:"People use this tool in training.", p:"This tool is used in training."},
+      {a:"They check the equipment weekly.", p:"The equipment is checked weekly."},
+    ];
+
+    for (const th of THEMES){
+      for (const scene of th.scenes){
+        seed++;
+
+        // Passive (MCQ)
+        {
+          const item = pick(passives);
+          const pt = `Escolha a forma passiva correta (B2) (${th.k} • ${scene}).`;
+          const prompt = `Foco no objeto da ação (passive voice).`;
+          const hint = `Dica: passive = be + past participle (checked/used/cleaned).`;
+          const why = `Passiva destaca o que foi feito, não quem fez.`;
+
+          const correct = item.p;
+          const wrong1 = item.p.replace("is","are");
+          const wrong2 = item.p.replace("cleaned","clean").replace("used","use").replace("checked","check");
+          const wrong3 = item.a;
+          const wrong4 = `The room cleaned every day.`;
+
+          const raw = shuffle([correct, wrong1, wrong2, wrong3, wrong4]);
+          const desired = rotateCorrectIndex(seed);
+          raw.splice(raw.indexOf(correct), 1);
+          const options = [];
+          for (let i=0;i<5;i++){
+            options[i] = (i===desired) ? correct : raw.pop();
+          }
+
+          const id = makeId(["B2", th.k, scene, "PASSIVE", seed, correct]);
+          if (!seen.has(id)){
+            seen.add(id);
+            pool.push(makeMCQ({
+              id, level:"B2", theme:th.k, skillK:"B2_PASSIVE",
+              pt, prompt, en: correct,
+              hint, why, options,
+              correctIndex: desired,
+              tts: correct.replace(".","")
+            }));
+          }
+        }
+
+        // Conditional (Typing)
+        {
+          seed++;
+          const pt = `Complete a ideia (if...) (B2) (${th.k} • ${scene}).`;
+          const prompt = `Escreva uma frase usando "If" + condição + resultado.`;
+          const example = pick([
+            "If I have time, I will practice English.",
+            "If we leave early, we will arrive on time.",
+            "If it rains, we will stay at home."
+          ]);
+          const hint = `Dica: If + present, will + base.`;
+          const why = `Conditionals ajudam a falar de consequências e planos.`;
+
+          const id = makeId(["B2", th.k, scene, "COND", seed, example]);
+          if (!seen.has(id)){
+            seen.add(id);
+            pool.push(makeTyping({
+              id, level:"B2", theme:th.k, skillK:"B2_COND",
+              pt,
+              prompt: `Digite algo nesse padrão (ex.: "${example}")`,
+              en: example,
+              answers: [norm(example)],
+              hint, why,
+              tts: example
+            }));
+          }
+        }
+
+        if (pool.length >= maxCount) break;
+      }
+      if (pool.length >= maxCount) break;
+    }
+
+    return pool;
+  }
+
+  function genC1Pool(maxCount = 120){
+    const pool = [];
+    const seen = new Set();
+    let seed = 4000;
+
+    const debate = [
+      {q:"Is technology making people more productive?", a:"In many cases, yes, because it automates repetitive tasks and saves time."},
+      {q:"Should schools teach financial education?", a:"Yes, because it helps students make better decisions in real life."},
+      {q:"Is remote work good for companies?", a:"It depends, but it can reduce costs and improve focus for many roles."}
+    ];
+
+    for (const d of debate){
+      seed++;
+      const pt = `Responda de forma clara (C1) — digite uma resposta curta.`;
+      const prompt = d.q;
+      const hint = `Dica: use "because" ou "it depends".`;
+      const why = `C1: clareza + argumento curto + conector.`;
+
+      const id = makeId(["C1", "DEBATE", seed, d.q]);
+      if (!seen.has(id)){
+        seen.add(id);
+        pool.push(makeTyping({
+          id, level:"C1", theme:"Debate", skillK:"C1_DEBATE",
+          pt, prompt, en: d.a,
+          answers: [norm(d.a)],
+          hint, why,
+          tts: d.a
+        }));
+      }
+      if (pool.length >= maxCount) break;
+    }
+
+    // Rewrites (MCQ)
+    const rewrites = [
+      {bad:"I want that you send me the file.", good:"I want you to send me the file."},
+      {bad:"I have 44 years.", good:"I am 44 years old."},
+      {bad:"I am agree with you.", good:"I agree with you."}
+    ];
+    for (const r of rewrites){
+      seed++;
+      const pt = `Escolha a forma natural (C1).`;
+      const prompt = `Qual frase está mais natural?`;
+      const hint = `Dica: algumas estruturas não traduzem literal do português.`;
+      const why = `C1: naturalidade e collocations.`;
+
+      const correct = r.good;
+      const wrong1 = r.bad;
+      const wrong2 = r.good.replace("I ","I am ");
+      const wrong3 = r.good.replace("to send","send");
+      const wrong4 = r.good + " now.";
+
+      const raw = shuffle([correct, wrong1, wrong2, wrong3, wrong4]);
+      const desired = rotateCorrectIndex(seed);
+      raw.splice(raw.indexOf(correct), 1);
+      const options = [];
+      for (let i=0;i<5;i++){
+        options[i] = (i===desired) ? correct : raw.pop();
+      }
+
+      const id = makeId(["C1", "REWRITE", seed, correct]);
+      if (!seen.has(id)){
+        seen.add(id);
+        pool.push(makeMCQ({
+          id, level:"C1", theme:"Natural", skillK:"C1_REWRITE",
+          pt, prompt, en: correct,
+          hint, why, options,
+          correctIndex: desired,
+          tts: correct
+        }));
+      }
+      if (pool.length >= maxCount) break;
+    }
+
+    return pool;
+  }
+
+  // Pools cache (generated once per load)
+  const POOLS = {
+    A1: genA1Pool(520),
+    A2: genA2Pool(420),
+    B1: genB1Pool(280),
+    B2: genB2Pool(180),
+    C1: genC1Pool(120),
+  };
+
+  function poolFor(level){ return POOLS[level] || []; }
+
+  // ==========================
+  // UI NAV
+  // ==========================
+  const screens = {
+    home: $("screenHome"),
+    train: $("screenTrain"),
+    review: $("screenReview"),
+    settings: $("screenSettings"),
+  };
+  function show(screen){
+    Object.values(screens).forEach(s=>s.classList.remove("active"));
+    screens[screen].classList.add("active");
+
+    $("tabHome").classList.toggle("active", screen==="home");
+    $("tabTrain").classList.toggle("active", screen==="train");
+    $("tabReview").classList.toggle("active", screen==="review");
+    $("tabSettings").classList.toggle("active", screen==="settings");
+  }
+
+  $("tabHome").onclick = () => show("home");
+  $("tabTrain").onclick = () => show("train");
+  $("tabReview").onclick = () => show("review");
+  $("tabSettings").onclick = () => show("settings");
+
+  // ==========================
+  // LEVEL BUTTONS
+  // ==========================
+  function renderLevelButtons(){
+    const wrap = $("levelButtons");
+    wrap.innerHTML = "";
+    Object.keys(LEVELS).forEach(lvl=>{
+      const b = document.createElement("button");
+      b.textContent = `${lvl} • ${LEVELS[lvl].label}`;
+      b.className = (state.level===lvl) ? "active" : "";
+      b.onclick = ()=>{
+        state.level = lvl;
+        store.set(STATE_KEY, state);
+        renderAll();
+      };
+      wrap.appendChild(b);
+    });
+  }
+
+  // ==========================
+  // TRAIN ENGINE
+  // ==========================
+  let run = {
+    active: false,
+    level: state.level,
+    round: 0,
+    hits: 0,
+    miss: 0,
+    xpGained: 0,
+    challenge: false,
+    challengeGoal: 5,
+    challengeHits: 0,
+    current: null,
+    locked: false,
+    recoveryMode: false,
+    recoveryQueue: [],
+    lastSkill: null,
+  };
+
+  function pickQuestion(level, mode){
+    // mode: "normal" | "review"
+    const pool = poolFor(level);
+    if (!pool.length) return null;
+
+    // build weighted candidates:
+    // - prefer weak skills in review mode
+    // - in normal mode: mix, but still favors weak
+    const skills = LEVELS[level].skills.map(s=>s.k);
+
+    const masteryMap = {};
+    skills.forEach(sk => masteryMap[sk] = getMastery(level, sk));
+
+    let targetSkill = null;
+    if (mode === "review"){
+      const sorted = skills.slice().sort((a,b)=> masteryMap[a] - masteryMap[b]);
+      targetSkill = sorted[0];
+    } else {
+      // 60% chance pick from weaker half
+      const sorted = skills.slice().sort((a,b)=> masteryMap[a] - masteryMap[b]);
+      const weakHalf = sorted.slice(0, Math.ceil(sorted.length/2));
+      targetSkill = (Math.random() < 0.6) ? pick(weakHalf) : pick(skills);
+    }
+
+    // recovery queue overrides
+    if (run.recoveryMode && run.recoveryQueue.length){
+      targetSkill = run.recoveryQueue[0];
+    }
+
+    // candidates by skill
+    let candidates = pool.filter(q => q.skillK === targetSkill);
+
+    // if not enough, fallback
+    if (candidates.length < 10){
+      candidates = pool.slice();
+    }
+
+    // no repetition in this session
+    candidates = candidates.filter(q => !wasUsed(level, q.id));
+
+    // if everything used, allow reset automatically
+    if (!candidates.length){
+      resetBank(level);
+      candidates = pool.filter(q => !wasUsed(level, q.id));
+      if (!candidates.length) candidates = pool.slice();
+    }
+
+    // pick
+    const q = pick(candidates);
+
+    // if in recovery, pop when asked
+    run.lastSkill = q.skillK;
+    return q;
+  }
+
+  function setTrainHeader(){
+    const lvl = run.level;
+    $("trainTitle").textContent = `Treino • ${lvl}`;
+    const avg = avgMastery(lvl);
+    $("trainSubtitle").textContent =
+      run.challenge
+        ? `Desafio: ${run.challengeHits}/${run.challengeGoal} sem errar • Mastery médio: ${avg}%`
+        : `Rounds misturados • Mastery médio: ${avg}% • Banco: ${poolFor(lvl).length}+`;
+  }
+
+  function setQuestion(q){
+    run.current = q;
+    markUsed(run.level, q.id);
+
+    // render meta
+    $("qLevel").textContent = q.level;
+    $("qTheme").textContent = q.theme;
+    const skillName = LEVELS[q.level].skills.find(s=>s.k===q.skillK)?.name || q.skillK;
+    $("qSkill").textContent = skillName;
+    $("qType").textContent = q.type;
+
+    // content
+    $("qPT").textContent = q.pt;
+    $("qPrompt").textContent = q.prompt;
+    $("qEN").textContent = q.en;
+
+    // blocks
+    $("feedback").style.display = "none";
+    $("feedback").className = "feedback";
+    $("mcqBlock").style.display = "none";
+    $("typingBlock").style.display = "none";
+    $("orderBlock").style.display = "none";
+
+    if (q.type === "MCQ"){
+      $("mcqBlock").style.display = "block";
+      renderOptions(q);
+    } else if (q.type === "TYPING"){
+      $("typingBlock").style.display = "block";
+      $("typingInput").value = "";
+      $("typingTip").textContent = q.hint;
+    } else if (q.type === "ORDER"){
+      $("orderBlock").style.display = "block";
+      renderWordBank(q);
     }
   }
 
-  document.getElementById("nextWritingBtn").style.display = "inline-flex";
-}
+  function renderOptions(q){
+    const opts = $("opts");
+    opts.innerHTML = "";
 
-function nextWriting(){
-  // depois do flex vai pro exact, depois do exact vai pro result
-  goNextStep();
-}
+    const letters = ["A","B","C","D","E"];
+    q.options.forEach((txt, idx)=>{
+      const b = document.createElement("button");
+      b.className = "opt";
+      b.innerHTML = `<span class="kbd">${letters[idx]}</span> ${txt}`;
+      b.onclick = () => onAnswerMCQ(idx, b);
+      opts.appendChild(b);
+    });
+  }
 
-/* =========================
-   XP + GLOBAL STATS
-========================= */
-function addXP(points){
-  const s = loadState();
-  const xp = (s.xp||0) + points;
-  const totalCorrect = (s.totalCorrect||0) + 0; // atualizado no finish
-  const totalWrong = (s.totalWrong||0) + 0;
-  saveState({ xp, totalCorrect, totalWrong });
-}
+  let built = [];
+  function renderWordBank(q){
+    built = [];
+    $("builtSentence").textContent = "—";
+    const bank = $("wordBank");
+    bank.innerHTML = "";
+    const shuffled = shuffle(q.words);
+    shuffled.forEach(w=>{
+      const b = document.createElement("button");
+      b.textContent = w;
+      b.className = "secondary";
+      b.onclick = ()=>{
+        built.push(w);
+        $("builtSentence").textContent = built.join(" ");
+      };
+      bank.appendChild(b);
+    });
+  }
 
-/* =========================
-   FINISH LESSON
-========================= */
-function finishLesson(){
-  const s = loadState();
-  const today = todayKey();
+  function showFeedback(kind, msg, hint, why){
+    const fb = $("feedback");
+    fb.style.display = "block";
+    fb.classList.remove("good","bad");
+    fb.classList.add(kind === "good" ? "good" : "bad");
+    fb.innerHTML = `
+      <div style="font-weight:900; margin-bottom:4px;">
+        ${kind === "good" ? "✅ Certo!" : "❌ Ops!"}
+      </div>
+      <div>${msg}</div>
+      <div class="divider"></div>
+      <div class="muted"><b>Dica:</b> ${hint || "—"}</div>
+      <div class="muted" style="margin-top:4px;"><b>Por quê:</b> ${why || "—"}</div>
+    `;
+  }
 
-  // streak simples (1 por dia)
-  let streak = s.streak || 0;
-  if(s.lastDay !== today) streak++;
+  function awardXP(n){
+    state.xp += n;
+    run.xpGained += n;
+  }
 
-  const total = session.correct + session.wrong;
-  const acc = total ? Math.round((session.correct/total)*100) : 0;
+  function updateHUD(){
+    $("xpValue").textContent = state.xp;
+    $("streakValue").textContent = state.streak;
+    $("levelValue").textContent = state.level;
 
-  // stats por nível
-  const key = session.levelKey;
-  const level = s[key] || {};
-  const completedSessions = (level.completedSessions||0) + 1;
-  const bestAcc = Math.max(level.bestAcc||0, acc);
+    $("xpInRun").textContent = run.xpGained;
+    $("hitsInRun").textContent = run.hits;
+    $("missInRun").textContent = run.miss;
 
-  // atualiza globais de acerto/erro
-  const totalCorrect = (s.totalCorrect||0) + session.correct;
-  const totalWrong = (s.totalWrong||0) + session.wrong;
+    $("roundN").textContent = run.round;
+    $("todayCount").textContent = state.todayRounds;
 
-  saveState({
-    streak,
-    lastDay: today,
-    totalCorrect,
-    totalWrong,
-    [key]: { ...level, completedSessions, bestAcc }
-  });
+    const pct = clamp((state.todayRounds/10)*100, 0, 100);
+    $("todayBar").style.width = pct + "%";
 
-  alert(`✅ Aula salva!\nAcerto: ${acc}%\nCertas: ${session.correct}\nErradas: ${session.wrong}`);
-  goHome();
-}
+    const avg = avgMastery(state.level);
+    $("avgMastery").textContent = avg + "%";
+    $("masteryBar").style.width = avg + "%";
 
-/* =========================
-   NAV
-========================= */
-renderHomePills();
+    store.set(STATE_KEY, state);
+  }
+
+  function startSession({challenge=false, review=false}={}){
+    run.active = true;
+    run.level = state.level;
+    run.round = 0;
+    run.hits = 0;
+    run.miss = 0;
+    run.xpGained = 0;
+    run.challenge = challenge;
+    run.challengeHits = 0;
+    run.recoveryMode = false;
+    run.recoveryQueue = [];
+    run.locked = false;
+
+    setTrainHeader();
+    nextQuestion(review ? "review" : "normal");
+    show("train");
+  }
+
+  function endSession(){
+    run.active = false;
+    run.challenge = false;
+    run.recoveryMode = false;
+    run.recoveryQueue = [];
+    stopSpeak();
+    show("home");
+    renderAll();
+  }
+
+  function nextQuestion(mode="normal"){
+    if (run.locked) return;
+    run.round += 1;
+    setTrainHeader();
+
+    const q = pickQuestion(run.level, mode);
+    if (!q){
+      showFeedback("bad","Sem questões disponíveis.","Tente resetar o banco.","—");
+      return;
+    }
+
+    setQuestion(q);
+    updateHUD();
+  }
+
+  function onCorrectBase(q){
+    run.hits += 1;
+    if (run.challenge){
+      run.challengeHits += 1;
+    }
+    // XP
+    awardXP(12);
+
+    // Mastery up
+    bumpMastery(q.level, q.skillK, +4);
+
+    // Save phrase if it was wrong before and now corrected (simple rule: if miss>0 for this skill, store)
+    if (run.miss > 0 && Math.random() < 0.35){
+      const phrase = q.en;
+      if (!state.savedPhrases.includes(phrase)){
+        state.savedPhrases.unshift(phrase);
+        state.savedPhrases = state.savedPhrases.slice(0, 30);
+      }
+    }
+
+    beep("good");
+    flash("good");
+    state.todayRounds += 1;
+
+    // Challenge success
+    if (run.challenge && run.challengeHits >= run.challengeGoal){
+      awardXP(60);
+      beep("good");
+      flash("good");
+      showFeedback("good", `Desafio completo! +60 XP bônus.`, "Agora mantenha a consistência.", "Você ficou sem errar no desafio.");
+      updateHUD();
+      setTimeout(()=> nextQuestion("normal"), 450);
+      return;
+    }
+
+    updateHUD();
+    setTimeout(()=> nextQuestion("normal"), 280);
+  }
+
+  // Recovery logic: err twice in same skill => 3 rounds forced in that skill
+  const missTracker = {}; // skillK -> count
+  function onWrongBase(q){
+    run.miss += 1;
+    beep("bad");
+    flash("bad");
+    awardXP(3); // still some XP to keep motivation
+
+    bumpMastery(q.level, q.skillK, -7);
+
+    missTracker[q.skillK] = (missTracker[q.skillK] || 0) + 1;
+
+    // challenge fail on first mistake
+    if (run.challenge){
+      run.challenge = false;
+      run.challengeHits = 0;
+    }
+
+    // enter recovery
+    if (missTracker[q.skillK] >= 2 && !run.recoveryMode){
+      run.recoveryMode = true;
+      run.recoveryQueue = [q.skillK, q.skillK, q.skillK];
+    }
+
+    // consume recovery queue if active
+    if (run.recoveryMode){
+      if (run.recoveryQueue.length){
+        run.recoveryQueue.shift();
+      }
+      if (!run.recoveryQueue.length){
+        run.recoveryMode = false;
+      }
+    }
+
+    updateHUD();
+
+    // IMPORTANT: errou => troca a pergunta (não repete)
+    setTimeout(()=> nextQuestion(run.recoveryMode ? "review" : "normal"), 320);
+  }
+
+  function onAnswerMCQ(idx, btn){
+    if (run.locked) return;
+    run.locked = true;
+
+    const q = run.current;
+    const correct = q.correctIndex;
+
+    // paint
+    const optButtons = Array.from($("opts").querySelectorAll("button.opt"));
+    optButtons.forEach((b, i)=>{
+      if (i === correct) b.classList.add("correct");
+      if (i === idx && idx !== correct) b.classList.add("wrong");
+      b.disabled = true;
+    });
+
+    if (idx === correct){
+      showFeedback("good", "Boa! Você acertou.", q.hint, q.why);
+      // speak correct sentence (optional)
+      speak(q.tts);
+      run.locked = false;
+      onCorrectBase(q);
+    } else {
+      showFeedback("bad", "Você errou — beleza! Agora o app troca por outra questão do mesmo alvo.", q.hint, q.why);
+      speak(q.tts);
+      run.locked = false;
+      onWrongBase(q);
+    }
+  }
+
+  $("btnCheckTyping").onclick = () => {
+    if (run.locked) return;
+    run.locked = true;
+    const q = run.current;
+    const ans = norm($("typingInput").value);
+    const ok = q.answers.some(a => a === ans);
+
+    if (ok){
+      showFeedback("good", "Perfeito. É isso aí.", q.hint, q.why);
+      speak(q.tts);
+      run.locked = false;
+      onCorrectBase(q);
+    } else {
+      showFeedback("bad", "Ainda não. Trocarei a questão e você tenta de novo em outro cenário.", q.hint, q.why);
+      speak(q.tts);
+      run.locked = false;
+      onWrongBase(q);
+    }
+  };
+
+  $("btnCheckOrder").onclick = () => {
+    if (run.locked) return;
+    run.locked = true;
+    const q = run.current;
+    const builtStr = built.join(" ").trim();
+    const ok = norm(builtStr) === norm(q.en.replace(".","").replace("?",""));
+    if (ok){
+      showFeedback("good", "Ordem perfeita!", q.hint, q.why);
+      speak(q.tts);
+      run.locked = false;
+      onCorrectBase(q);
+    } else {
+      showFeedback("bad", "Ordem não ficou certa. Trocarei por outra do mesmo alvo.", q.hint, q.why);
+      speak(q.tts);
+      run.locked = false;
+      onWrongBase(q);
+    }
+  };
+
+  $("btnUndoWord").onclick = () => {
+    built.pop();
+    $("builtSentence").textContent = built.length ? built.join(" ") : "—";
+  };
+  $("btnClearWords").onclick = () => {
+    built = [];
+    $("builtSentence").textContent = "—";
+  };
+
+  // buttons
+  $("btnHear").onclick = () => {
+    const q = run.current;
+    if (q) speak(q.tts);
+  };
+  $("btnSkip").onclick = () => {
+    // swap question without penalty
+    if (!run.active) return;
+    nextQuestion("normal");
+  };
+  $("btnBackHome").onclick = () => endSession();
+  $("btnEndSession").onclick = () => endSession();
+
+  // Home actions
+  $("btnStartNow").onclick = () => startSession({challenge:false});
+  $("btnChallenge").onclick = () => startSession({challenge:true});
+  $("btnStartDaily").onclick = () => startSession({challenge:false});
+  $("btnGoReview").onclick = () => { show("review"); renderReview(); };
+  $("btnQuickListening").onclick = () => startSession({challenge:false}); // keeps same; listening via hear
+  $("btnContinueTrack") && ($("btnContinueTrack").onclick = () => startSession({challenge:false}));
+
+  // Review
+  $("btnReviewBack").onclick = () => show("home");
+  $("btnReviewStart").onclick = () => {
+    // start session in review mode (targets weakest skills)
+    startSession({challenge:false, review:true});
+  };
+
+  // Settings
+  $("btnSettingsBack").onclick = () => show("home");
+  $("btnTestVoice").onclick = () => { ensureAudio(); speak("Hello! Let's practice English."); };
+  $("btnStopVoice").onclick = () => stopSpeak();
+  $("btnResetAll").onclick = () => {
+    if (!confirm("Reset TOTAL? Vai zerar XP, streak, mastery e banco.")) return;
+    state = JSON.parse(JSON.stringify(DEFAULT));
+    state.level = "A1";
+    state.lastDay = todayKey();
+    store.set(STATE_KEY, state);
+    resetBank("A1"); resetBank("A2"); resetBank("B1"); resetBank("B2"); resetBank("C1");
+    renderAll();
+    show("home");
+  };
+  $("btnResetBank").onclick = () => {
+    if (!confirm("Resetar banco do nível atual? (não perde XP)")) return;
+    resetBank(state.level);
+    store.set(STATE_KEY, state);
+    renderAll();
+  };
+
+  // Top nav
+  $("tabHome").onclick = ()=> { stopSpeak(); show("home"); renderAll(); };
+  $("tabTrain").onclick = ()=> { stopSpeak(); show("train"); };
+  $("tabReview").onclick = ()=> { stopSpeak(); show("review"); renderReview(); };
+  $("tabSettings").onclick = ()=> { stopSpeak(); show("settings"); };
+
+  // ==========================
+  // REVIEW RENDER
+  // ==========================
+  function renderReview(){
+    const lvl = state.level;
+    const skills = LEVELS[lvl].skills.map(s=>({k:s.k, name:s.name, m:getMastery(lvl, s.k)}));
+    skills.sort((a,b)=>a.m-b.m);
+    const weak = skills.slice(0,4);
+
+    const ws = $("weakSkills");
+    ws.innerHTML = "";
+    weak.forEach(x=>{
+      const el = document.createElement("span");
+      el.className = "pill";
+      el.innerHTML = `<strong>${x.name}</strong> • ${x.m}%`;
+      ws.appendChild(el);
+    });
+
+    const ul = $("savedPhrases");
+    ul.innerHTML = "";
+    (state.savedPhrases || []).slice(0,15).forEach(p=>{
+      const li = document.createElement("li");
+      li.textContent = p;
+      ul.appendChild(li);
+    });
+  }
+
+  // ==========================
+  // RENDER ALL
+  // ==========================
+  function renderAll(){
+    renderLevelButtons();
+    updateHUD();
+    renderReview();
+  }
+
+  renderAll();
+
+})();
 </script>
 </body>
 </html>
